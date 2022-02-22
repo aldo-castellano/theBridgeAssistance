@@ -1,0 +1,14 @@
+//variables
+$primaryColor: #e1331a;
+$secondaryColor: #22172b;
+$backgrounColor: #f9f9f9;
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "roboto", sans-serif;
+  min-width: calc(100vh - 4rem);
+  background-color: $backgrounColor;
+}
