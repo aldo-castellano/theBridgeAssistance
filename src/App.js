@@ -7,12 +7,12 @@ import Nav from "./components/nav/Nav";
 const App = () => {
   return (
     <div className="container">
-      {/* <BrowserRouter> */}
-      {/* <Routes>
+       <BrowserRouter>
+      <Routes>
           <Route path="/" element={<Main />} />
-        </Routes> */}
+      </Routes>
       <Nav></Nav>
-      {/* </BrowserRouter> */}
+      </BrowserRouter>
     </div>
   );
 };
