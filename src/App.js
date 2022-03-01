@@ -2,7 +2,7 @@ import React from "react";
 import "./styles.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Main from "./views/main/Main";
-import Nav from "./components/nav/Nav";
+import Nav from "./components/nav/nav";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./assets/themeCofi";
 

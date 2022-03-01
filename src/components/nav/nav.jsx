@@ -6,7 +6,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import SpeedDial from "@mui/material/SpeedDial";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
-import logo from "../../assets/img/thebridgelogo.svg";
+import logo from "assets/img/thebridgelogo.svg";
 
 export default function Nav() {
   const [state, setState] = React.useState(false);
