@@ -6,7 +6,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import SpeedDial from "@mui/material/SpeedDial";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
-import logo from "../../assets/img/thebridgelogo.png";
+import logo from "../../assets/img/thebridgelogo.svg";
 
 export default function Nav() {
   const [state, setState] = React.useState(false);
@@ -25,7 +25,7 @@ export default function Nav() {
   const list = () => (
     <Box
       className="nav-menu"
-      sx={{ width: 200, textAlign: "center" }}
+      sx={{ width: 250 }}
       role="presentation"
       onClick={toggleDrawer(!state)}
       onKeyDown={toggleDrawer(!state)}
@@ -41,40 +41,28 @@ export default function Nav() {
   );
 
   return (
-    <div className="nav ">
-      <div className="nav-logo-container">
-        <img src={logo} alt="logo" />
-        <h2>ASSISTANCE</h2>
+    <div className="nav">
+      <div className="nav-logo">
+        <div>
+          <img src={logo} alt="logo" />
+          <h2>ASSISTENSE</h2>
+        </div>
       </div>
-
-      <React.Fragment className="nav-button">
+      <React.Fragment>
         <SpeedDial
           onClick={toggleDrawer(!state)}
           ariaLabel="SpeedDial basic example"
-          FabProps={{
-            sx: {
-              position: "absolute",
-              top: "-50%",
-              right: 20,
-              width: "68px",
-              height: "68px",
-              bgcolor: "#E1331A",
-
-              "&:hover": {
-                bgcolor: "#E1331A",
-              },
-              zIndex: { SpeedDial: 3000 },
-            },
+          sx={{
+            position: "fixed",
+            bottom: 40,
+            right: 0,
+            marginRight: "1rem",
+            zIndex: "3000",
           }}
           icon={<DragHandleIcon />}
         ></SpeedDial>
 
-        <Drawer
-          className="nav-button"
-          anchor="right"
-          open={state}
-          onClose={toggleDrawer(!state)}
-        >
+        <Drawer anchor="right" open={state} onClose={toggleDrawer(!state)}>
           {list("right")}
         </Drawer>
       </React.Fragment>

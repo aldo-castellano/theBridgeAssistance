@@ -1,14 +1,23 @@
 //variables
 $primaryColor: #e1331a;
 $secondaryColor: #22172b;
-$backgrounColor: #f9f9f9;
+$backgrounColor: #f0f0f0;
 
 * {
   box-sizing: border-box;
 }
 body {
   margin: 0;
+  position: relative;
   font-family: "roboto", sans-serif;
-  min-width: calc(100vh - 4rem);
   background-color: $backgrounColor;
+}
+
+.container {
+  // position: relative;
+  width: 95%;
+  margin: 0 auto;
+  @media (min-width: 450px) {
+    width: 85%;
+  }
 }
