@@ -4,10 +4,12 @@ import "./styles.scss";
 import { UserContextProvider } from "./context/UserContext";
 import Main from "./views/main/Main";
 import Nav from "./components/nav/nav";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./assets/themeCofi";
 import Login from "./views/login/login";
 
 const App = () => {
-  return (
+  return (<ThemeProvider theme={theme}>
     <UserContextProvider>
       <div className="container">
         <BrowserRouter>
@@ -19,7 +21,8 @@ const App = () => {
         </BrowserRouter>
       </div>
     </UserContextProvider>
-  );
+</ThemeProvider>
+ );
 };
 
 export default App;

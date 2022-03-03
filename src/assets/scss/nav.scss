@@ -1,24 +1,13 @@
-.nav {
+.nav-logo {
+  color: #ffffff;
   background-color: $secondaryColor;
   width: 100%;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   height: 4rem;
   display: flex;
   align-items: center;
-  color: white;
-}
-.nav-menu {
-  background-color: $secondaryColor;
-  height: 100%;
-  color: white;
-  .text-nav {
-    padding-bottom: 1rem;
-  }
-}
-.nav-logo-container {
   padding-left: 1rem;
-
   img {
     width: 150px;
     height: 20px;
@@ -29,9 +18,8 @@
     margin: 0;
   }
 }
-#root
-  > div
-  > div
-  > div.MuiSpeedDial-root.MuiSpeedDial-directionUp.css-h0fz3e-MuiSpeedDial-root {
-  z-index: 3000;
+
+.text-nav {
+  color: #ffffff;
+  padding-bottom: 1rem;
 }
