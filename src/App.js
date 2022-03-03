@@ -1,24 +1,27 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import "./styles.scss";
+import { UserContextProvider } from "./context/UserContext";
+import Main from "./views/main/Main";
+import Nav from "./components/nav/nav";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./assets/themeCofi";
-import "./styles.scss";
-
-import Main from "./views/main/Main";
-import { Courses } from "views/courses";
-import Nav from "./components/nav/nav";
+import Login from "./views/login/login";
 
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/courses/:user" element={<Courses />} />
-        </Routes>
-        <Nav></Nav>
-      </BrowserRouter>
+      <UserContextProvider>
+        <div className="container">
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+            {/* <Nav></Nav> */}
+          </BrowserRouter>
+        </div>
+      </UserContextProvider>
     </ThemeProvider>
   );
 };
