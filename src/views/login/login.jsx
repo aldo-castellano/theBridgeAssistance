@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useSession } from "../../logic/useSession";
 import { TextField, Button } from "@mui/material";
-import logo from "../../assets/img/thebridgelogo.png";
+import logo from "../../assets/img/thebridgelogo.svg";
 import logol from "../../assets/img/lone-logo.png";
 
 const Login = () => {
