@@ -57,6 +57,7 @@ const Login = () => {
           sx={{
             paddingX: 10,
           }}
+          color="secondary"
         >
           Login
         </Button>

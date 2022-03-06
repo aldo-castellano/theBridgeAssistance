@@ -12,15 +12,13 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <UserContextProvider>
-        <div className="container">
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Main />} />
-              <Route path="/login" element={<Login />} />
-            </Routes>
-            {/* <Nav></Nav> */}
-          </BrowserRouter>
-        </div>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+          {/* <Nav></Nav> */}
+        </BrowserRouter>
       </UserContextProvider>
     </ThemeProvider>
   );
