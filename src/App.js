@@ -18,9 +18,10 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/add" element={<AddForm/>} />
+              <Route path="/add-user" element={<AddForm />} />
+              <Route path="/add-course" element={<AddForm />} />
             </Routes>
-            {/* <Nav></Nav> */}
+            <Nav></Nav>
           </BrowserRouter>
         </div>
       </UserContextProvider>
