@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -8,9 +9,13 @@ import SpeedDial from "@mui/material/SpeedDial";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import logo from "assets/img/thebridgelogo.svg";
 
-export default function Nav() {
-  const [state, setState] = React.useState(false);
+export default function Nav(props) {
+  const [state, setState] = useState(false);
+  const [location] = useState(useLocation().pathname);
 
+  useEffect(() => {
+    location === "/login" ? props.location(false) : props.location(true);
+  }, [location]);
   const toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -25,7 +30,7 @@ export default function Nav() {
   const list = () => (
     <Box
       className="nav-menu"
-      sx={{ width: 250 }}
+      // sx={{ width: "20vw" }}
       role="presentation"
       onClick={toggleDrawer(!state)}
       onKeyDown={toggleDrawer(!state)}
@@ -41,22 +46,28 @@ export default function Nav() {
   );
 
   return (
-    <div className="nav">
-      <div className="nav-logo">
-        <div>
-          <img src={logo} alt="logo" />
-          <h2>ASSISTENSE</h2>
+    <div className="">
+      <div className="nav">
+        <div className="container">
+          <div className="nav-logo">
+            <div>
+              <img src={logo} alt="logo" />
+              <h2>ASSISTENSE</h2>
+            </div>
+          </div>
         </div>
       </div>
       <React.Fragment>
         <SpeedDial
           onClick={toggleDrawer(!state)}
           ariaLabel="SpeedDial basic example"
+          className="button-menu container"
           sx={{
             position: "fixed",
             bottom: 40,
-            right: 0,
-            marginRight: "1rem",
+            alignItems: "flex-end",
+            // right: "10%",
+            // marginRight: "1rem",
             zIndex: "3000",
           }}
           icon={<DragHandleIcon />}
