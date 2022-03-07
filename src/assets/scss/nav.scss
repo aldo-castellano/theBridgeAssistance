@@ -36,6 +36,9 @@
 .nav-menu {
   width: 60vw;
   @media (min-width: $mobile) {
+    width: 40vw;
+  }
+  @media (min-width: 1200px) {
     width: 20vw;
   }
 }

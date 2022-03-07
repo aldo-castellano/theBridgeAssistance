@@ -66,8 +66,6 @@ export default function Nav(props) {
             position: "fixed",
             bottom: 40,
             alignItems: "flex-end",
-            // right: "10%",
-            // marginRight: "1rem",
             zIndex: "3000",
           }}
           icon={<DragHandleIcon />}
