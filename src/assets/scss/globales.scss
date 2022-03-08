@@ -3,6 +3,7 @@ $primaryColor: #e1331a;
 $secondaryColor: #22172b;
 $backgrounColor: #f0f0f0;
 $wordColor: #c4c4c4;
+
 $mobile: 450px;
 
 * {
@@ -21,4 +22,7 @@ body {
   @media (min-width: $mobile) {
     width: 75%;
   }
+}
+.container-main {
+  padding-bottom: 8rem;
 }

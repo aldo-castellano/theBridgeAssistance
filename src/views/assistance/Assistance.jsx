@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Prueba from "./modelAssistance";
+import { Icon } from "@iconify/react";
 // import { modelAssitance, modelcourses } from "./modelAssistance";
 
 const Assistant = () => {
@@ -19,11 +20,11 @@ const Assistant = () => {
   const onChangeValue = (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
-    const tempAssitance = prueba.map((e) => {
+    const tempAssitance = prueba.map((e, index) => {
       return {
         name: e.name,
         type: data.get(e.name),
-        modo: data.get(e.name + "check"),
+        coment: data.get(index + "comment"),
       };
     });
     console.log(tempAssitance);
@@ -33,6 +34,14 @@ const Assistant = () => {
     let removes = document.getElementById(`${event.target.id}`);
 
     console.log(removes);
+  };
+  const handleClickComment = (event) => {
+    const comment = document.getElementById(event.target.id + "comment");
+    comment.toggleAttribute("hidden");
+    // console.log(comment);
+  };
+  const handleClickIcon = (event) => {
+    event.stopPropagation();
   };
 
   return (
@@ -46,57 +55,75 @@ const Assistant = () => {
             </option>
           ))}
         </select>
-        <form onSubmit={onChangeValue}>
+        <form onSubmit={onChangeValue} className="assistance-form">
           {prueba.map((e, index) => {
             return (
-              <div key={index} id={`${index}`} data-hola="hola">
+              <div key={index} id={`${index}`} className="item-assistance">
+                <p>{e.name}</p>
+                <div className="type-assistance">
+                  <input
+                    className="input"
+                    id={`${index} pretencial`}
+                    type="radio"
+                    defaultChecked
+                    value={0}
+                    name={e.name}
+                    onClick={testt}
+                  />
+                  <label className="pretencial" htmlFor={`${index} pretencial`}>
+                    <Icon className="icon-assistance" icon="bi:laptop" />
+                  </label>
+
+                  <input
+                    id={`${index} remote`}
+                    type="radio"
+                    value="1"
+                    name={e.name}
+                    onClick={testt}
+                  />
+                  <label className="pretencial" htmlFor={`${index} remote`}>
+                    <Icon
+                      className="icon-assistance"
+                      icon="fa-solid:chalkboard-teacher"
+                    />
+                  </label>
+
+                  <input
+                    id={`${index} absent`}
+                    type="radio"
+                    value="2"
+                    name={e.name}
+                    onClick={testt}
+                  />
+
+                  <label className="absent" htmlFor={`${index} absent`}>
+                    <Icon
+                      className="icon-assistance"
+                      icon="akar-icons:person-cross"
+                    />
+                  </label>
+                </div>
                 <div>
-                  <p>{e.name}</p>
-                  <div>
-                    <label className="contenedor">
-                      <input
-                        className="input"
-                        id={`${index}`}
-                        type="radio"
-                        defaultValue={0}
-                        value={0}
-                        name={e.name}
-                        onClick={testt}
-                      />
-                      <span> Presential </span>
-                    </label>
-                    <label className="contenedor">
-                      <input
-                        id={`${index}`}
-                        type="radio"
-                        value="1"
-                        name={e.name}
-                        onClick={testt}
-                      />
-                      <span> Remote </span>
-                    </label>
-                    <label className="contenedor">
-                      <input
-                        id={`${index}`}
-                        type="radio"
-                        value="2"
-                        name={e.name}
-                        defaultChecked
-                        onClick={testt}
-                      />
-                      <span> Absent </span>
-                    </label>
+                  <button
+                    id={index}
+                    className={`${index} coment-button`}
+                    onClick={handleClickComment}
+                    type="button"
+                  >
+                    <Icon
+                      onClick={handleClickIcon}
+                      className="icon-assistance"
+                      icon="fa6-regular:note-sticky"
+                    />
+                  </button>
+                  <div
+                    id={`${index}comment`}
+                    hidden
+                    className=" textarea-assistance"
+                  >
+                    <textarea name={index + "comment"}></textarea>
                   </div>
                 </div>
-                <input
-                  type="checkbox"
-                  id="vehicle1"
-                  name={e.name + "check"}
-                  value="Partial"
-                ></input>
-                <p className=" display-none" id={"partial" + index}>
-                  esto es una prueba
-                </p>
               </div>
             );
           })}

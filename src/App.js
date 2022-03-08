@@ -17,19 +17,21 @@ const App = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <UserContextProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/" element={<Assitance />} />
-            <Route path="/courses" element={<Courses />} />
-          </Routes>
-          {/* TODO: SHOW BASED ON USER CONTEXT (LOGIN) */}
-          {navRender ? <Nav location={handleChange}></Nav> : null}
-        </BrowserRouter>
-      </UserContextProvider>
-    </ThemeProvider>
+    <div className="container-main">
+      <ThemeProvider theme={theme}>
+        <UserContextProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/" element={<Assitance />} />
+              <Route path="/courses" element={<Courses />} />
+            </Routes>
+            {/* TODO: SHOW BASED ON USER CONTEXT (LOGIN) */}
+            {navRender ? <Nav location={handleChange}></Nav> : null}
+          </BrowserRouter>
+        </UserContextProvider>
+      </ThemeProvider>
+    </div>
   );
 };
 
