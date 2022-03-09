@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Prueba from "./modelAssistance";
 import { Icon } from "@iconify/react";
+import { Check } from "@mui/icons-material";
 // import { modelAssitance, modelcourses } from "./modelAssistance";
 
 const Assistant = () => {
@@ -28,22 +29,27 @@ const Assistant = () => {
       };
     });
     console.log(tempAssitance);
-    return tempAssitance;
+    return setPrueba(tempAssitance);
   };
-  const testt = (event) => {
-    let removes = document.getElementById(`${event.target.id}`);
-
-    console.log(removes);
+  const tempAssitance = [...prueba];
+  const testt = (event, index, clave) => {
+    let partial = document.getElementById(`${index} partial`);
+    if (clave === "partial") {
+      tempAssitance[index][clave] = event.target.checked;
+    } else if (clave === "type" && event.target.value == 2) {
+      tempAssitance[index][clave] = event.target.value;
+      tempAssitance[index].partial = false;
+    } else {
+      tempAssitance[index][clave] = event.target.value;
+    }
+    setPrueba(tempAssitance);
   };
   const handleClickComment = (event) => {
     const comment = document.getElementById(event.target.id + "comment");
     comment.toggleAttribute("hidden");
-    // console.log(comment);
-  };
-  const handleClickIcon = (event) => {
-    event.stopPropagation();
   };
 
+  console.log(prueba);
   return (
     <>
       <main className="main container">
@@ -62,26 +68,34 @@ const Assistant = () => {
                 <p>{e.name}</p>
                 <div className="type-assistance">
                   <input
-                    className="input"
+                    className="input-assistance-type"
                     id={`${index} pretencial`}
                     type="radio"
-                    defaultChecked
+                    defaultChecked={e.type == 0 ? true : false}
                     value={0}
                     name={e.name}
-                    onClick={testt}
+                    onClick={(event) => testt(event, index, "type")}
                   />
-                  <label className="pretencial" htmlFor={`${index} pretencial`}>
+                  <label
+                    className="pretencial label-assistance"
+                    htmlFor={`${index} pretencial`}
+                  >
                     <Icon className="icon-assistance" icon="bi:laptop" />
                   </label>
 
                   <input
+                    className="input-assistance-type"
+                    defaultChecked={e.type == 1 ? true : false}
                     id={`${index} remote`}
                     type="radio"
-                    value="1"
+                    value={1}
                     name={e.name}
-                    onClick={testt}
+                    onClick={(event) => testt(event, index, "type")}
                   />
-                  <label className="pretencial" htmlFor={`${index} remote`}>
+                  <label
+                    className="pretencial label-assistance"
+                    htmlFor={`${index} remote`}
+                  >
                     <Icon
                       className="icon-assistance"
                       icon="fa-solid:chalkboard-teacher"
@@ -89,14 +103,19 @@ const Assistant = () => {
                   </label>
 
                   <input
+                    className="input-assistance-type"
+                    defaultChecked={e.type == 2 ? true : false}
                     id={`${index} absent`}
                     type="radio"
-                    value="2"
+                    value={2}
                     name={e.name}
-                    onClick={testt}
+                    onClick={(event) => testt(event, index, "type")}
                   />
 
-                  <label className="absent" htmlFor={`${index} absent`}>
+                  <label
+                    className="absent label-assistance"
+                    htmlFor={`${index} absent`}
+                  >
                     <Icon
                       className="icon-assistance"
                       icon="akar-icons:person-cross"
@@ -111,7 +130,7 @@ const Assistant = () => {
                     type="button"
                   >
                     <Icon
-                      onClick={handleClickIcon}
+                      id={index}
                       className="icon-assistance"
                       icon="fa6-regular:note-sticky"
                     />
@@ -121,6 +140,26 @@ const Assistant = () => {
                     hidden
                     className=" textarea-assistance"
                   >
+                    <div className="container-partial">
+                      <input
+                        id={`${index} partial`}
+                        type="checkbox"
+                        name={index}
+                        checked={e.partial}
+                        onChange={(event) => {
+                          testt(event, index, "partial");
+                        }}
+                        hidden={e.type == 2 ? true : false}
+                        className="input-partial"
+                      ></input>
+                      <label
+                        hidden={e.type == 2 ? true : false}
+                        htmlFor={`${index} partial`}
+                        className="label-partial"
+                      >
+                        Partial
+                      </label>
+                    </div>
                     <textarea name={index + "comment"}></textarea>
                   </div>
                 </div>

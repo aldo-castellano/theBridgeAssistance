@@ -24,30 +24,37 @@ const prueba = [
   {
     name: "algfddo",
     type: 0,
+    partial: false,
   },
   {
     name: "ald",
     type: 2,
+    partial: false,
   },
   {
     name: "ado",
     type: 2,
+    partial: false,
   },
   {
     name: "do",
     type: 0,
+    partial: false,
   },
   {
     name: "alkgjdo",
     type: 1,
+    partial: false,
   },
   {
     name: "algfdsgdo",
     type: 0,
+    partial: false,
   },
   {
     name: "algfdsdo",
     type: 0,
+    partial: false,
   },
 ];
 export default prueba;
