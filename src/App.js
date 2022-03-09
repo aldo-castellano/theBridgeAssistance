@@ -4,7 +4,7 @@ import "./styles.scss";
 import { UserContextProvider } from "./context/UserContext";
 import Main from "./views/main/Main";
 import Nav from "./components/nav/nav";
-import AddForm from "views/addForm";
+import Form from "views/form";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./assets/themeCofi";
 import Login from "./views/login/login";
@@ -18,8 +18,8 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/add-user" element={<AddForm />} />
-              <Route path="/add-course" element={<AddForm />} />
+              <Route path="/add-user" element={<Form />} />
+              <Route path="/add-course" element={<Form />} />
             </Routes>
             <Nav></Nav>
           </BrowserRouter>
@@ -30,3 +30,4 @@ const App = () => {
 };
 
 export default App;
+
