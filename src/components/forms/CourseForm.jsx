@@ -14,11 +14,11 @@ const schemaCourse = yup.object().shape({
     .string()
     .min(3, "El titulo debe tener un minimo de 3 caracteres")
     .required("Este campo es obligario"),
-  dateStart: yup.date().required("Es necesario este campo"),
-  dateEnd: yup
+  startDate: yup.date().required("Es necesario este campo"),
+  endDate: yup
     .date()
     .min(
-      yup.ref("dateStart"),
+      yup.ref("startDate"),
       "La fecha de fin debe de ser mayor a la de inicio"
     ),
 });
@@ -59,7 +59,7 @@ export default function CourseForm({ setForm, title }) {
           <ThemeProvider theme={theme}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <Controller
-                name="dateStart"
+                name="startDate"
                 control={controlCourse}
                 defaultValue={format(Date.now(), "yyyy-MM-dd")}
                 render={({
@@ -67,17 +67,16 @@ export default function CourseForm({ setForm, title }) {
                   fieldState: { error, invalid },
                 }) => (
                   <DatePicker
-                    label="Inicio de curso"
-                    id="dateStart"
+                    label="Inicio del curso"
+                    id="startDate"
                     value={value}
                     onChange={(nvalue) => {
-                      console.log(format(nvalue, "yyyy-MM-dd"));
                       onChange(nvalue);
                     }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        id="dateStart"
+                        id="startDate"
                         variant="standard"
                         margin="dense"
                         error={!!errors.dateStart}
@@ -90,7 +89,7 @@ export default function CourseForm({ setForm, title }) {
                 )}
               />
               <Controller
-                name="dateEnd"
+                name="endDate"
                 control={controlCourse}
                 defaultValue={format(Date.now(), "yyyy-MM-dd")}
                 render={({
@@ -98,8 +97,8 @@ export default function CourseForm({ setForm, title }) {
                   fieldState: { error, invalid },
                 }) => (
                   <DatePicker
-                    label="Inicio de curso"
-                    id="dateEnd"
+                    label="Fin del curso"
+                    id="endDate"
                     value={value}
                     onChange={(nvalue) => {
                       console.log(format(nvalue, "yyyy-MM-dd"));
@@ -108,7 +107,7 @@ export default function CourseForm({ setForm, title }) {
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        id="dateEnd"
+                        id="endDate"
                         variant="standard"
                         margin="dense"
                         error={!!errors.dateEnd}
@@ -124,7 +123,7 @@ export default function CourseForm({ setForm, title }) {
             <FormControl >
           <InputLabel id="demo-simple-select-label">Modalidad</InputLabel>              
           <Controller
-            name="typeCourse"
+            name="type"
             control={controlCourse}
             defaultValue={0}
             

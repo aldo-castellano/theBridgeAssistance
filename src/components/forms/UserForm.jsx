@@ -6,8 +6,8 @@ import { yupResolver} from "@hookform/resolvers/yup";
 
 
 const schemaUser = yup.object().shape({
-    firstName : yup.string().min(3,"El nombre debe tener un minimo de 3 caracteres").required(),
-    lastName : yup.string().min(3,"El apellido debe tener un minimo de 3 caracteres").required(),
+    firstname : yup.string().min(3,"El nombre debe tener un minimo de 3 caracteres").required(),
+    lastname : yup.string().min(3,"El apellido debe tener un minimo de 3 caracteres").required(),
     login : yup.string().min(3,"El login debe tener un minimo de 3 caracteres").required(), 
     // WIP VERIFICACION SI EL LOGIN EXISTE
     password: yup.string().required('Es necesaria una contraseña'),
@@ -38,7 +38,7 @@ export default function UserForm({setForm,title}) {
       <form onSubmit={handleSubmit(onSubmit)} >
       <div className="form-contianer">
       <Controller
-        name="firstName"
+        name="firstname"
         control={controlUser}
         defaultValue=""
         render={({ field }) => (
@@ -53,7 +53,7 @@ export default function UserForm({setForm,title}) {
         )}
       />
       <Controller
-        name="lastName"
+        name="lastname"
         control={controlUser}
         defaultValue=""
         render={({ field }) => (

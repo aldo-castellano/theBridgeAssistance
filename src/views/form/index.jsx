@@ -2,12 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import CourseForm from "components/forms/CourseForm";
 import UserForm from "components/forms/UserForm";
+import axios from "axios";
+import { format } from "date-fns";
+
 
 
 const Form = () => {
   const [formType, setFormType] = useState(0);
   const { pathname } = useLocation();
-  const [formState,setFormState] = useState();
+  const [postDone,setPostDone] = useState(false);
+  const [formState,setFormState] = useState(null);
   const [title,setTitle] = useState("");
   
   console.log("FormState",formState);
@@ -18,11 +22,56 @@ const Form = () => {
   useEffect(() => {
     setFormType(getTypeForm(pathname));
   }, [pathname]);
-
+  useEffect(() => {
+    if(formState != null){
+      switch (formType) {
+        case 0:
+          createUser();
+          break;
+        case 1:
+          createCourse();
+          break;
+        default:
+          break;
+      }
+    }
+   
+  }, [formState]);
+  //Funcion que se envia a los forms hijos para recoger la info y hacer la peticion
  const updateStateForm = (newdata)=>{
       setFormState(newdata);
   }
+const createUser = async ()=>{
+  const url = "http://localhost:3003/api/user/add";
+  try {
+    const response = await axios.post(url,formState);
+    console.log("Se realiza post correctamente",response)
+    setPostDone(true)
+  } catch (error) {
+    console.log(error)
+  }
+  
 
+}
+const createCourse = async ()=>{
+  const url = "http://localhost:3003/api/course/add";
+  try {
+    let tempObj = {
+      title:formState.title,
+      startDate:format(formState.startDate,"yyyy-MM-dd"),
+      endDate:format(formState.endDate,"yyyy-MM-dd"),
+      type:formState.type === 0 ? false : true 
+    }
+    console.log("TempOBJ",tempObj);
+    const response = await axios.post(url,tempObj);
+    console.log("Se realiza post correctamente",response)
+    setPostDone(true)
+  } catch (error) {
+    console.log(error)
+  }
+  
+
+}
   //Funcion que define por path que tipo de formulario mostrar
   function getTypeForm(path) {
     switch (path) {
@@ -47,7 +96,9 @@ const Form = () => {
   //INICIO RENDER
   return (
     <div className="add-form">
-        {formType === 0 ? <UserForm title={title} setForm={updateStateForm}  /> : <CourseForm title={title} setForm={updateStateForm}/>}
+        {postDone ? <h1>POST DONE</h1> : formType === 0 ? 
+        <UserForm title={title} setForm={updateStateForm}  /> :
+         <CourseForm title={title} setForm={updateStateForm}/>}
     </div>
   );
 };
