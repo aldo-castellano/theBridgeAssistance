@@ -17,8 +17,8 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/login" element={<Login />} />
-              <Route path="/" element={<Main />} />
               <Route path="/courses" element={<Courses />} />
+              <Route path="/" element={<Main />} />
             </Routes>
             {/* TODO: SHOW BASED ON USER CONTEXT (LOGIN) */}
             {/* <Nav></Nav> */}

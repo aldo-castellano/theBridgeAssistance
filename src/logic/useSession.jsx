@@ -1,21 +1,25 @@
-import React, { useState, useCallback, useContext } from "react";
-import Context from "../context/UserContext";
-import loginSrv from "../services/login";
+import { useCallback, useContext } from "react";
+import Context from "context/UserContext";
+import loginSrv from "services/login";
+import { useNavigate } from "react-router-dom";
 
 export const useSession = () => {
-  const { jwt, setJWT } = useContext(Context);
-  const login = useCallback(
-    ({ username, password }) => {
+  const navigate = useNavigate();
+  const { jwt, setJWT, setUser } = useContext(Context);
+  const loger = useCallback(
+    ({ login, password }) => {
       // setState({ loading: true, error: false });
-      loginSrv({ username, password })
-        .then((jwt) => {
-          window.sessionStorage.setItem("jwt", jwt);
+      loginSrv({ login, password })
+        .then(({ token, login, id }) => {
+          window.sessionStorage.setItem("jwt", token);
+          window.sessionStorage.setItem("user", { login, id });
           // setState({ loading: false, error: false });
-          setJWT(jwt);
-          console.log(jwt);
+          setJWT(token);
+          setUser({ login, id });
         })
         .catch((err) => {
           window.sessionStorage.removeItem("jwt");
+          window.sessionStorage.removeItem("user");
           // setState({ loading: false, error: true });
           console.error(err);
         });
@@ -25,8 +29,11 @@ export const useSession = () => {
 
   const logout = useCallback(() => {
     window.sessionStorage.removeItem("jwt");
+    window.sessionStorage.removeItem("user");
     setJWT(null);
+    setUser(null);
+    navigate("/login");
   }, [setJWT]);
 
-  return { logout, login, isLogged: jwt != 0 };
+  return { logout, loger, isLogged: Boolean(jwt) };
 };

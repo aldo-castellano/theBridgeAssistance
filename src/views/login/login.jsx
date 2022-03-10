@@ -7,7 +7,6 @@ import logol from "assets/img/lone-logo.png";
 
 import { useSession } from "logic/useSession";
 
-
 const Login = () => {
   const navigate = useNavigate();
 
@@ -19,15 +18,13 @@ const Login = () => {
     //TODO: VALIDATE
     //TODO: ERROR MESSAGE
     loger({ login, password });
+    setLogin("");
+    setPassword("");
   };
 
   useEffect(() => {
     console.log(isLogged);
-    if (isLogged) {
-      navigate("/");
-    } else {
-      console.log("bad credentials");
-    }
+    if (isLogged) navigate("/");
   }, [isLogged, navigate]);
 
   return (
@@ -43,6 +40,7 @@ const Login = () => {
         <h2>INICIA SESION</h2>
         <TextField
           variant="standard"
+          value={login}
           onChange={(e) => setLogin(e.target.value)}
           label="Usuario"
         />
@@ -50,6 +48,7 @@ const Login = () => {
           variant="standard"
           label="Contraseña"
           type="password"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <Button
@@ -67,6 +66,3 @@ const Login = () => {
   );
 };
 export default Login;
-//! BORDER RADIUS HARDCORED
-//! WRONG LOGO
-//* VALIDATE -> AXIOS -> BACk -> DB -> RESP
