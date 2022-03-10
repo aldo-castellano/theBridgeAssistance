@@ -7,7 +7,7 @@ export function UserContextProvider({ children }) {
 
   useEffect(() => {
     //user not logged implementations
-    // if (!jwt) true;
+    // if (!jwt) navigate("/login");
   }, [jwt]);
 
   return (
