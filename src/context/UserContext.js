@@ -4,19 +4,10 @@ const Context = React.createContext({});
 
 export function UserContextProvider({ children }) {
   const [jwt, setJWT] = useState(() => window.sessionStorage.getItem("jwt"));
-
-  useEffect(() => {
-    //user not logged implementations
-    // if (!jwt) navigate("/login");
-  }, [jwt]);
+  const [user, setUser] = useState(() => window.sessionStorage.getItem("user"));
 
   return (
-    <Context.Provider
-      value={{
-        jwt,
-        setJWT,
-      }}
-    >
+    <Context.Provider value={{ jwt, setJWT, user, setUser }}>
       {children}
     </Context.Provider>
   );
