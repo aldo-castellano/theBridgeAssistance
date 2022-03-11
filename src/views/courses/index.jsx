@@ -13,9 +13,9 @@ export const Courses = () => {
   }, [isLogged, navigate]);
 
   const { user } = useContext(Context);
+ 
   const userid = user.split(",")[0];
   const courses = usercourse(userid);
-
   //? course creation only for admins
   //? course asignement to users
 
@@ -26,7 +26,7 @@ export const Courses = () => {
         <section onClick={() => navigate("/")} className="course plus">
           <p>+</p>
         </section>
-        {courses.map(({ id, title }, i) => (
+        {courses[0] && courses.map(({ id, title }, i) => (
           <section
             key={`course-${i}`}
             onClick={() => navigate("/", { state: { id, title } })}

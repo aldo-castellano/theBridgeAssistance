@@ -45,7 +45,7 @@ export default function Nav() {
       <div className="nav-logo">
         <div>
           <img src={logo} alt="logo" />
-          <h2>ASSISTENSE</h2>
+          <h2>ASSISTANCE</h2>
         </div>
       </div>
       <React.Fragment>

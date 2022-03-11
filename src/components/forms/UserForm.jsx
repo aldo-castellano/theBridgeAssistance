@@ -16,19 +16,23 @@ const schemaUser = yup.object().shape({
     password: yup.string().required('Es necesaria una contraseña'),
     confirmPassword : yup.string()
     .oneOf([yup.ref('password'), null], 'Las contraseñas deben coincidir'),
-    email:yup.string().email("Introduce un email valido"),
+    email:yup.string().email("Introduce un email valido").required('Es necesario un email'),
     rol: yup.string().required()
   })
 
-export default function UserForm({setForm,title}) {
+export default function UserForm({setForm,title,defaultValues}) {
   const {
     control:controlUser,
     handleSubmit,
     formState: { errors:errorsUser },
+    reset 
   
   } = useForm({
-    resolver:yupResolver(schemaUser)
+    resolver:yupResolver(schemaUser),
+    
   });
+
+  console.log("DATA",defaultValues)
 
   const [rols,setRols] = useState([])
   const [coursesArr, setCoursesArr] = useState([]);
@@ -37,6 +41,11 @@ export default function UserForm({setForm,title}) {
     getRoles();
     getCourses();
   }, []);
+
+  useEffect(() => {
+      defaultValues && defaultValues.defaultValues && reset(defaultValues.defaultValues)
+      
+  }, [defaultValues,reset]);
 
   const getRoles = async()=>{
     let url = "http://localhost:3003/api/roles/all"
@@ -115,8 +124,7 @@ export default function UserForm({setForm,title}) {
           />
         )}
       />
-
-      <Controller
+      {defaultValues == null ?    ( <><Controller
         name="password"
         control={controlUser}
         defaultValue=""
@@ -147,7 +155,8 @@ export default function UserForm({setForm,title}) {
             }
           />
         )}
-      />
+      /> </>):""}
+ 
       <Controller
         name="email"
         control={controlUser}

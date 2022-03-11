@@ -9,6 +9,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "assets/themeCofi";
 import Login from "views/login/login";
 import { Courses } from "views/courses";
+import UserList from "views/userList"
 
 const App = () => {
   return (
@@ -22,7 +23,9 @@ const App = () => {
               <Route path="/add-user" element={<Form />} />
               <Route path="/add-course" element={<Form />} />
               <Route path="/add-participant" element={<Form />} />
+              <Route path="/edit-user" element={<Form />} />
               <Route path="/courses" element={<Courses />} />
+              <Route path="/user-list" element={<UserList />} />
             </Routes>
             <Nav></Nav>
             {/* TODO: SHOW BASED ON USER CONTEXT (LOGIN) */}
