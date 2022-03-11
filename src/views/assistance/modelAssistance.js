@@ -39,7 +39,7 @@ const prueba = [
   {
     name: "do",
     type: 0,
-    partial: false,
+    partial: true,
   },
   {
     name: "alkgjdo",
