@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useSession } from "../../logic/useSession";
 import { TextField, Button } from "@mui/material";
-import logo from "../../assets/img/thebridgelogo.svg";
-import logol from "../../assets/img/lone-logo.png";
+import logo from "assets/img/thebridgelogo.svg";
+import logol from "assets/img/lone-logo.png";
+
+import { useSession } from "logic/useSession";
+
 
 const Login = () => {
   const navigate = useNavigate();
-  // const [logged, setLogged] = useState(false);
-  const [username, setUsername] = useState("");
+
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-  const { isLoginLoading, hasLoginError, login, isLogged } = useSession();
+  const { loger, isLogged } = useSession();
 
   const userLogin = () => {
     //TODO: VALIDATE
-    //TODO: SUCCESS/ERROR MESSAGE
-    login({ username, password });
+    //TODO: ERROR MESSAGE
+    loger({ login, password });
   };
 
   useEffect(() => {
@@ -41,7 +43,7 @@ const Login = () => {
         <h2>INICIA SESION</h2>
         <TextField
           variant="standard"
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => setLogin(e.target.value)}
           label="Usuario"
         />
         <TextField

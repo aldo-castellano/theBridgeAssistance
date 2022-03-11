@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+
 let courses = [
   { name: "Full-Stack Intensivo", user: "richi" },
   { name: "Full-Stack Part-time", user: "richi" },

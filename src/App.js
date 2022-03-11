@@ -6,8 +6,9 @@ import Main from "./views/main/Main";
 import Nav from "./components/nav/nav";
 import Form from "views/form";
 import { ThemeProvider } from "@mui/material/styles";
-import theme from "./assets/themeCofi";
-import Login from "./views/login/login";
+import theme from "assets/themeCofi";
+import Login from "views/login/login";
+import { Courses } from "views/courses";
 
 const App = () => {
   return (
@@ -16,13 +17,16 @@ const App = () => {
         <div className="container">
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Main />} />
               <Route path="/login" element={<Login />} />
               <Route path="/add-user" element={<Form />} />
               <Route path="/add-course" element={<Form />} />
               <Route path="/add-participant" element={<Form />} />
+              <Route path="/" element={<Main />} />
+              <Route path="/courses" element={<Courses />} />
             </Routes>
             <Nav></Nav>
+            {/* TODO: SHOW BASED ON USER CONTEXT (LOGIN) */}
+            {/* <Nav></Nav> */}
           </BrowserRouter>
         </div>
       </UserContextProvider>
