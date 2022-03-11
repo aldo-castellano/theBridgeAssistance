@@ -20,9 +20,18 @@ const getUsers = async() =>{
     
   }
 }
-
+let isDouble = null;
 const handleSelection = (a)=> {
-  navigate("/edit-user", {state:{id: a.id}}) 
+  if(isDouble == null){
+    isDouble = setTimeout(()=>{
+      isDouble = null;
+    },400)
+  }else{
+    clearTimeout(isDouble);
+    isDouble=null;
+    navigate("/edit-user", {state:{id: a.id}});
+  }
+ 
 
 }
 //Definicion columnas grid
@@ -46,8 +55,8 @@ const columns = [
         rows={users}
         columns={columns}
         pageSize={6}
-        rowsPerPageOptions={[6]}
-        onRowDoubleClick={handleSelection}    
+        rowsPerPageOptions={[6]}  
+        onRowClick={handleSelection}   
         
       /></div>
       </div>
