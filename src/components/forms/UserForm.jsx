@@ -16,7 +16,8 @@ const schemaUser = yup.object().shape({
     password: yup.string().required('Es necesaria una contraseña'),
     confirmPassword : yup.string()
     .oneOf([yup.ref('password'), null], 'Las contraseñas deben coincidir'),
-    email:yup.string().email("Introduce un email valido")
+    email:yup.string().email("Introduce un email valido"),
+    rol: yup.string().required()
   })
 
 export default function UserForm({setForm,title}) {
@@ -59,6 +60,7 @@ export default function UserForm({setForm,title}) {
         name="firstname"
         control={controlUser}
         defaultValue=""
+        fullWidth
         render={({ field }) => (
           <TextField
             {...field}
@@ -149,16 +151,16 @@ export default function UserForm({setForm,title}) {
           />
         )}
       /><ThemeProvider theme={theme}>
-       <FormControl >
-          <InputLabel id="demo-simple-select-label">Modalidad</InputLabel>              
+       <FormControl sx={{mt:"25px"}} >
+          <InputLabel id="demo-simple-select-label">Rol</InputLabel>              
           <Controller
-            name="type"
+            name="rol"
             control={controlUser}
-            defaultValue={null}
+            defaultValue={""}
             
             render={({ field }) => (
-              <Select {...field} label="Modalidad">
-                {rols.map(e=><MenuItem value={e.id}>{e.name}</MenuItem>)}
+              <Select {...field}   label="Rol">
+                {rols.map(e=><MenuItem key={e.id}value={e.id}>{e.name}</MenuItem>)}
                 
                 
               

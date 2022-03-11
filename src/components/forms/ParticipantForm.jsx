@@ -1,9 +1,11 @@
-import React from "react";
-import { Button,TextField } from "@mui/material";
+import React , {useState,useEffect} from "react";
+import { Button,TextField , Select, MenuItem ,InputLabel,FormControl } from "@mui/material";
 import { Controller , useForm} from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver} from "@hookform/resolvers/yup";
-
+import axios from 'axios';
+import theme from "../../assets/formConfi";
+import { ThemeProvider } from "@mui/material/styles";
 
 const schemaParticipant = yup.object().shape({
     firstname : yup.string().min(3,"El nombre debe tener un minimo de 3 caracteres").required(),
@@ -20,7 +22,23 @@ export default function ParticipantForm({setForm,title}) {
   } = useForm({
     resolver:yupResolver(schemaParticipant)
   });
+ 
+  const [coursesArr,setCoursesArr] = useState([]);
 
+  useEffect(() => {
+    getCourses()
+
+  }, []);
+
+  const getCourses = async()=>{
+    let url = "http://localhost:3003/api/course/all"
+
+    try {
+      setCoursesArr(await (await axios.get(url)).data)
+    } catch (error) {
+      console.log("Error en getRoles");
+    }
+  }
   const onSubmit = data => setForm(data)
 
   return (
@@ -61,23 +79,22 @@ export default function ParticipantForm({setForm,title}) {
           />
         )}
       />
-
-      <Controller
-        name="courseid"
-        control={controlParticipant}
-        defaultValue=""
-        render={({ field }) => (
-          <TextField
-            {...field}
-            id="courseid-input"
-            label="Course ID"
-            variant="standard"
-            error={!!errorsParticipant.courseid}
-            helperText={errorsParticipant.courseid ? errorsParticipant.courseid?.message : ""}
-          />
-        )}
-      />
-
+<ThemeProvider theme={theme}>
+  <FormControl >
+          <InputLabel id="demo-simple-select-label">Curso</InputLabel>              
+          <Controller
+            name="courseid"
+            control={controlParticipant}
+            defaultValue={""}
+            
+            render={({ field }) => (
+              <Select {...field} label="Curso">
+               {coursesArr.map(element=><MenuItem key={element.id} value={element.id}>{element.title}</MenuItem>)}
+              
+              </Select>
+            )} />
+            </FormControl>
+            </ThemeProvider>
       
        <Button variant="contained" type="submit" sx={{mt:4}}>Crear</Button></div>
       </form>
