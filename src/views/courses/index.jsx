@@ -1,5 +1,8 @@
-import React from "react";
+import Context from "context/UserContext";
+import { useSession } from "logic/useSession";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import usercourse from "services/usercourses";
 
 let courses = [
   { name: "Full-Stack Intensivo", user: "richi" },
@@ -10,18 +13,25 @@ let courses = [
   { name: "Cyber Part-time", user: "richard" },
 ];
 let user = window.location.href;
-user = user.substring(user.lastIndexOf("/") + 1);
-console.log(user);
+// user = user.substring(user.lastIndexOf("/") + 1);
 courses = courses.filter((course) => course.user == user);
 
 export const Courses = () => {
+  const navigate = useNavigate();
+  const { isLogged, logout } = useSession();
+
+  useEffect(() => {
+    if (!isLogged) navigate("/login");
+  }, [isLogged, navigate]);
+
+  const { user } = useContext(Context);
+  const userid = user.split(",")[0];
+  const courses = usercourse({ userid });
   //User idenfification
   //fetch courses based on user
   //section generation based on database
   //? course creation only for admins
   //? course asignement to users
-
-  const navigate = useNavigate();
 
   return (
     <>

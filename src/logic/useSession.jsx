@@ -5,17 +5,17 @@ import { useNavigate } from "react-router-dom";
 
 export const useSession = () => {
   const navigate = useNavigate();
-  const { jwt, setJWT, setUser } = useContext(Context);
+  const { jwt, setJWT, user, setUser } = useContext(Context);
   const loger = useCallback(
     ({ login, password }) => {
       // setState({ loading: true, error: false });
       loginSrv({ login, password })
-        .then(({ token, login, id }) => {
+        .then(({ token, rol, login, id }) => {
           window.sessionStorage.setItem("jwt", token);
-          window.sessionStorage.setItem("user", { login, id });
+          window.sessionStorage.setItem("user", [id, login, rol]);
           // setState({ loading: false, error: false });
           setJWT(token);
-          setUser({ login, id });
+          setUser([id, login, rol]);
         })
         .catch((err) => {
           window.sessionStorage.removeItem("jwt");
@@ -35,5 +35,5 @@ export const useSession = () => {
     navigate("/login");
   }, [setJWT]);
 
-  return { logout, loger, isLogged: Boolean(jwt) };
+  return { user, logout, loger, isLogged: Boolean(jwt) };
 };
