@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import CourseForm from "components/forms/CourseForm";
 import UserForm from "components/forms/UserForm";
+import ParticipantForm from "components/forms/ParticipantForm";
 import axios from "axios";
 import { format } from "date-fns";
 
@@ -58,11 +59,10 @@ const createCourse = async ()=>{
   try {
     let tempObj = {
       title:formState.title,
-      startDate:format(formState.startDate,"yyyy-MM-dd"),
-      endDate:format(formState.endDate,"yyyy-MM-dd"),
+      startdate:format(formState.startdate,"yyyy-MM-dd"),
+      enddate:format(formState.enddate,"yyyy-MM-dd"),
       type:formState.type === 0 ? false : true 
     }
-    console.log("TempOBJ",tempObj);
     const response = await axios.post(url,tempObj);
     console.log("Se realiza post correctamente",response)
     setPostDone(true)
@@ -76,31 +76,41 @@ const createCourse = async ()=>{
   function getTypeForm(path) {
     switch (path) {
       case "/add-user":
-        setTitle("AGREGAR UN ALUMNO")
+        setTitle("AGREGAR UN USUARIO")
         return 0;
       case "/add-course":
         setTitle("AGREGAR UN CURSO")
         return 1;
+      case "/add-participant":
+          setTitle("AGREGAR UN ALUMNO")
+          return 2;
       case "/edit-user":
-        setTitle("MODIFICAR UN ALUMNO")
-        return 2;
-      case "/edit-course":
-        setTitle("MODIFICAR UN CURSO")
+        setTitle("EDITAR ALUMNO")
         return 3;
+      case "/edit-course":
+        setTitle("EDITAR UN CURSO")
+        return 4;
       default:
         setTitle("ERROR")
         break;
     }
   }
 
-  //INICIO RENDER
+  const propsForm = {
+    title:title,
+    setForm:updateStateForm
+  }
+//INICIO RENDER
   return (
     <div className="add-form">
         {postDone ? <h1>POST DONE</h1> : formType === 0 ? 
-        <UserForm title={title} setForm={updateStateForm}  /> :
-         <CourseForm title={title} setForm={updateStateForm}/>}
+        <UserForm  {...propsForm} /> : formType === 1 ? 
+        <CourseForm {...propsForm} />:
+        <ParticipantForm {...propsForm} />
+      }
     </div>
   );
 };
+
 //FIN RENDER
 export default Form;

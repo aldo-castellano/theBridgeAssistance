@@ -1,8 +1,11 @@
-import React from "react";
-import { Button,TextField } from "@mui/material";
+import React , {useState,useEffect} from "react";
+import { Button,TextField ,Select, MenuItem ,InputLabel,FormControl} from "@mui/material";
 import { Controller , useForm} from "react-hook-form";
 import * as yup from "yup";
+import { ThemeProvider } from "@mui/material/styles";
 import { yupResolver} from "@hookform/resolvers/yup";
+import axios from 'axios';
+import theme from "../../assets/formConfi";
 
 
 const schemaUser = yup.object().shape({
@@ -14,7 +17,6 @@ const schemaUser = yup.object().shape({
     confirmPassword : yup.string()
     .oneOf([yup.ref('password'), null], 'Las contraseñas deben coincidir'),
     email:yup.string().email("Introduce un email valido")
-  
   })
 
 export default function UserForm({setForm,title}) {
@@ -26,6 +28,22 @@ export default function UserForm({setForm,title}) {
   } = useForm({
     resolver:yupResolver(schemaUser)
   });
+
+  const [rols,setRols] = useState([])
+
+  useEffect(() => {
+    getRoles();
+  }, []);
+
+  const getRoles = async()=>{
+    let url = "http://localhost:3003/api/roles/all"
+
+    try {
+      setRols(await (await axios.get(url)).data)
+    } catch (error) {
+      console.log("Error en getRoles");
+    }
+  }
 
   const onSubmit = data => setForm(data)
 
@@ -47,8 +65,8 @@ export default function UserForm({setForm,title}) {
             id="first-name-input"
             label="Nombre"
             variant="standard"
-            error={!!errorsUser.firstName}
-            helperText={errorsUser.firstName ? errorsUser.firstName?.message : ""}
+            error={!!errorsUser.firstname}
+            helperText={errorsUser.firstname ? errorsUser.firstname?.message : ""}
           />
         )}
       />
@@ -62,8 +80,8 @@ export default function UserForm({setForm,title}) {
             id="last-name-input"
             label="Apellidos"
             variant="standard"
-            error={!!errorsUser.lastName}
-            helperText={errorsUser.lastName ? errorsUser.lastName?.message : ""}
+            error={!!errorsUser.lastname}
+            helperText={errorsUser.lastname ? errorsUser.lastname?.message : ""}
           />
         )}
       />
@@ -130,7 +148,25 @@ export default function UserForm({setForm,title}) {
             helperText={errorsUser.email ? errorsUser.email?.message : ""}
           />
         )}
-      />
+      /><ThemeProvider theme={theme}>
+       <FormControl >
+          <InputLabel id="demo-simple-select-label">Modalidad</InputLabel>              
+          <Controller
+            name="type"
+            control={controlUser}
+            defaultValue={null}
+            
+            render={({ field }) => (
+              <Select {...field} label="Modalidad">
+                {rols.map(e=><MenuItem value={e.id}>{e.name}</MenuItem>)}
+                
+                
+              
+              </Select>
+            )} />
+             
+            </FormControl>
+            </ThemeProvider>
        <Button variant="contained" type="submit" sx={{mt:4}}>Crear</Button></div>
       </form>
       
