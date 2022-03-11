@@ -1,5 +1,6 @@
 .login {
   top: 0;
+  background-color: darkblue;
 }
 .login-field {
   position: absolute;
@@ -19,6 +20,6 @@
   }
   & button {
     margin-top: 2rem;
-    border-radius: 50%;
+    border-radius: 999px;
   }
 }
