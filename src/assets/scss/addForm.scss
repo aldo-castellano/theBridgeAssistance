@@ -1,0 +1,35 @@
+.add-form {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.add-form-header {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    img {
+        margin-top: 10px;
+        height: 50px;
+        width: 30%;
+    }
+     ::after {
+        position: absolute;
+        background-color: red;
+        opacity: 0.3;
+        left: 0;
+        margin-top: 10px;
+        z-index: -9;
+        content: "";
+        height: 25px;
+        width: 70%;
+    }
+}
+
+.form-contianer {
+    display: flex;
+    flex-flow: column;
+    margin-top: 20px;
+    row-gap: 15px;
+    margin-bottom: 100px;
+}
