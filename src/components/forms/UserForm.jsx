@@ -31,9 +31,11 @@ export default function UserForm({setForm,title}) {
   });
 
   const [rols,setRols] = useState([])
+  const [coursesArr, setCoursesArr] = useState([]);
 
   useEffect(() => {
     getRoles();
+    getCourses();
   }, []);
 
   const getRoles = async()=>{
@@ -45,6 +47,16 @@ export default function UserForm({setForm,title}) {
       console.log("Error en getRoles");
     }
   }
+
+  const getCourses = async () => {
+    let url = "http://localhost:3003/api/course/all";
+
+    try {
+      setCoursesArr(await (await axios.get(url)).data);
+    } catch (error) {
+      console.log("Error en getRoles");
+    }
+  };
 
   const onSubmit = data => setForm(data)
 
@@ -168,7 +180,26 @@ export default function UserForm({setForm,title}) {
             )} />
              
             </FormControl>
-            </ThemeProvider>
+          
+            
+            <FormControl sx={{mt:4}}>
+              <InputLabel id="demo-simple-select-label">Curso</InputLabel>
+              <Controller
+                name="courseid"
+                control={controlUser}
+                defaultValue={""}
+                render={({ field }) => (
+                  <Select {...field} label="Curso">
+                    {coursesArr.map((element) => (
+                      <MenuItem key={element.id} value={element.id}>
+                        {element.title}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
+              />
+            </FormControl>
+          </ThemeProvider>
        <Button variant="contained" type="submit" sx={{mt:4}}>Crear</Button></div>
       </form>
       
