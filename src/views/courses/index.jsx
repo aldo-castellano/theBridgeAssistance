@@ -4,18 +4,6 @@ import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import usercourse from "services/usercourses";
 
-let courses = [
-  { name: "Full-Stack Intensivo", user: "richi" },
-  { name: "Full-Stack Part-time", user: "richi" },
-  { name: "Full-Stack Part-time", user: "richi" },
-  { name: "Cyber Intensivo", user: "richard" },
-  { name: "Cyber Intensivo", user: "richard" },
-  { name: "Cyber Part-time", user: "richard" },
-];
-let user = window.location.href;
-// user = user.substring(user.lastIndexOf("/") + 1);
-courses = courses.filter((course) => course.user == user);
-
 export const Courses = () => {
   const navigate = useNavigate();
   const { isLogged, logout } = useSession();
@@ -26,10 +14,8 @@ export const Courses = () => {
 
   const { user } = useContext(Context);
   const userid = user.split(",")[0];
-  const courses = usercourse({ userid });
-  //User idenfification
-  //fetch courses based on user
-  //section generation based on database
+  const courses = usercourse(userid);
+
   //? course creation only for admins
   //? course asignement to users
 
@@ -40,13 +26,13 @@ export const Courses = () => {
         <section onClick={() => navigate("/")} className="course plus">
           <p>+</p>
         </section>
-        {courses.map((course, id) => (
+        {courses.map(({ id, title }, i) => (
           <section
-            key={`course-${id}`}
-            onClick={() => navigate("/")}
+            key={`course-${i}`}
+            onClick={() => navigate("/", { state: { id, title } })}
             className="course"
           >
-            <p>{course.name}</p>
+            <p>{title}</p>
           </section>
         ))}
       </div>
