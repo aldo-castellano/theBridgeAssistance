@@ -30,6 +30,7 @@ export const Courses = () => {
       <h2 className="title">MIS CURSOS</h2>
       <div className="courses-container">
         {admin && (
+
           <section
             onClick={() => navigate("/add-course")}
             className="course plus"

@@ -13,23 +13,36 @@ const schemaUser = yup.object().shape({
     lastname : yup.string().min(3,"El apellido debe tener un minimo de 3 caracteres").required(),
     login : yup.string().min(3,"El login debe tener un minimo de 3 caracteres").required(), 
     // WIP VERIFICACION SI EL LOGIN EXISTE
+    
     password: yup.string().required('Es necesaria una contraseña'),
     confirmPassword : yup.string()
     .oneOf([yup.ref('password'), null], 'Las contraseñas deben coincidir'),
-    email:yup.string().email("Introduce un email valido"),
+    email:yup.string().email("Introduce un email valido").required('Es necesario un email'),
+    rol: yup.string().required()
+  })
+  const schemaUserE = yup.object().shape({
+    firstname : yup.string().min(3,"El nombre debe tener un minimo de 3 caracteres").required(),
+    lastname : yup.string().min(3,"El apellido debe tener un minimo de 3 caracteres").required(),
+    login : yup.string().min(3,"El login debe tener un minimo de 3 caracteres").required(), 
+    // WIP VERIFICACION SI EL LOGIN EXISTE
+    email:yup.string().email("Introduce un email valido").required('Es necesario un email'),
     rol: yup.string().required()
   })
 
-export default function UserForm({setForm,title}) {
+export default function UserForm({setForm,title,defaultValues}) {
+  const [isEdit,setIsEdit] = useState(false)
+  const [userId,setUserId] = useState("");
   const {
     control:controlUser,
     handleSubmit,
     formState: { errors:errorsUser },
+    reset,
   
   } = useForm({
-    resolver:yupResolver(schemaUser)
+    resolver:yupResolver( isEdit ? schemaUserE : schemaUser),
+    
   });
-
+ 
   const [rols,setRols] = useState([])
   const [coursesArr, setCoursesArr] = useState([]);
 
@@ -38,6 +51,16 @@ export default function UserForm({setForm,title}) {
     getCourses();
   }, []);
 
+  useEffect(() => {
+      defaultValues && defaultValues.defaultValues && setupCourse(defaultValues.defaultValues)
+  }, [defaultValues,reset]);
+ 
+  const setupCourse = (a)=>{
+    setIsEdit(true)
+    setUserId(a.id);
+    reset(a)
+
+  }
   const getRoles = async()=>{
     let url = "http://localhost:3003/api/roles/all"
 
@@ -52,14 +75,19 @@ export default function UserForm({setForm,title}) {
     let url = "http://localhost:3003/api/course/all";
 
     try {
+      let data = await axios.get(url);
       setCoursesArr(await (await axios.get(url)).data);
     } catch (error) {
       console.log("Error en getRoles");
     }
   };
 
-  const onSubmit = data => setForm(data)
-
+  const onSubmit = data => {
+    let data2 = {...data,id:isEdit ? userId : ""}
+    
+    setForm(data2)
+  }
+ 
   return (
     <>
        <div className="add-form-header">
@@ -115,8 +143,7 @@ export default function UserForm({setForm,title}) {
           />
         )}
       />
-
-      <Controller
+      {defaultValues == null ?    ( <><Controller
         name="password"
         control={controlUser}
         defaultValue=""
@@ -147,7 +174,8 @@ export default function UserForm({setForm,title}) {
             }
           />
         )}
-      />
+      /> </>):""}
+ 
       <Controller
         name="email"
         control={controlUser}
