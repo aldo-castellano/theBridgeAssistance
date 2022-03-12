@@ -48,8 +48,8 @@ const Assistant = (props) => {
           );
 
           const modelAlumn = {
-            firstname: `${nameParticipant[0]?.firstname}`,
-            lastname: `${nameParticipant[0]?.lastname}`,
+            firstname: nameParticipant[0]?.firstname,
+            lastname: nameParticipant[0]?.lastname,
             ...asistencia,
           };
 
@@ -58,14 +58,13 @@ const Assistant = (props) => {
       } else {
         participants.map((participant) => {
           const modelAlumn = {
-            firstname: `${participant?.firstname}`,
-            lastname: `${participant?.lastname}`,
-            participantid: `${participant?.id}`,
-            ispartial: `${location.ispartial}` || true,
-            coments: `${location.coments}`,
-            assistance: `${location.assistance}` || 0,
+            firstname: participant?.firstname,
+            lastname: participant?.lastname,
+            participantid: participant?.id,
+            ispartial: location.ispartial ?? false,
+            coments: location.coments ?? null,
+            assistance: location.assistance ?? 0,
           };
-
           return tempModel.push(modelAlumn);
         });
       }
@@ -79,12 +78,13 @@ const Assistant = (props) => {
   const testt = (event, index, clave) => {
     if (clave === "ispartial") {
       tempAssitance[index][clave] = event.target.checked;
-    } else if (clave === "assistance" && event.target.value == 2) {
+    } else if (clave == "assistance" && event.target.value == 2) {
       tempAssitance[index][clave] = event.target.value;
       tempAssitance[index].ispartial = false;
     } else {
       tempAssitance[index][clave] = event.target.value;
     }
+    console.log(tempAssitance);
     setModel(tempAssitance);
   };
   const handleClickComment = (event) => {
@@ -102,12 +102,7 @@ const Assistant = (props) => {
       "http://localhost:3003/api/class/add",
       postClass,
     );
-    // console.log("class", axiosClas);
-
-    // const postAssist = {
-    //   classId: `${axiosClass.data.id}`,
-    //   ...model,
-    // };
+    console.log("model", model);
 
     model.map(async (item) => {
       console.log("data", model);
@@ -121,6 +116,8 @@ const Assistant = (props) => {
   return (
     <>
       <main className="main container">
+        {console.log(location)}
+        <h1>{location.title}</h1>
         <form className="assistance-form">
           {model?.map((e, index) => {
             return (

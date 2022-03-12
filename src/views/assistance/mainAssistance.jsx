@@ -50,7 +50,7 @@ const MainAssistance = () => {
 
   const newClass = () => {
     navigate("/addclass", {
-      state: { ...clases[0], mode: "true" },
+      state: { ...clases[0], mode: "true", title: location.title },
     });
   };
   return (
