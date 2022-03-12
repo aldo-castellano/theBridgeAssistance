@@ -21,7 +21,7 @@ export const Courses = () => {
   }, [admin]);
 
   const handleClick = (id, title) => {
-    if (admin) navigate("/", { state: { id, title } });
+    if (admin) navigate("/edit-course", { state: { id, title } });
     else navigate("/class", { state: { id, coursename: title } });
   };
 
