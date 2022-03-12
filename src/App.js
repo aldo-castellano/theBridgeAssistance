@@ -33,7 +33,7 @@ const App = () => {
               <Route path="/edit-course" element={<Form />} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/user-list" element={<UserList />} />
-              <Route path="*" element={<NoMatch />} />
+              {/* <Route path="*" element={<NoMatch />} /> */}
             </Routes>
             <Nav></Nav>
           </BrowserRouter>

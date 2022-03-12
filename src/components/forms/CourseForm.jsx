@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
 
 const schemaCourse = yup.object().shape({
   title: yup
@@ -35,6 +36,7 @@ const schemaCourse = yup.object().shape({
 export default function CourseForm({ setForm, title, defaultValues }) {
   const [isEdit,setIsEdit] = useState(false)
   const [courseId,setCourseId] = useState("");
+  const [nParticipants,setNParticipants] = useState(0)
   const navigate = useNavigate()
   const {
     control: controlCourse,
@@ -47,16 +49,28 @@ export default function CourseForm({ setForm, title, defaultValues }) {
 
   const [partAdded,setPartAdded] = useState(false);
 
+  const getNumberParticipants = async(id)=>{
+      let url = `http://localhost:3003/api/participants/count/${id}`;
+      try {
+        setNParticipants(await(await axios.get(url)).data)
+        
+      } catch (error) {
+        console.log(error);
+      }
+      
+  }
   useEffect(() => {
     defaultValues &&
       defaultValues.defaultValues && 
-      setupCourse(defaultValues.defaultValues)
+      setupCourse(defaultValues.defaultValues);
+      
      
   }, [defaultValues, reset]);
 
   const setupCourse = (a)=>{
     setIsEdit(true)
     setCourseId(a.id);
+    getNumberParticipants(a.id);
     reset(a)
 
   }
@@ -96,7 +110,7 @@ export default function CourseForm({ setForm, title, defaultValues }) {
       >
         Añadir alumnos
       </Button>)}
-      <small>Actualmente el curso tiene {} alumnos.</small>
+      <small>Actualmente el curso tiene {nParticipants.count} alumnos.</small>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-contianer">
           <Controller
