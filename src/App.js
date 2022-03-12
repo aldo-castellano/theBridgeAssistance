@@ -12,13 +12,15 @@ import { Courses } from "views/courses";
 import UserList from "views/userList";
 import { Redirect } from "components/redirect";
 import { NoMatch } from "views/nomatch";
+import Assistant from "views/assistance/Assistance";
+import MainAssistant from "views/assistance/mainAssistance";
 
 const App = () => {
   // const { isLogged } = useSession();
   return (
-    <ThemeProvider theme={theme}>
-      <UserContextProvider>
-        <div className="container">
+    <div className="container-main">
+      <ThemeProvider theme={theme}>
+        <UserContextProvider>
           <BrowserRouter>
             <Routes>
               <Route path="/login" element={<Login />} />
@@ -30,14 +32,17 @@ const App = () => {
               <Route path="/edit-course" element={<Form />} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/user-list" element={<UserList />} />
+              <Route path="/addclass" element={<Assistant />} />
+              <Route path="/checkclass" element={<Assistant />} />
+              <Route path="/class" element={<MainAssistant />} />
               {/* <Route path="*" element={<NoMatch />} /> */}
             </Routes>
             <Redirect />
             <Nav></Nav>
           </BrowserRouter>
-        </div>
-      </UserContextProvider>
-    </ThemeProvider>
+        </UserContextProvider>
+      </ThemeProvider>
+    </div>
   );
 };
 

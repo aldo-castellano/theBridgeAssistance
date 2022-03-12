@@ -3,6 +3,7 @@ $primaryColor: #e1331a;
 $secondaryColor: #22172b;
 $backgrounColor: #f0f0f0;
 $wordColor: #c4c4c4;
+$mobile: 450px;
 * {
   box-sizing: border-box;
 }
@@ -31,4 +32,7 @@ body {
     padding: 1rem;
     text-align: center;
   }
+}
+.container-main {
+  padding-bottom: 8rem;
 }

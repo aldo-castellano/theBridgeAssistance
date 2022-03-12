@@ -34,7 +34,7 @@ export default function Nav() {
   const list = () => (
     <Box
       className="nav-menu"
-      sx={{ width: 250 }}
+      // sx={{ width: "20vw" }}
       role="presentation"
       onClick={toggleDrawer(!state)}
       onKeyDown={toggleDrawer(!state)}

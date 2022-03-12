@@ -1,13 +1,17 @@
-.nav-logo {
-  color: #ffffff;
+.nav {
   background-color: $secondaryColor;
-  width: 100%;
   position: fixed;
   bottom: 0;
+  width: 100%;
+}
+
+.nav-logo {
+  color: white;
+
   height: 4rem;
   display: flex;
   align-items: center;
-  padding-left: 1rem;
+
   img {
     width: 150px;
     height: 20px;
@@ -20,6 +24,21 @@
 }
 
 .text-nav {
-  color: #ffffff;
+  color: white;
   padding-bottom: 1rem;
+}
+.button-menu {
+  bottom: 40px;
+  right: 0;
+  left: 0;
+  align-items: end;
+}
+.nav-menu {
+  width: 60vw;
+  @media (min-width: 450px) {
+    width: 40vw;
+  }
+  @media (min-width: 1200px) {
+    width: 20vw;
+  }
 }
