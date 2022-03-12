@@ -22,9 +22,6 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/login" element={<Login />} />
-            </Routes>
-            <Redirect />
-            <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/add-user" element={<Form />} />
               <Route path="/add-course" element={<Form />} />
@@ -35,6 +32,7 @@ const App = () => {
               <Route path="/user-list" element={<UserList />} />
               {/* <Route path="*" element={<NoMatch />} /> */}
             </Routes>
+            <Redirect />
             <Nav></Nav>
           </BrowserRouter>
         </div>

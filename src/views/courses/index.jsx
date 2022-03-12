@@ -17,12 +17,14 @@ export const Courses = () => {
 
   useEffect(async () => {
     if (admin) setCourses(await adminCourses());
-    else setCourses(userCourses(userid));
+    else setCourses(await userCourses(userid));
   }, [admin]);
+
+  useEffect(() => {}, [user]);
 
   const handleClick = (id, title) => {
     if (admin) navigate("/edit-course", { state: { id, title } });
-    else navigate("/class", { state: { id, coursename: title } });
+    else navigate("/class", { state: { courseid: id, title } });
   };
 
   return (
