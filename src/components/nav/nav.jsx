@@ -58,7 +58,7 @@ export default function Nav() {
       <div className={`nav-logo ${isLogged ? "" : "login"}`}>
         <div>
           <img src={logo} alt="logo" />
-          <h2>ASSISTENSE</h2>
+          <h2>ASSISTANCE</h2>
         </div>
       </div>
       {isLogged && (

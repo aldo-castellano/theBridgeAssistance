@@ -9,6 +9,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "assets/themeCofi";
 import Login from "views/login/login";
 import { Courses } from "views/courses";
+import UserList from "views/userList";
 import { Redirect } from "components/redirect";
 import { NoMatch } from "views/nomatch";
 
@@ -25,8 +26,11 @@ const App = () => {
               <Route path="/add-user" element={<Form />} />
               <Route path="/add-course" element={<Form />} />
               <Route path="/add-participant" element={<Form />} />
+              <Route path="/edit-user" element={<Form />} />
+              <Route path="/edit-course" element={<Form />} />
               <Route path="/courses" element={<Courses />} />
-              <Route path="*" element={<NoMatch />} />
+              <Route path="/user-list" element={<UserList />} />
+              {/* <Route path="*" element={<NoMatch />} /> */}
             </Routes>
             <Redirect />
             <Nav></Nav>
