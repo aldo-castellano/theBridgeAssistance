@@ -9,17 +9,23 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "assets/themeCofi";
 import Login from "views/login/login";
 import { Courses } from "views/courses";
-import UserList from "views/userList"
+import UserList from "views/userList";
+import { Redirect } from "components/redirect";
+import { NoMatch } from "views/nomatch";
 
 const App = () => {
+  // const { isLogged } = useSession();
   return (
     <ThemeProvider theme={theme}>
       <UserContextProvider>
         <div className="container">
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Main />} />
               <Route path="/login" element={<Login />} />
+            </Routes>
+            <Redirect />
+            <Routes>
+              <Route path="/" element={<Main />} />
               <Route path="/add-user" element={<Form />} />
               <Route path="/add-course" element={<Form />} />
               <Route path="/add-participant" element={<Form />} />
@@ -27,10 +33,9 @@ const App = () => {
               <Route path="/edit-course" element={<Form />} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/user-list" element={<UserList />} />
+              <Route path="*" element={<NoMatch />} />
             </Routes>
             <Nav></Nav>
-            {/* TODO: SHOW BASED ON USER CONTEXT (LOGIN) */}
-            {/* <Nav></Nav> */}
           </BrowserRouter>
         </div>
       </UserContextProvider>
@@ -39,4 +44,3 @@ const App = () => {
 };
 
 export default App;
-
