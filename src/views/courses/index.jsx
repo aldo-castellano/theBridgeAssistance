@@ -8,13 +8,6 @@ import axios from "axios";
 
 export const Courses = () => {
   const navigate = useNavigate();
-  const { isLogged } = useSession();
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    if (!isLogged) navigate("/login");
-  }, [isLogged, navigate]);
-
   const [courses, setCourses] = useState([]);
 
   //Wait for user
@@ -28,7 +21,7 @@ export const Courses = () => {
   }, [admin]);
 
   const handleClick = (id, title) => {
-    if (admin) navigate("/add-course", { state: { id, title } });
+    if (admin) navigate("/", { state: { id, title } });
     else navigate("/class", { state: { id, coursename: title } });
   };
 
@@ -37,7 +30,10 @@ export const Courses = () => {
       <h2 className="title">MIS CURSOS</h2>
       <div className="courses-container">
         {admin && (
-          <section onClick={() => navigate("/")} className="course plus">
+          <section
+            onClick={() => navigate("/add-course")}
+            className="course plus"
+          >
             <p>+</p>
           </section>
         )}

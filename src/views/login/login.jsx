@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { TextField, Button } from "@mui/material";
-import logo from "assets/img/thebridgelogo.svg";
 import logol from "assets/img/lone-logo.png";
 
 import { useSession } from "logic/useSession";
