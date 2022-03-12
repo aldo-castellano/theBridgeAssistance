@@ -2,12 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import axios from "axios";
 import { Button } from "@mui/material";
-import {
-  HolidayVillageTwoTone,
-  HotelTwoTone,
-  LocalConvenienceStoreOutlined,
-} from "@mui/icons-material";
-
+import { format } from "date-fns";
 import { useNavigate, useLocation } from "react-router-dom";
 const Assistant = (props) => {
   const location = useLocation().state;
@@ -47,7 +42,7 @@ const Assistant = (props) => {
   useEffect(() => {
     const modelAssistance = () => {
       if (mode === false) {
-        assistance.map((asistencia) => {
+        assistance?.map((asistencia) => {
           const nameParticipant = participants?.filter(
             (item) => asistencia.participantid == item.id,
           );
@@ -66,9 +61,9 @@ const Assistant = (props) => {
             firstname: `${participant?.firstname}`,
             lastname: `${participant?.lastname}`,
             participantid: `${participant?.id}`,
-            ispartial: `${location.ispartial}` || true,
-            coments: `${location.coments}`,
-            assistance: `${location.assistance}` || 0,
+            // ispartial: `${location.ispartial}` || true,
+            // coments: `${location.coments}`,
+            // assistance: `${location.assistance}` || 0,
           };
 
           return tempModel.push(modelAlumn);
@@ -96,16 +91,28 @@ const Assistant = (props) => {
     const comment = document.getElementById(event.target.id + "comment");
     comment.toggleAttribute("hidden");
   };
-  const postClassAssistance = () => {
-    // try {
-    //   axios
-    //     .post(`http://localhost:3003/api/assist/classid/${classid}`)
-    //     .then((res) => setAssistance(res.data));
-    // } catch (error) {
-    //   console.log(error);
-    // }
+  const postClassAssistance = async () => {
+    console.log(model);
+    const postClass = {
+      courseid: `${location.courseid}`,
+      userid: `${location.userid}`,
+      createdat: format(Date.now(), "yyyy-MM-dd"),
+    };
+    let axiosClass = await axios.post(
+      "http://localhost:3003/api/class/add",
+      postClass,
+    );
+    const postAssist = {
+      classId: `${axiosClass.id}`,
+      ...model,
+    };
+    let axiosAssist = await axios.post(
+      "http://localhost:3003/api/assist/add",
+      postAssist,
+    );
+    console.log(axiosAssist);
   };
-  console.log(model);
+
   return (
     <>
       <main className="main container">
@@ -219,6 +226,7 @@ const Assistant = (props) => {
                         testt(event, index, "coments");
                       }}
                     ></textarea>
+                    {console.log(e.ispartial)}
                   </div>
                 </div>
               </div>

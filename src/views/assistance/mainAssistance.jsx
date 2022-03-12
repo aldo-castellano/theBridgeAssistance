@@ -14,7 +14,7 @@ const MainAssistance = () => {
   useEffect(() => {
     function classData() {
       try {
-        let courseid = "bfc11207-4f81-4044-ab8d-26dd0f477dd0";
+        let courseid = location.id;
         axios
           .get(`http://localhost:3003/api/class/courseid/${courseid}`)
           .then((res) => orderClass(res.data));
@@ -51,7 +51,7 @@ const MainAssistance = () => {
   return (
     <>
       <main className="main-assistance container">
-        <h1 className="title-main">{modelcourses.titleCourse}</h1>
+        <h1 className="title-main">{location.title}</h1>
         <div className="container-mainAssistance">
           {clases?.length > 1 ? (
             <>
