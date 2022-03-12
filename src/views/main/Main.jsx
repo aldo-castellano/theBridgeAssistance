@@ -9,12 +9,12 @@ const Main = () => {
 
   useEffect(() => {
     if (!isLogged) navigate("/login");
+    else navigate("/courses");
   }, [isLogged, navigate]);
 
   return (
     <>
       <h2>Main</h2>
-      <button onClick={() => logout()}>logout</button>
     </>
   );
 };

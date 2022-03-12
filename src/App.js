@@ -9,8 +9,10 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "assets/themeCofi";
 import Login from "views/login/login";
 import { Courses } from "views/courses";
+import { useSession } from "logic/useSession";
 
 const App = () => {
+  // const { isLogged } = useSession();
   return (
     <ThemeProvider theme={theme}>
       <UserContextProvider>
@@ -25,8 +27,6 @@ const App = () => {
               <Route path="/courses" element={<Courses />} />
             </Routes>
             <Nav></Nav>
-            {/* TODO: SHOW BASED ON USER CONTEXT (LOGIN) */}
-            {/* <Nav></Nav> */}
           </BrowserRouter>
         </div>
       </UserContextProvider>
@@ -35,4 +35,3 @@ const App = () => {
 };
 
 export default App;
-
