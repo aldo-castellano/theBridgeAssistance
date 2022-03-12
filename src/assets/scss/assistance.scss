@@ -138,3 +138,19 @@
   position: absolute;
   transform: rotate(14deg);
 }
+.main-assistance {
+  .container-mainAssistance {
+    margin: auto;
+    width: 400px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+  }
+  .new-class {
+    width: 200px;
+    height: 200px;
+    box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.25);
+  }
+}

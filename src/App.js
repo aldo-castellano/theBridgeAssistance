@@ -8,7 +8,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "assets/themeCofi";
 import Login from "views/login/login";
 import { Courses } from "views/courses";
-import Assitance from "views/assistance/Assistance";
+import Assistance from "views/assistance/Assistance";
 
 const App = () => {
   const [navRender, setNavRender] = useState(true);
@@ -23,7 +23,7 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/login" element={<Login />} />
-              <Route path="/" element={<Assitance />} />
+              <Route path="/" element={<Assistance />} />
               <Route path="/courses" element={<Courses />} />
             </Routes>
             {/* TODO: SHOW BASED ON USER CONTEXT (LOGIN) */}
