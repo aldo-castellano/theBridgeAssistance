@@ -22,13 +22,13 @@ export const Courses = () => {
     else setCourses(await userCourses(userid));
     if (courses.length == 1)
       navigate("/class", {
-        state: { courseid: courses[0].id, title: courses[0].title },
+        state: { id: courses[0].id, title: courses[0].title },
       });
   }, [admin]);
 
   const handleClick = (id, title) => {
     if (admin == "admin") navigate("/edit-course", { state: { id, title } });
-    else navigate("/class", { state: { courseid: id, title } });
+    else navigate("/class", { state: { id: id, title } });
   };
 
   return (

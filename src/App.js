@@ -35,7 +35,7 @@ const App = () => {
               <Route path="/addclass" element={<Assistant />} />
               <Route path="/checkclass" element={<Assistant />} />
               <Route path="/class" element={<MainAssistant />} />
-              {/* <Route path="*" element={<NoMatch />} /> */}
+              <Route path="*" element={<NoMatch />} />
             </Routes>
             <Redirect />
             <Nav></Nav>

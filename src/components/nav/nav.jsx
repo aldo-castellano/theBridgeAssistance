@@ -16,7 +16,7 @@ export default function Nav() {
   const handleClick = (text) => {
     if (text == "Logout") logout();
     else if (text == "Cursos") navigate("/courses");
-    else if (text == "Asistencias") navigate("/");
+    else if (text == "Usuarios") navigate("/user-list");
   };
 
   const [state, setState] = React.useState(false);
@@ -40,7 +40,7 @@ export default function Nav() {
       onKeyDown={toggleDrawer(!state)}
     >
       <List>
-        {["Cursos", "Asistencias", "Logout"].map((text, index) => (
+        {["Cursos", "Usuarios", "Logout"].map((text, index) => (
           <ListItem button key={text}>
             <ListItemText
               onClick={() => handleClick(text)}
@@ -54,8 +54,8 @@ export default function Nav() {
   );
 
   return (
-    <div className="nav">
-      <div className={`nav-logo ${isLogged ? "" : "login"}`}>
+    <div className={`nav ${isLogged ? "" : "login"}`}>
+      <div className="nav-logo">
         <div>
           <img src={logo} alt="logo" />
           <h2>ASSISTANCE</h2>

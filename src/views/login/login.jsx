@@ -17,10 +17,10 @@ const Login = () => {
     if (e.which == 13) userLogin();
   };
 
-  const userLogin = () => {
+  const userLogin = async () => {
     //TODO: VALIDATE
     //TODO: ERROR MESSAGE
-    loger({ login, password });
+    await loger({ login, password });
     setLogin("");
     setPassword("");
   };
