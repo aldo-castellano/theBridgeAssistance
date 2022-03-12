@@ -11,9 +11,12 @@ import { useSession } from "logic/useSession";
 import { useNavigate } from "react-router-dom";
 
 export default function Nav() {
+  const navigate = useNavigate();
   const { isLogged, logout } = useSession();
   const handleClick = (text) => {
     if (text == "Logout") logout();
+    else if (text == "Cursos") navigate("/courses");
+    else if (text == "Asistencias") navigate("/");
   };
 
   const [state, setState] = React.useState(false);
@@ -37,7 +40,7 @@ export default function Nav() {
       onKeyDown={toggleDrawer(!state)}
     >
       <List>
-        {["Inbox", "Starred", "Drafts", "Logout"].map((text, index) => (
+        {["Cursos", "Asistencias", "Logout"].map((text, index) => (
           <ListItem button key={text}>
             <ListItemText
               onClick={() => handleClick(text)}
