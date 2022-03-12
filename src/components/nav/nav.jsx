@@ -56,7 +56,7 @@ export default function Nav() {
   return (
     <div className={`nav ${isLogged ? "" : "login"}`}>
       <div className="nav-logo">
-        <div>
+        <div className="container">
           <img src={logo} alt="logo" />
           <h2>ASSISTANCE</h2>
         </div>
@@ -69,8 +69,8 @@ export default function Nav() {
             sx={{
               position: "fixed",
               bottom: 40,
-              right: 0,
-              marginRight: "1rem",
+              right: "5%",
+              // marginRight: "1rem",
               zIndex: "3000",
             }}
             icon={<DragHandleIcon />}
