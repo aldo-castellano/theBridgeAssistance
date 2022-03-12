@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Button, getFabUtilityClass } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Box from "@mui/material/Box";
+import { useNavigate, useLocation } from "react-router-dom";
 const MainAssistance = () => {
   const [clases, setClases] = useState();
   const modelcourses = { titleCourse: "full Stack" };
+  const navigate = useNavigate();
+  const location = useLocation().state;
   useEffect(() => {
     function classData() {
       try {
@@ -24,7 +26,8 @@ const MainAssistance = () => {
   }, []);
 
   const handleClickGetClass = (event, classItem) => {
-    console.log(classItem);
+    // console.log(classItem);
+    navigate("/checkclass", { state: { ...classItem }, mode: "false" });
   };
 
   const orderClass = (dataClass) => {
@@ -39,7 +42,12 @@ const MainAssistance = () => {
     });
     return setClases(dataClass);
   };
-  const newClass = () => {};
+  const newClass = () => {
+    // console.log(clases[0]);
+    navigate("/addclass", {
+      state: { ...clases[0], mode: "true" },
+    });
+  };
   return (
     <>
       <main className="main-assistance container">

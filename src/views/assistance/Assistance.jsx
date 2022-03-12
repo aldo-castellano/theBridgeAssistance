@@ -8,16 +8,19 @@ import {
   LocalConvenienceStoreOutlined,
 } from "@mui/icons-material";
 
+import { useNavigate, useLocation } from "react-router-dom";
 const Assistant = (props) => {
-  const [mode, setMode] = useState(true);
+  const location = useLocation().state;
+  const [mode, setMode] = useState(Boolean(location.mode));
   const [participants, setParticipants] = useState([]);
   const [assistance, setAssistance] = useState([]);
   const [model, setModel] = useState([]);
-
+  console.log(location);
   useEffect(() => {
     function participantData() {
       try {
-        let courseid = "bfc11207-4f81-4044-ab8d-26dd0f477dd0";
+        let courseid = location.courseid;
+
         axios
           .get(`http://localhost:3003/api/participants/courseid/${courseid}`)
           .then((res) => setParticipants(res.data));
@@ -30,7 +33,7 @@ const Assistant = (props) => {
   useEffect(() => {
     function assistanceData() {
       try {
-        let classid = "67d62554-8dc6-480f-b177-ece71027ad06";
+        let classid = location.id;
         axios
           .get(`http://localhost:3003/api/assist/classid/${classid}`)
           .then((res) => setAssistance(res.data));
@@ -40,50 +43,42 @@ const Assistant = (props) => {
     }
     assistanceData();
   }, []);
-  const chao = [];
+  const tempModel = [];
   useEffect(() => {
     const modelAssistance = () => {
-      assistance.map((asistencia) => {
-        const nameParticipant = participants.filter(
-          (item) => asistencia.participantid == item.id,
-        );
+      if (mode === false) {
+        assistance.map((asistencia) => {
+          const nameParticipant = participants?.filter(
+            (item) => asistencia.participantid == item.id,
+          );
 
-        const modelAlumn = {
-          firstname: `${nameParticipant[0]?.firstname}`,
-          lastname: `${nameParticipant[0]?.lastname}`,
-          ...asistencia,
-        };
+          const modelAlumn = {
+            firstname: `${nameParticipant[0]?.firstname}`,
+            lastname: `${nameParticipant[0]?.lastname}`,
+            ...asistencia,
+          };
 
-        return chao.push(modelAlumn);
-      });
-      setModel(chao);
+          return tempModel.push(modelAlumn);
+        });
+      } else {
+        participants.map((participant) => {
+          const modelAlumn = {
+            firstname: `${participant?.firstname}`,
+            lastname: `${participant?.lastname}`,
+            participantid: `${participant?.id}`,
+            ispartial: `${location.ispartial}` || true,
+            coments: `${location.coments}`,
+            assistance: `${location.assistance}` || 0,
+          };
+
+          return tempModel.push(modelAlumn);
+        });
+      }
+
+      setModel(tempModel);
     };
     modelAssistance();
-  }, [assistance]);
-
-  //   modelAssistance(assistance);
-  //   const mapParticipantsName = (assistance) => {
-  //     const nameParticipant = participants.filter(
-  //       (item) => assistance.participantid == item.id,
-  //     );
-  //     console.log(nameParticipant);
-  //     return nameParticipant[0];
-  //   };
-
-  //   console.log(clases);
-  //   const onChangeValue = (event) => {
-  //     event.preventDefault();
-  //     const data = new FormData(event.target);
-  //     const tempAssitance = participants.map((e, index) => {
-  //       return {
-  //         name: e.name,
-  //         type: data.get(e.name),
-  //         coment: data.get(index + "comment"),
-  //       };
-  //     });
-  //     console.log(tempAssitance);
-  //     return setParticipants(tempAssitance);
-  //   };
+  }, [mode ? participants : assistance]);
 
   const tempAssitance = [...model];
   const testt = (event, index, clave) => {
@@ -100,6 +95,15 @@ const Assistant = (props) => {
   const handleClickComment = (event) => {
     const comment = document.getElementById(event.target.id + "comment");
     comment.toggleAttribute("hidden");
+  };
+  const postClassAssistance = () => {
+    // try {
+    //   axios
+    //     .post(`http://localhost:3003/api/assist/classid/${classid}`)
+    //     .then((res) => setAssistance(res.data));
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
   console.log(model);
   return (
@@ -197,11 +201,11 @@ const Assistant = (props) => {
                         onChange={(event) => {
                           testt(event, index, "ispartial");
                         }}
-                        hidden={e.type == 2 ? true : false}
+                        hidden={e.assistance == 2 ? true : false}
                         className="input-partial"
                       ></input>
                       <label
-                        hidden={e.type == 2 ? true : false}
+                        hidden={e.assistance == 2 ? true : false}
                         htmlFor={`${index} partial`}
                         className="label-partial"
                       >
@@ -222,7 +226,7 @@ const Assistant = (props) => {
           })}
           {mode == false ? null : (
             <Button
-              // onClick={() => }
+              onClick={postClassAssistance}
               variant="contained"
               size="large"
               sx={{

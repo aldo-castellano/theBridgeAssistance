@@ -8,6 +8,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "assets/themeCofi";
 import Login from "views/login/login";
 import { Courses } from "views/courses";
+import MainAssistance from "views/assistance/mainAssistance";
 import Assistance from "views/assistance/Assistance";
 
 const App = () => {
@@ -23,7 +24,9 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/login" element={<Login />} />
-              <Route path="/" element={<Assistance />} />
+              <Route path="/" element={<MainAssistance />} />
+              <Route path="/checkclass" element={<Assistance />} />
+              <Route path="/addclass" element={<Assistance />} />
               <Route path="/courses" element={<Courses />} />
             </Routes>
             {/* TODO: SHOW BASED ON USER CONTEXT (LOGIN) */}
