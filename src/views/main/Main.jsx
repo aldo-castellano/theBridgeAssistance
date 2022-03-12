@@ -15,6 +15,10 @@ const Main = () => {
     <>
       <h2>Main</h2>
       <button onClick={() => logout()}>logout</button>
+      <button onClick={() =>  navigate("/edit-course",{state:{
+        id:"1aecb7b2-6da1-46f2-8827-6fafeb441b11"
+      }})}>test</button>
+      
     </>
   );
 };

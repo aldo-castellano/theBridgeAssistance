@@ -26,15 +26,21 @@ const schemaParticipant = yup.object().shape({
   courseid: yup.string().required(),
 });
 
-export default function ParticipantForm({ setForm, title }) {
+export default function ParticipantForm({ setForm, title,defaultValues }) {
   const {
     control: controlParticipant,
     handleSubmit,
     formState: { errors: errorsParticipant },
+    reset,
   } = useForm({
     resolver: yupResolver(schemaParticipant),
   });
-
+ 
+  useEffect(() => {
+    defaultValues &&
+      defaultValues.defaultValues &&
+      reset(defaultValues.defaultValues);
+  }, [defaultValues, reset]);
   const [coursesArr, setCoursesArr] = useState([]);
 
   useEffect(() => {
@@ -106,7 +112,7 @@ export default function ParticipantForm({ setForm, title }) {
                 control={controlParticipant}
                 defaultValue={""}
                 render={({ field }) => (
-                  <Select {...field} label="Curso">
+                  <Select {...field} label="Curso" disabled>
                     {coursesArr.map((element) => (
                       <MenuItem key={element.id} value={element.id}>
                         {element.title}
