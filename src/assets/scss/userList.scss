@@ -1,0 +1,41 @@
+.user-list-container {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  width: 100%;
+}
+
+.user-list-table {
+  padding: 0 1rem;
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.user-list-title {
+  ::after {
+    position: absolute;
+    background-color: red;
+    opacity: 0.3;
+    left: 0;
+    margin-top: 20px;
+    z-index: -9;
+    content: "";
+    height: 20px;
+    width: 60%;
+  }
+}
+
+.user-list-control {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  width: 70%;
+}
+
+.list-users {
+  height: 70vh;
+  width: 100%;
+  margin-top: 15px;
+}

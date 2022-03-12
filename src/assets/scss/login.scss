@@ -1,0 +1,34 @@
+.login {
+  top: 0;
+  position: fixed;
+  height: 4rem;
+}
+.login-field {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8rem;
+  height: 20rem;
+  width: 100%;
+
+  & .logo {
+    height: 10rem;
+  }
+  & img {
+    height: 25rem;
+  }
+  & .input {
+    margin-top: 2rem;
+  }
+  & button {
+    margin-top: 2rem;
+    border-radius: 999px;
+  }
+}
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}

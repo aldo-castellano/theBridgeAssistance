@@ -1,0 +1,40 @@
+.title {
+  margin: 2rem 0 0;
+  text-align: center;
+}
+.courses-container {
+  //Allow scroll compensating for footer pos: abs
+  padding-bottom: 5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 80%;
+  margin: 1rem auto;
+  & .plus {
+    font-size: 2rem;
+    color: $wordColor;
+  }
+}
+.course {
+  padding: 0.5rem;
+  margin: 1.1rem 1rem 0 0;
+  width: 7.25rem;
+  height: 7.25rem;
+  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.25);
+  border-radius: 11px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+.no-course {
+  color: darkgray;
+  text-align: center;
+}
