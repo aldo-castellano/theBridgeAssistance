@@ -15,9 +15,12 @@ const MainAssistance = () => {
     function classData() {
       try {
         let courseid = location.id;
+
         axios
           .get(`http://localhost:3003/api/class/courseid/${courseid}`)
-          .then((res) => orderClass(res.data));
+          .then((res) => {
+            orderClass(res.data);
+          });
       } catch (error) {
         console.log(error);
       }
@@ -31,6 +34,7 @@ const MainAssistance = () => {
   };
 
   const orderClass = (dataClass) => {
+    console.log("clases", dataClass);
     dataClass.sort((a, b) => {
       if (a.createdat > b.createdat) {
         return -1;
@@ -40,10 +44,11 @@ const MainAssistance = () => {
         return 0;
       }
     });
+    console.log(dataClass);
     return setClases(dataClass);
   };
+
   const newClass = () => {
-    // console.log(clases[0]);
     navigate("/addclass", {
       state: { ...clases[0], mode: "true" },
     });

@@ -1,71 +1,71 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useSession } from "logic/useSession";
 import { TextField, Button } from "@mui/material";
-import logo from "assets/img/thebridgelogo.svg";
 import logol from "assets/img/lone-logo.png";
+
+import { useSession } from "logic/useSession";
 
 const Login = () => {
   const navigate = useNavigate();
-  // const [logged, setLogged] = useState(false);
-  const [username, setUsername] = useState("");
+
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-  const { isLoginLoading, hasLoginError, login, isLogged } = useSession();
+  const { loger, isLogged } = useSession();
+
+  const trySubmit = (e) => {
+    if (e.which == 13) userLogin();
+  };
 
   const userLogin = () => {
     //TODO: VALIDATE
-    //TODO: SUCCESS/ERROR MESSAGE
-    login({ username, password });
+    //TODO: ERROR MESSAGE
+    loger({ login, password });
+    setLogin("");
+    setPassword("");
   };
 
   useEffect(() => {
     console.log(isLogged);
-    if (isLogged) {
-      navigate("/");
-    } else {
-      console.log("bad credentials");
-    }
+    if (isLogged) navigate("/");
   }, [isLogged, navigate]);
 
   return (
     <>
-      <div className="nav login">
-        <div className="nav-logo-container">
-          <img src={logo} alt="logo" />
-          <h2>ASSISTANCE</h2>
-        </div>
-      </div>
       <div className="login-field">
         <img className="logo" src={logol} alt="logo" />
         <h2>INICIA SESION</h2>
-        <TextField
-          variant="standard"
-          onChange={(e) => setUsername(e.target.value)}
-          label="Usuario"
-        />
-        <TextField
-          variant="standard"
-          label="Contraseña"
-          type="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button
-          onClick={() => userLogin()}
-          variant="contained"
-          size="large"
-          sx={{
-            paddingX: 10,
-          }}
-          color="secondary"
-        >
-          Login
-        </Button>
+        <form className="login-form" onSubmit={userLogin}>
+          <TextField
+            className="input"
+            variant="standard"
+            value={login}
+            onKeyPress={(e) => trySubmit(e)}
+            onChange={(e) => setLogin(e.target.value)}
+            label="Usuario"
+          />
+          <TextField
+            className="input"
+            variant="standard"
+            label="Contraseña"
+            type="password"
+            value={password}
+            onKeyPress={(e) => trySubmit(e)}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button
+            onClick={(e) => userLogin(e)}
+            variant="contained"
+            size="large"
+            sx={{
+              paddingX: 10,
+            }}
+          >
+            Login
+          </Button>
+        </form>
       </div>
     </>
   );
 };
 export default Login;
-//! BORDER RADIUS HARDCORED
-//! WRONG LOGO
-//* VALIDATE -> AXIOS -> BACk -> DB -> RESP

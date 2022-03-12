@@ -10,7 +10,7 @@ const Assistant = (props) => {
   const [participants, setParticipants] = useState([]);
   const [assistance, setAssistance] = useState([]);
   const [model, setModel] = useState([]);
-  console.log(location);
+  console.log("location", location);
   useEffect(() => {
     function participantData() {
       try {
@@ -61,9 +61,9 @@ const Assistant = (props) => {
             firstname: `${participant?.firstname}`,
             lastname: `${participant?.lastname}`,
             participantid: `${participant?.id}`,
-            // ispartial: `${location.ispartial}` || true,
-            // coments: `${location.coments}`,
-            // assistance: `${location.assistance}` || 0,
+            ispartial: `${location.ispartial}` || true,
+            coments: `${location.coments}`,
+            assistance: `${location.assistance}` || 0,
           };
 
           return tempModel.push(modelAlumn);
@@ -92,7 +92,7 @@ const Assistant = (props) => {
     comment.toggleAttribute("hidden");
   };
   const postClassAssistance = async () => {
-    console.log(model);
+    console.log("post", model);
     const postClass = {
       courseid: `${location.courseid}`,
       userid: `${location.userid}`,
@@ -102,15 +102,20 @@ const Assistant = (props) => {
       "http://localhost:3003/api/class/add",
       postClass,
     );
-    const postAssist = {
-      classId: `${axiosClass.id}`,
-      ...model,
-    };
-    let axiosAssist = await axios.post(
-      "http://localhost:3003/api/assist/add",
-      postAssist,
-    );
-    console.log(axiosAssist);
+    // console.log("class", axiosClas);
+
+    // const postAssist = {
+    //   classId: `${axiosClass.data.id}`,
+    //   ...model,
+    // };
+
+    model.map(async (item) => {
+      console.log("data", model);
+      await axios.post("http://localhost:3003/api/assist/add", {
+        classid: axiosClass.data[0].id,
+        ...item,
+      });
+    });
   };
 
   return (

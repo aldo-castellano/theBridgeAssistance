@@ -17,8 +17,16 @@
   & img {
     height: 25rem;
   }
+  & .input {
+    margin-top: 2rem;
+  }
   & button {
     margin-top: 2rem;
-    border-radius: 50px;
+    border-radius: 999px;
   }
+}
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }

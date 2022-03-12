@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import "styles.scss";
-import { UserContextProvider } from "context/UserContext";
-import Main from "views/main/Main";
-import Nav from "components/nav/nav";
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./styles.scss";
+import { UserContextProvider } from "./context/UserContext";
+import Main from "./views/main/Main";
+import Nav from "./components/nav/nav";
+import Form from "views/form";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "assets/themeCofi";
 import Login from "views/login/login";
 import { Courses } from "views/courses";
-import MainAssistance from "views/assistance/mainAssistance";
-import Assistance from "views/assistance/Assistance";
+import UserList from "views/userList";
+import { Redirect } from "components/redirect";
+import { NoMatch } from "views/nomatch";
+import Assistant from "views/assistance/Assistance";
+import MainAssistant from "views/assistance/mainAssistance";
 
 const App = () => {
-  const [navRender, setNavRender] = useState(true);
-  const handleChange = (renderState) => {
-    setNavRender(renderState);
-  };
-
+  // const { isLogged } = useSession();
   return (
     <div className="container-main">
       <ThemeProvider theme={theme}>
@@ -24,13 +24,23 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/login" element={<Login />} />
-              <Route path="/" element={<MainAssistance />} />
-              <Route path="/checkclass" element={<Assistance />} />
-              <Route path="/addclass" element={<Assistance />} />
-              <Route path="/courses" element={<Courses />} />
             </Routes>
-            {/* TODO: SHOW BASED ON USER CONTEXT (LOGIN) */}
-            {navRender ? <Nav location={handleChange}></Nav> : null}
+            <Redirect />
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/add-user" element={<Form />} />
+              <Route path="/add-course" element={<Form />} />
+              <Route path="/add-participant" element={<Form />} />
+              <Route path="/edit-user" element={<Form />} />
+              <Route path="/edit-course" element={<Form />} />
+              <Route path="/courses" element={<Courses />} />
+              <Route path="/user-list" element={<UserList />} />
+              <Route path="/addclass" element={<Assistant />} />
+              <Route path="/checkclass" element={<Assistant />} />
+              <Route path="/class" element={<MainAssistant />} />
+              {/* <Route path="*" element={<NoMatch />} /> */}
+            </Routes>
+            <Nav></Nav>
           </BrowserRouter>
         </UserContextProvider>
       </ThemeProvider>

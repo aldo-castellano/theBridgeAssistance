@@ -3,12 +3,11 @@ $primaryColor: #e1331a;
 $secondaryColor: #22172b;
 $backgrounColor: #f0f0f0;
 $wordColor: #c4c4c4;
-
 $mobile: 450px;
-
 * {
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
   position: relative;
@@ -17,10 +16,21 @@ body {
 }
 
 .container {
-  width: 95%;
-  margin: 0 auto;
-  @media (min-width: $mobile) {
-    width: 75%;
+  // position: relative;
+  // width: 95%;
+  // margin: 0 auto;
+  // @media (min-width: 450px) {
+  //     width: 85%;
+  // }
+}
+.error404 {
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & p {
+    padding: 1rem;
+    text-align: center;
   }
 }
 .container-main {

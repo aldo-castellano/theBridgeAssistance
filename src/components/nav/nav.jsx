@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -8,14 +7,19 @@ import ListItemText from "@mui/material/ListItemText";
 import SpeedDial from "@mui/material/SpeedDial";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import logo from "assets/img/thebridgelogo.svg";
+import { useSession } from "logic/useSession";
+import { useNavigate } from "react-router-dom";
 
-export default function Nav(props) {
-  const [state, setState] = useState(false);
-  const [location] = useState(useLocation().pathname);
+export default function Nav() {
+  const navigate = useNavigate();
+  const { isLogged, logout } = useSession();
+  const handleClick = (text) => {
+    if (text == "Logout") logout();
+    else if (text == "Cursos") navigate("/courses");
+    else if (text == "Asistencias") navigate("/");
+  };
 
-  useEffect(() => {
-    location === "/login" ? props.location(false) : props.location(true);
-  }, [location]);
+  const [state, setState] = React.useState(false);
   const toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -36,9 +40,13 @@ export default function Nav(props) {
       onKeyDown={toggleDrawer(!state)}
     >
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+        {["Cursos", "Asistencias", "Logout"].map((text, index) => (
           <ListItem button key={text}>
-            <ListItemText className="text-nav" primary={text} />
+            <ListItemText
+              onClick={() => handleClick(text)}
+              className="text-nav"
+              primary={text}
+            />
           </ListItem>
         ))}
       </List>
@@ -46,35 +54,33 @@ export default function Nav(props) {
   );
 
   return (
-    <div className="">
-      <div className="nav">
-        <div className="container">
-          <div className="nav-logo">
-            <div>
-              <img src={logo} alt="logo" />
-              <h2>ASSISTENSE</h2>
-            </div>
-          </div>
+    <div className="nav">
+      <div className={`nav-logo ${isLogged ? "" : "login"}`}>
+        <div>
+          <img src={logo} alt="logo" />
+          <h2>ASSISTANCE</h2>
         </div>
       </div>
-      <React.Fragment>
-        <SpeedDial
-          onClick={toggleDrawer(!state)}
-          ariaLabel="SpeedDial basic example"
-          className="button-menu container"
-          sx={{
-            position: "fixed",
-            bottom: 40,
-            alignItems: "flex-end",
-            zIndex: "3000",
-          }}
-          icon={<DragHandleIcon />}
-        ></SpeedDial>
+      {isLogged && (
+        <React.Fragment>
+          <SpeedDial
+            onClick={toggleDrawer(!state)}
+            ariaLabel="SpeedDial basic example"
+            sx={{
+              position: "fixed",
+              bottom: 40,
+              right: 0,
+              marginRight: "1rem",
+              zIndex: "3000",
+            }}
+            icon={<DragHandleIcon />}
+          ></SpeedDial>
 
-        <Drawer anchor="right" open={state} onClose={toggleDrawer(!state)}>
-          {list("right")}
-        </Drawer>
-      </React.Fragment>
+          <Drawer anchor="right" open={state} onClose={toggleDrawer(!state)}>
+            {list("right")}
+          </Drawer>
+        </React.Fragment>
+      )}
     </div>
   );
 }

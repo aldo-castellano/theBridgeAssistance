@@ -1,21 +1,14 @@
+import { useSession } from "logic/useSession";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useSession } from "logic/useSession";
-
-const Main = () => {
+export const Redirect = () => {
   const navigate = useNavigate();
-  const { isLogged, logout } = useSession();
+  const { isLogged } = useSession();
 
   useEffect(() => {
     if (!isLogged) navigate("/login");
-    else navigate("/courses");
   }, [isLogged, navigate]);
 
-  return (
-    <>
-      <h2>Main</h2>
-    </>
-  );
+  return <></>;
 };
-export default Main;
