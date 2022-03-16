@@ -13,8 +13,10 @@ export const Courses = () => {
   const { user } = useSession();
   const userid = typeof user == "string" ? user.split(",")[0] : "null";
 
-  useEffect(() => {
-    setAdmin(typeof user == "string" ? user.split(",")[1] : "");
+  useEffect(async () => {
+    typeof user == "object" &&  await setAdmin(user[1])
+    typeof user == "string" && await setAdmin(user.split(",")[1]);   
+    
   }, [user, useSession()]);
 
   useEffect(async () => {

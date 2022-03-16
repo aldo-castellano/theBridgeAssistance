@@ -28,6 +28,7 @@ export const useSession = () => {
   );
 
   const logout = useCallback(() => {
+    console.log("ha hecho logout");
     window.sessionStorage.removeItem("jwt");
     window.sessionStorage.removeItem("user");
     setJWT(null);
