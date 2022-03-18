@@ -15,6 +15,7 @@ export const useSession = () => {
           window.sessionStorage.setItem("user", [id, login, rol]);
           // setState({ loading: false, error: false });
           setJWT(token);
+          //console.log([id, login, rol])
           setUser([id, login, rol]);
         })
         .catch((err) => {
@@ -28,7 +29,6 @@ export const useSession = () => {
   );
 
   const logout = useCallback(() => {
-    console.log("ha hecho logout");
     window.sessionStorage.removeItem("jwt");
     window.sessionStorage.removeItem("user");
     setJWT(null);
