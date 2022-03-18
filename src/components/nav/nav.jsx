@@ -55,8 +55,8 @@ export default function Nav() {
 
   return (
     <div className={`nav ${isLogged ? "" : "login"}`}>
-      <div className="nav-logo container">
-        <div>
+      <div className="nav-logo">
+        <div className="container">
           <img src={logo} alt="logo" />
           <h2>ASSISTANCE</h2>
         </div>

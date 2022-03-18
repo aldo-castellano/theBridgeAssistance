@@ -13,8 +13,9 @@ export const Courses = () => {
   const { user } = useSession();
   const userid = typeof user == "string" ? user.split(",")[0] : "null";
 
-  useEffect(() => {
-    setAdmin(typeof user == "string" ? user.split(",")[1] : "");
+  console.log(user)  
+  useEffect(async () => {
+    typeof user == "object" && setAdmin(user[1]);
   }, [user, useSession()]);
 
   useEffect(async () => {
@@ -27,7 +28,7 @@ export const Courses = () => {
   }, [admin]);
 
   const handleClick = (id, title) => {
-    if (admin == "admin") navigate("/edit-course", { state: { id, title } });
+    if (!admin == "admin") navigate("/edit-course", { state: { id, title } });
     else navigate("/class", { state: { id: id, title } });
   };
 

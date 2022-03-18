@@ -1,15 +1,17 @@
 .nav {
-  background-color: $secondaryColor;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+  // background-color: $secondaryColor;
+
+  // width: 100%;
 }
 
 .nav-logo {
   color: white;
-
+  position: fixed;
+  bottom: 0;
   height: 4rem;
   display: flex;
+  background-color: $secondaryColor;
+  width: 100%;
   align-items: center;
 
   img {
@@ -18,7 +20,7 @@
   }
   h2 {
     font-size: 14px;
-    text-align: center;
+
     margin: 0;
   }
 }
