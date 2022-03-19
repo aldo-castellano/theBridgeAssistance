@@ -1,5 +1,5 @@
 import { useSession } from "logic/useSession";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import userCourses from "services/usercourses";
 import adminCourses from "services/admincourses";
@@ -8,24 +8,29 @@ export const Courses = () => {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [admin, setAdmin] = useState([]);
-
-  //Wait for user
   const { user } = useSession();
-  const userid = typeof user == "string" ? user.split(",")[0] : "null";
+  const userid = user ? user[0] : "null";
 
-  console.log(user)  
   useEffect(async () => {
-    typeof user == "object" && setAdmin(user[1]);
+    (typeof user == "object" && user !== null) && setAdmin(user[1]);
   }, [user, useSession()]);
 
   useEffect(async () => {
-    if (admin == "admin") setCourses(await adminCourses());
-    else setCourses(await userCourses(userid));
-    if (courses.length == 1)
+    if (admin == "admin") {
+      setCourses(await adminCourses());
+    } else if (userid != null && userid.length > 1) {
+      const coursesResponse = await userCourses(userid);
+      setCourses(coursesResponse);
+    }
+  }, [admin]);
+
+  useEffect(() => {
+    if (courses.length == 1) {
       navigate("/class", {
         state: { id: courses[0].id, title: courses[0].title },
       });
-  }, [admin]);
+    }
+  }, [courses])
 
   const handleClick = (id, title) => {
     if (admin == "admin") navigate("/edit-course", { state: { id, title } });
