@@ -25,14 +25,16 @@ export const Courses = () => {
   }, [admin]);
 
   useEffect(() => {
+    console.log(courses, 'sourses')
     if (courses.length == 1) {
       navigate("/class", {
         state: { id: courses[0].id, title: courses[0].title },
       });
     }
   }, [courses])
-
+  
   const handleClick = (id, title) => {
+    console.log(id, 'id')
     if (!admin == "admin") navigate("/edit-course", { state: { id, title } });
     else navigate("/class", { state: { id: id, title } });
   };

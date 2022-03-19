@@ -14,11 +14,13 @@ const MainAssistance = () => {
   useEffect(() => {
     function classData() {
       try {
+        console.log(location, 'LOCATION')
         let courseid = location.id;
-
+        console.log(courseid, 'courseid useeffecttdh')
         axios
           .get(`http://localhost:3003/api/class/courseid/${courseid}`)
           .then((res) => {
+            console.log(res,"CLASES DATA EN USEFECT");
             orderClass(res.data);
           });
       } catch (error) {
