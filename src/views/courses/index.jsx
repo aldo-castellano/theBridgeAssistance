@@ -33,7 +33,7 @@ export const Courses = () => {
   }, [courses])
 
   const handleClick = (id, title) => {
-    if (admin == "admin") navigate("/edit-course", { state: { id, title } });
+    if (!admin == "admin") navigate("/edit-course", { state: { id, title } });
     else navigate("/class", { state: { id: id, title } });
   };
 

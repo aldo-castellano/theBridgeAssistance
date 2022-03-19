@@ -11,6 +11,7 @@ const Assistant = (props) => {
   const [assistance, setAssistance] = useState([]);
   const [model, setModel] = useState([]);
   console.log("location", location);
+
   useEffect(() => {
     function participantData() {
       try {
@@ -25,6 +26,7 @@ const Assistant = (props) => {
     }
     participantData();
   }, []);
+
   useEffect(() => {
     function assistanceData() {
       try {
@@ -38,6 +40,7 @@ const Assistant = (props) => {
     }
     assistanceData();
   }, []);
+
   const tempModel = [];
   useEffect(() => {
     const modelAssistance = () => {
@@ -94,8 +97,8 @@ const Assistant = (props) => {
   const postClassAssistance = async () => {
     console.log("post", model);
     const postClass = {
-      courseid: `${location.courseid}`,
-      userid: `${location.userid}`,
+      courseid: location.courseid,
+      userid: location.userid,
       createdat: format(Date.now(), "yyyy-MM-dd"),
     };
     let axiosClass = await axios.post(
@@ -111,6 +114,7 @@ const Assistant = (props) => {
         ...item,
       });
     });
+    navigator("/courses");
   };
 
   return (
