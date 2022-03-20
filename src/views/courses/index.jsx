@@ -1,5 +1,5 @@
 import { useSession } from "logic/useSession";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import userCourses from "services/usercourses";
 import adminCourses from "services/admincourses";
@@ -8,35 +8,29 @@ export const Courses = () => {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [admin, setAdmin] = useState([]);
-  const { user } = useSession();
+    //Wait for user
+  const { user } = useSession();  
   const userid = user ? user[0] : "null";
-
+  console.log(user[0],"AMIN 0");
   useEffect(async () => {
-    (typeof user == "object" && user !== null) && setAdmin(user[1]);
+    typeof user == "object" && setAdmin(user[1]);    
   }, [user, useSession()]);
 
   useEffect(async () => {
-    if (admin == "admin") {
-      setCourses(await adminCourses());
-    } else if (userid != null && userid.length > 1) {
-      const coursesResponse = await userCourses(userid);
-      setCourses(coursesResponse);
-    }
+    if (admin == "admin") setCourses(await adminCourses())           
+    else if (admin !== "admin") setCourses(await userCourses(userid)) 
   }, [admin]);
-
-  useEffect(() => {
-    console.log(courses, 'sourses')
-    if (courses.length == 1) {
-      navigate("/class", {
-        state: { id: courses[0].id, title: courses[0].title },
-      });
-    }
-  }, [courses])
   
+  useEffect(async () => {          
+    if (courses.length == 1 && admin !== "admin")    
+      navigate("/class", {
+        state: { id: user[0],  title: courses[0].title },
+      });
+  }, [courses]);
+
   const handleClick = (id, title) => {
-    console.log(id, 'id')
-    if (!admin == "admin") navigate("/edit-course", { state: { id, title } });
-    else navigate("/class", { state: { id: id, title } });
+    if (admin == "admin") navigate("/edit-course", { state: { id, title } });
+    else navigate("/class", { state: { id: user[0], title } });
   };
 
   return (
@@ -55,7 +49,7 @@ export const Courses = () => {
           courses.map(({ id, title }, i) => (
             <section
               key={`course-${i}`}
-              onClick={() => handleClick(id, title)}
+              onClick={() => handleClick(user[0], title)}
               className="course"
             >
               <p>{title}</p>

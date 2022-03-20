@@ -11,6 +11,7 @@ const MainAssistance = () => {
   const modelcourses = { titleCourse: "full Stack" };
   const navigate = useNavigate();
   const location = useLocation().state;
+  console.log(location,"LOCATION");
   useEffect(() => {
     function classData() {
       try {
@@ -60,6 +61,7 @@ const MainAssistance = () => {
       <main className="main-assistance container">
         <h1 className="title-main">{location.title}</h1>
         <div className="container-mainAssistance">
+          {console.log(clases)}
           {clases?.length > 1 ? (
             <>
               <Box sx={{ minWidth: 100, width: 300 }}>
