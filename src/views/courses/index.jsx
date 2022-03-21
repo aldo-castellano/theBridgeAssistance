@@ -8,30 +8,31 @@ export const Courses = () => {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [admin, setAdmin] = useState([]);
+    //Wait for user
+  const { user } = useSession();  
+  const userid = user ? user[0] : "null";
 
-  //Wait for user
-  const { user } = useSession();
-  const userid = typeof user == "string" ? user.split(",")[0] : "null";
-
-  console.log(user)  
   useEffect(async () => {
-    typeof user == "object" && setAdmin(user[1]);
+    typeof user == "object" && setAdmin(user[1]);    
   }, [user, useSession()]);
 
   useEffect(async () => {
-    if (admin == "admin") setCourses(await adminCourses());
-    else setCourses(await userCourses(userid));
-    if (courses.length == 1)
-      navigate("/class", {
-        state: { id: courses[0].id, title: courses[0].title },
-      });
+    if (admin == "admin") setCourses(await adminCourses())           
+    else if (admin !== "admin") setCourses(await userCourses(userid)) 
   }, [admin]);
-
+  
+  useEffect(async () => {          
+    if (courses.length == 1 && admin !== "admin")    
+      navigate("/class", {
+        state: { id: courses[0].id,  title: courses[0].title },
+      });
+  }, [courses]);
+console.log(courses,"COURSES");
   const handleClick = (id, title) => {
-    if (!admin == "admin") navigate("/edit-course", { state: { id, title } });
-    else navigate("/class", { state: { id: id, title } });
+    if (admin == "admin") navigate("/edit-course", { state: { id, title } });
+    else navigate("/class", { state: { id: courses[0].id,  title: courses[0].title  } });
   };
-
+console.log(courses,"COURSES");
   return (
     <>
       <h2 className="title">MIS CURSOS</h2>
@@ -46,11 +47,11 @@ export const Courses = () => {
         )}
         {courses.length > 1 &&
           courses.map(({ id, title }, i) => (
-            <section
+            <section            
               key={`course-${i}`}
               onClick={() => handleClick(id, title)}
               className="course"
-            >
+            >              
               <p>{title}</p>
             </section>
           ))}

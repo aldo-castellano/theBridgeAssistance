@@ -11,14 +11,17 @@ const MainAssistance = () => {
   const modelcourses = { titleCourse: "full Stack" };
   const navigate = useNavigate();
   const location = useLocation().state;
+  
   useEffect(() => {
     function classData() {
       try {
-        let courseid = location.id;
-
+        console.log(location, 'LOCATION')
+        let courseid = location.id;   
+        console.log(courseid,"COURSEID");     
         axios
           .get(`http://localhost:3003/api/class/courseid/${courseid}`)
           .then((res) => {
+            console.log(res,"CLASES DATA EN USEFECT");
             orderClass(res.data);
           });
       } catch (error) {
@@ -58,6 +61,7 @@ const MainAssistance = () => {
       <main className="main-assistance container">
         <h1 className="title-main">{location.title}</h1>
         <div className="container-mainAssistance">
+          {console.log(clases)}
           {clases?.length > 1 ? (
             <>
               <Box sx={{ minWidth: 100, width: 300 }}>
