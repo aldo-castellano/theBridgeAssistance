@@ -11,13 +11,13 @@ const MainAssistance = () => {
   const modelcourses = { titleCourse: "full Stack" };
   const navigate = useNavigate();
   const location = useLocation().state;
-  console.log(location,"LOCATION");
+  
   useEffect(() => {
     function classData() {
       try {
         console.log(location, 'LOCATION')
-        let courseid = location.id;
-        console.log(courseid, 'courseid useeffecttdh')
+        let courseid = location.id;   
+        console.log(courseid,"COURSEID");     
         axios
           .get(`http://localhost:3003/api/class/courseid/${courseid}`)
           .then((res) => {
