@@ -10,29 +10,31 @@ export const Courses = () => {
   const [admin, setAdmin] = useState([]);
     //Wait for user
   const { user } = useSession();  
-  const userid = user ? user[0] : "null";
+  const userid = user ? user[0] : "";
 
   useEffect(async () => {
-    typeof user == "object" && setAdmin(user[1]);    
+    if (user !== null && typeof user == "object"){      
+      setAdmin(user[1]); 
+    }    
   }, [user, useSession()]);
 
-  useEffect(async () => {
-    if (admin == "admin") setCourses(await adminCourses())           
-    else if (admin !== "admin") setCourses(await userCourses(userid)) 
+  useEffect(async () => {    
+    if (admin == "admin" ) setCourses(await adminCourses())           
+    else if (admin !== "admin" && admin.length > 0 ) setCourses(await userCourses(userid)) 
   }, [admin]);
   
-  useEffect(async () => {          
+  useEffect(async () => {              
     if (courses.length == 1 && admin !== "admin")    
       navigate("/class", {
         state: { id: courses[0].id,  title: courses[0].title },
       });
   }, [courses]);
-console.log(courses,"COURSES");
+
   const handleClick = (id, title) => {
     if (admin == "admin") navigate("/edit-course", { state: { id, title } });
     else navigate("/class", { state: { id: courses[0].id,  title: courses[0].title  } });
   };
-console.log(courses,"COURSES");
+
   return (
     <>
       <h2 className="title">MIS CURSOS</h2>
