@@ -12,10 +12,11 @@ export const Courses = () => {
   const { user } = useSession();  
   const userid = user ? user[0] : "";
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
     if (user !== null && typeof user == "object"){      
       setAdmin(user[1]); 
-    }    
+    }
   }, [user, useSession()]);
 
   useEffect(async () => {    
@@ -32,7 +33,7 @@ export const Courses = () => {
 
   const handleClick = (id, title) => {
     if (admin == "admin") navigate("/edit-course", { state: { id, title } });
-    else navigate("/class", { state: { id: courses[0].id,  title: courses[0].title  } });
+    else navigate("/class", { state: { id: id,  title: title  } });
   };
 
   return (

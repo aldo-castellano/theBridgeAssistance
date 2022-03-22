@@ -61,9 +61,11 @@ const MainAssistance = () => {
       <main className="main-assistance container">
         <h1 className="title-main">{location.title}</h1>
         <div className="container-mainAssistance">
-          {console.log(clases)}
+          
           {clases?.length > 1 ? (
             <>
+            {console.log(clases)}
+
               <Box sx={{ minWidth: 100, width: 300 }}>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
