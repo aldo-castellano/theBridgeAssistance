@@ -11,30 +11,6 @@ const MainAssistance = () => {
   const modelcourses = { titleCourse: "full Stack" };
   const navigate = useNavigate();
   const location = useLocation().state;
-  
-  useEffect(() => {
-    function classData() {
-      try {
-        console.log(location, 'LOCATION')
-        let courseid = location.id;   
-        console.log(courseid,"COURSEID");     
-        axios
-          .get(`http://localhost:3003/api/class/courseid/${courseid}`)
-          .then((res) => {
-            console.log(res,"CLASES DATA EN USEFECT");
-            orderClass(res.data);
-          });
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    classData();
-  }, []);
-
-  const handleClickGetClass = (event, classItem) => {
-    // console.log(classItem);
-    navigate("/checkclass", { state: { ...classItem }, mode: "false" });
-  };
 
   const orderClass = (dataClass) => {
     console.log("clases", dataClass);
@@ -51,9 +27,37 @@ const MainAssistance = () => {
     return setClases(dataClass);
   };
 
+  useEffect(() => {
+    function classData() {
+      console.log('MAIN ASISTAADFEF USEEFFECT');
+      try {
+        console.log(location, 'LOCATION')
+        let courseid = location.id;
+        console.log(courseid, "COURSEID");
+        axios
+          .get(`http://localhost:3003/api/class/courseid/${courseid}`)
+          .then((res) => {
+            console.log(res, "CLASES DATA EN USEFECT");
+            orderClass(res.data);
+          });
+      } catch (error) {
+        console.log(error, 'ERROR' );
+      }
+    }
+    classData();
+  }, []);
+
+  const handleClickGetClass = (event, classItem) => {
+    // console.log(classItem);
+    navigate("/checkclass", { state: { ...classItem }, mode: false });
+  };
+
+
   const newClass = () => {
+    console.log(clases, 'soy clases')
+    console.log(location, "location en clases");
     navigate("/addclass", {
-      state: { ...clases[0], mode: "true", title: location.title },
+      state: { ...clases[0], mode: true, title: location.title , courseid:location.id},
     });
   };
   return (

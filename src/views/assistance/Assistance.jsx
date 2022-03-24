@@ -10,13 +10,15 @@ const Assistant = (props) => {
   const [participants, setParticipants] = useState([]);
   const [assistance, setAssistance] = useState([]);
   const [model, setModel] = useState([]);
+  const navigate = useNavigate();
+  console.log(model, 'model');
   console.log("location", location);
 
   useEffect(() => {
     function participantData() {
       try {
         let courseid = location.courseid;
-
+        console.log("este es el courseid",courseid)
         axios
           .get(`http://localhost:3003/api/participants/courseid/${courseid}`)
           .then((res) => setParticipants(res.data));
@@ -71,10 +73,11 @@ const Assistant = (props) => {
           return tempModel.push(modelAlumn);
         });
       }
-
+      console.log(tempModel, 'tempModel');
       setModel(tempModel);
     };
     modelAssistance();
+    console.log(mode, 'mode')
   }, [mode ? participants : assistance]);
 
   const tempAssitance = [...model];
@@ -96,11 +99,13 @@ const Assistant = (props) => {
   };
   const postClassAssistance = async () => {
     console.log("post", model);
+    console.log(location, 'hoolaaaaaaa');
     const postClass = {
       courseid: location.courseid,
       userid: location.userid,
       createdat: format(Date.now(), "yyyy-MM-dd"),
     };
+    console.log(postClass, 'POST CLASSSSWNSDHWEIFGIWREGFU')
     let axiosClass = await axios.post(
       "http://localhost:3003/api/class/add",
       postClass,
@@ -114,7 +119,7 @@ const Assistant = (props) => {
         ...item,
       });
     });
-    navigator("/courses");
+    navigate("/courses");
   };
 
   return (

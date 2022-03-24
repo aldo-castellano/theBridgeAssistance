@@ -8,31 +8,31 @@ export const Courses = () => {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [admin, setAdmin] = useState([]);
-    //Wait for user
-  const { user } = useSession();  
+  const { user } = useSession();
   const userid = user ? user[0] : "";
 
-  useEffect(async () => {
-    if (user !== null && typeof user == "object"){      
-      setAdmin(user[1]); 
-    }    
+  useEffect(() => {
+    if (user !== null && typeof user == "object") {
+      setAdmin(user[1]);
+    }
   }, [user, useSession()]);
 
-  useEffect(async () => {    
-    if (admin == "admin" ) setCourses(await adminCourses())           
-    else if (admin !== "admin" && admin.length > 0 ) setCourses(await userCourses(userid)) 
+  useEffect(async () => {
+    if (admin == "admin") setCourses(await adminCourses())
+    else if (admin !== "admin" && admin.length > 0) setCourses(await userCourses(userid))
   }, [admin]);
-  
-  useEffect(async () => {              
-    if (courses.length == 1 && admin !== "admin")    
+
+  useEffect(async () => {
+    if (courses.length == 1 && admin !== "admin")
       navigate("/class", {
-        state: { id: courses[0].id,  title: courses[0].title },
+        state: { id: courses[0].id, title: courses[0].title },
       });
   }, [courses]);
 
   const handleClick = (id, title) => {
+    console.log(id, 'hola soy el id')
     if (admin == "admin") navigate("/edit-course", { state: { id, title } });
-    else navigate("/class", { state: { id: courses[0].id,  title: courses[0].title  } });
+    else navigate("/class", { state: { id: id, title: title } });
   };
 
   return (
@@ -49,11 +49,11 @@ export const Courses = () => {
         )}
         {courses.length > 1 &&
           courses.map(({ id, title }, i) => (
-            <section            
+            <section
               key={`course-${i}`}
               onClick={() => handleClick(id, title)}
               className="course"
-            >              
+            >
               <p>{title}</p>
             </section>
           ))}
