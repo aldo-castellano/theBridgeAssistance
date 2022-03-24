@@ -19,6 +19,7 @@ const Assistant = (props) => {
       try {
         let courseid = location.courseid;
         console.log("este es el courseid",courseid)
+        
         axios
           .get(`http://localhost:3003/api/participants/courseid/${courseid}`)
           .then((res) => setParticipants(res.data));
@@ -74,6 +75,7 @@ const Assistant = (props) => {
         });
       }
       console.log(tempModel, 'tempModel');
+      console.log("model", model);
       setModel(tempModel);
     };
     modelAssistance();
@@ -90,7 +92,7 @@ const Assistant = (props) => {
     } else {
       tempAssitance[index][clave] = event.target.value;
     }
-    console.log(tempAssitance);
+    console.log(tempAssitance,"TEMPASSISTANCE");
     setModel(tempAssitance);
   };
   const handleClickComment = (event) => {
@@ -125,7 +127,7 @@ const Assistant = (props) => {
   return (
     <>
       <main className="main container">
-        {console.log(location)}
+        {console.log(location,"ASSISTANCE")}
         <h1>{location.title}</h1>
         <form className="assistance-form">
           {model?.map((e, index) => {
