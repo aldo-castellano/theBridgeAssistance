@@ -57,7 +57,7 @@ const MainAssistance = () => {
     console.log(clases, 'soy clases')
     console.log(location, "location en clases");
     navigate("/addclass", {
-      state: { ...clases[0], mode: true, title: location.title , courseid:location.id},
+      state: { ...clases[0], mode: true, title: location.title , courseid:location.id, userid:location},
     });
   };
   return (
@@ -65,11 +65,9 @@ const MainAssistance = () => {
       <main className="main-assistance container">
         <h1 className="title-main">{location.title}</h1>
         <div className="container-mainAssistance">
-          
+          {console.log(clases)}
           {clases?.length > 1 ? (
             <>
-            {console.log(clases)}
-
               <Box sx={{ minWidth: 100, width: 300 }}>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
