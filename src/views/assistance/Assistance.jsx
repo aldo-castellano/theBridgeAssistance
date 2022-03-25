@@ -19,6 +19,7 @@ const Assistant = (props) => {
     function participantData() {
       try {
         let courseid = location.courseid;
+        console.log("este es el courseid",courseid)
         
         axios
           .get(`http://localhost:3003/api/participants/courseid/${courseid}`)
@@ -62,10 +63,12 @@ const Assistant = (props) => {
           return tempModel.push(modelAlumn);
         });
       }
+      console.log(tempModel, 'tempModel');
       console.log("model", model);
       setModel(tempModel);
     };
     modelAssistance();
+    console.log(mode, 'mode')
   }, [mode ? participants : assistance]);
 
   const tempAssitance = [...model];
@@ -87,6 +90,7 @@ const Assistant = (props) => {
   };
   const postClassAssistance = async () => {
     console.log("post", model);
+    console.log(location, 'hoolaaaaaaa');
     const postClass = {
       courseid: location.courseid,
       userid: user[0],

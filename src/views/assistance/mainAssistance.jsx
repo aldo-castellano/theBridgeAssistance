@@ -31,11 +31,7 @@ const MainAssistance = () => {
     }
     classData();
   }, []);
-
-  const handleClickGetClass = (event, classItem) => {
-    // console.log(classItem);
-    navigate("/checkclass", { state: { ...classItem }, mode: false });
-  };
+  
   useEffect(() => {
     function assistanceData() {
       try {
@@ -64,6 +60,32 @@ const MainAssistance = () => {
     return setClases(dataClass);
   };
 
+  useEffect(() => {
+    function classData() {
+      console.log('MAIN ASISTAADFEF USEEFFECT');
+      try {
+        console.log(location, 'LOCATION')
+        let courseid = location.id;
+        console.log(courseid, "COURSEID");
+        axios
+          .get(`http://localhost:3003/api/class/courseid/${courseid}`)
+          .then((res) => {
+            console.log(res, "CLASES DATA EN USEFECT");
+            orderClass(res.data);
+          });
+      } catch (error) {
+        console.log(error, 'ERROR' );
+      }
+    }
+    classData();
+  }, []);
+
+  const handleClickGetClass = (event, classItem) => {
+    // console.log(classItem);
+    navigate("/checkclass", { state: { ...classItem }, mode: false });
+  };
+
+
   const newClass = () => {
     console.log("location MainAsistance",location);
     navigate("/addclass", {
@@ -78,8 +100,6 @@ const MainAssistance = () => {
           
           {clases?.length >= 1 ? (
             <>
-            {console.log(clases)}
-
               <Box sx={{ minWidth: 100, width: 300 }}>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
