@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
+import { useSession } from "logic/useSession";
 import { Icon } from "@iconify/react";
 import axios from "axios";
 import { Button } from "@mui/material";
 import { format } from "date-fns";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation} from "react-router-dom";
 const Assistant = (props) => {
   const location = useLocation().state;
+  const { user } = useSession();  
   const [mode, setMode] = useState(Boolean(location.mode));
   const [participants, setParticipants] = useState([]);
-  const [assistance, setAssistance] = useState([]);
-  const [model, setModel] = useState([]);
-  console.log("location", location);
-
+  const assistance = location.assistance
+  const [model, setModel] = useState([]);  
+  const navigate = useNavigate();
+  
+  
   useEffect(() => {
     function participantData() {
       try {
@@ -27,19 +30,7 @@ const Assistant = (props) => {
     participantData();
   }, []);
 
-  useEffect(() => {
-    function assistanceData() {
-      try {
-        let classid = location.id;
-        axios
-          .get(`http://localhost:3003/api/assist/classid/${classid}`)
-          .then((res) => setAssistance(res.data));
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    assistanceData();
-  }, []);
+  
 
   const tempModel = [];
   useEffect(() => {
@@ -98,13 +89,15 @@ const Assistant = (props) => {
     console.log("post", model);
     const postClass = {
       courseid: location.courseid,
-      userid: location.userid,
+      userid: user[0],
       createdat: format(Date.now(), "yyyy-MM-dd"),
     };
+    console.log(postClass,"POSTCLASS");
     let axiosClass = await axios.post(
       "http://localhost:3003/api/class/add",
       postClass,
     );
+    console.log(axiosClass,"POST Q FALLA");
     console.log("model", model);
 
     model.map(async (item) => {
@@ -114,7 +107,7 @@ const Assistant = (props) => {
         ...item,
       });
     });
-    navigator("/courses");
+    navigate("/courses");
   };
 
   return (

@@ -35,7 +35,8 @@ export const Courses = () => {
     if (admin == "admin") navigate("/edit-course", { state: { id, title } });
     else navigate("/class", { state: { id: id,  title: title  } });
   };
-
+console.log(courses,"Index Courses");
+console.log(admin,"index admin");
   return (
     <>
       <h2 className="title">MIS CURSOS</h2>
