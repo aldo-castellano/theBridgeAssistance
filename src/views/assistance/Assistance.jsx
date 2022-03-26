@@ -31,7 +31,7 @@ const Assistant = (props) => {
     participantData();
   }, []);
 
-  
+
 
   const tempModel = [];
   useEffect(() => {
@@ -47,18 +47,19 @@ const Assistant = (props) => {
             lastname: nameParticipant[0]?.lastname,
             ...asistencia,
           };
-
+          
           return tempModel.push(modelAlumn);
         });
       } else {
         participants.map((participant) => {
+          
           const modelAlumn = {
             firstname: participant?.firstname,
             lastname: participant?.lastname,
             participantid: participant?.id,
             ispartial: location.ispartial ?? false,
             coments: location.coments ?? null,
-            assistance: location.assistance ?? 0,
+            assistance: "0"
           };
           return tempModel.push(modelAlumn);
         });
@@ -72,7 +73,7 @@ const Assistant = (props) => {
   }, [mode ? participants : assistance]);
 
   const tempAssitance = [...model];
-  const testt = (event, index, clave) => {
+  const testt = (event, index, clave) => {    
     if (clave === "ispartial") {
       tempAssitance[index][clave] = event.target.checked;
     } else if (clave == "assistance" && event.target.value == 2) {
@@ -81,6 +82,7 @@ const Assistant = (props) => {
     } else {
       tempAssitance[index][clave] = event.target.value;
     }
+    console.log(location,"location.Asistance");
     console.log(tempAssitance,"TEMPASSISTANCE");
     setModel(tempAssitance);
   };
