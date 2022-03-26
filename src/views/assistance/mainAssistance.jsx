@@ -11,7 +11,8 @@ const MainAssistance = () => {
   const modelcourses = { titleCourse: "full Stack" };
   const navigate = useNavigate();
   const location = useLocation().state;
-  
+  const [assistance, setAssistance] = useState([]);
+  console.log(clases,"CLASES MAIN");
   useEffect(() => {
     function classData() {
       try {
@@ -30,12 +31,20 @@ const MainAssistance = () => {
     }
     classData();
   }, []);
-
-  const handleClickGetClass = (event, classItem) => {
-    // console.log(classItem);
-    navigate("/checkclass", { state: { ...classItem }, mode: "false" });
-  };
-
+  
+  useEffect(() => {
+    function assistanceData() {
+      try {
+        let classid = location.id;
+        axios
+          .get(`http://localhost:3003/api/assist/classid/${classid}`)
+          .then((res) => setAssistance(res.data));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    assistanceData();
+  }, []);
   const orderClass = (dataClass) => {
     console.log("clases", dataClass);
     dataClass.sort((a, b) => {
@@ -51,9 +60,36 @@ const MainAssistance = () => {
     return setClases(dataClass);
   };
 
+  useEffect(() => {
+    function classData() {
+      console.log('MAIN ASISTAADFEF USEEFFECT');
+      try {
+        console.log(location, 'LOCATION')
+        let courseid = location.id;
+        console.log(courseid, "COURSEID");
+        axios
+          .get(`http://localhost:3003/api/class/courseid/${courseid}`)
+          .then((res) => {
+            console.log(res, "CLASES DATA EN USEFECT");
+            orderClass(res.data);
+          });
+      } catch (error) {
+        console.log(error, 'ERROR' );
+      }
+    }
+    classData();
+  }, []);
+
+  const handleClickGetClass = (event, classItem) => {
+    // console.log(classItem);
+    navigate("/checkclass", { state: { ...classItem }, mode: false });
+  };
+
+
   const newClass = () => {
+    console.log("location MainAsistance",location);
     navigate("/addclass", {
-      state: { ...clases[0], mode: "true", title: location.title },
+      state: { ...clases[0], mode: true, title: location.title, courseid: location.id, assistance: [...assistance] },
     });
   };
   return (
@@ -61,8 +97,8 @@ const MainAssistance = () => {
       <main className="main-assistance container">
         <h1 className="title-main">{location.title}</h1>
         <div className="container-mainAssistance">
-          {console.log(clases)}
-          {clases?.length > 1 ? (
+          
+          {clases?.length >= 1 ? (
             <>
               <Box sx={{ minWidth: 100, width: 300 }}>
                 <FormControl fullWidth>
