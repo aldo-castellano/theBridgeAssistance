@@ -15,14 +15,15 @@ const Form = () => {
   const [postDone, setPostDone] = useState(false);
   const [formState, setFormState] = useState(null);
   const [title, setTitle] = useState("");
-
-
-
+  
+  
+  
   //INICIO FUNCIONES DE INICIALIZACION
-
+  
   //Definimos tipo de form recogiendo pathname
   useEffect(() => {
     setFormType(getTypeForm(pathname));
+    console.log(location.state)
   }, [pathname]);
 
   useEffect(() => {
@@ -49,6 +50,7 @@ const Form = () => {
       }
     }
   }, [formState]);
+
  
   //Funcion que se envia a los forms hijos para recoger la info y hacer la peticion
   const updateStateForm = (newdata) => {
@@ -88,7 +90,7 @@ const Form = () => {
         createdat: format(Date.now(), "yyyy-MM-dd"),
       };
       await axios.post(url, tmpObj);
-      navigate("/edit-course",{state:{
+      navigate(`/view-participants/course/${location.state.id}`,{state:{
         id:location.state.id,
         participantAdded:true
       }})

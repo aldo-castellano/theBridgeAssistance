@@ -47,8 +47,6 @@ export default function CourseForm({ setForm, title, defaultValues }) {
     resolver: yupResolver(schemaCourse),
   });
 
-  const [partAdded,setPartAdded] = useState(false);
-
   const getNumberParticipants = async(id)=>{
       let url = `http://localhost:3003/api/participants/count/${id}`;
       try {
@@ -74,31 +72,15 @@ export default function CourseForm({ setForm, title, defaultValues }) {
     reset(a)
 
   }
-  useEffect(() => {
-    if(defaultValues?.defaultValues?.participantAdded){
-     
-      setPartAdded(defaultValues.defaultValues.participantAdded);
-    }
-    
-  }, [defaultValues]);
+ 
   const onSubmit = data => setForm({...data,id:isEdit ? courseId : ""})
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setPartAdded(false);
-  };
+ 
   return (
     <>
       <div className="add-form-header">
         <h2>{title}</h2>
       </div>
-      <Snackbar anchorOrigin={{ vertical:"top", horizontal:"center" }} open={partAdded} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: '80%' }}>
-          Se añade alumno !
-        </Alert>
-        </Snackbar >
+
       { defaultValues &&
       defaultValues.defaultValues && (<Button
         variant="contained"
@@ -106,10 +88,11 @@ export default function CourseForm({ setForm, title, defaultValues }) {
           backgroundColor: "#22172b",
         }}
         sx={{ mt: 4 }}
-        onClick={()=> navigate("/add-participant", {state:{id:defaultValues.defaultValues.id}})}
+        onClick={()=> navigate(`/view-participants/course/${courseId}`)}
       >
-        Añadir alumnos
+        Administrar alumnos
       </Button>)}
+
       <small>Actualmente el curso tiene {nParticipants.count} alumnos.</small>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-contianer">
