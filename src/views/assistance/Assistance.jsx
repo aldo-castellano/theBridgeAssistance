@@ -1,29 +1,30 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useSession } from "logic/useSession";
 import { Icon } from "@iconify/react";
 import axios from "axios";
 import { Button } from "@mui/material";
-import { format } from "date-fns";
-import { useNavigate, useLocation} from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 const Assistant = (props) => {
   const location = useLocation().state;
-  const { user } = useSession();  
+  const { user } = useSession();
   const [mode, setMode] = useState(Boolean(location.mode));
   const [participants, setParticipants] = useState([]);
-  const assistance = location.assistance
-  const [model, setModel] = useState([]);  
+  const assistance = location.assistance;
+  const [model, setModel] = useState([]);
   const navigate = useNavigate();
-  
-  
+
   useEffect(() => {
     function participantData() {
       try {
         let courseid = location.courseid;
-        console.log("este es el courseid",courseid)
-        
+        // console.log("este es el courseid", courseid);
+
         axios
           .get(`http://localhost:3003/api/participants/courseid/${courseid}`)
-          .then((res) => setParticipants(res.data));
+          .then((res) => {
+            console.log("esto son los participantes", res.data);
+            setParticipants(res.data);
+          });
       } catch (error) {
         console.log(error);
       }
@@ -31,49 +32,48 @@ const Assistant = (props) => {
     participantData();
   }, []);
 
-
-
   const tempModel = [];
   useEffect(() => {
     const modelAssistance = () => {
       if (mode === false) {
         assistance?.map((asistencia) => {
-          const nameParticipant = participants?.filter(
-            (item) => asistencia.participantid == item.id,
-          );
+          const nameParticipant = participants?.filter((item) => {
+            return (
+              asistencia.participantid === item.id,
+              console.log("el itemid", item.id)
+            );
+          });
 
           const modelAlumn = {
             firstname: nameParticipant[0]?.firstname,
             lastname: nameParticipant[0]?.lastname,
             ...asistencia,
           };
-          
+
           return tempModel.push(modelAlumn);
         });
       } else {
         participants.map((participant) => {
-          
           const modelAlumn = {
             firstname: participant?.firstname,
             lastname: participant?.lastname,
             participantid: participant?.id,
             ispartial: location.ispartial ?? false,
             coments: location.coments ?? null,
-            assistance: "0"
+            assistance: "0",
           };
           return tempModel.push(modelAlumn);
         });
       }
-      console.log(tempModel, 'tempModel');
-      console.log("model", model);
+
       setModel(tempModel);
     };
     modelAssistance();
-    console.log(mode, 'mode')
+    console.log(mode, "mode");
   }, [mode ? participants : assistance]);
 
   const tempAssitance = [...model];
-  const testt = (event, index, clave) => {    
+  const testt = (event, index, clave) => {
     if (clave === "ispartial") {
       tempAssitance[index][clave] = event.target.checked;
     } else if (clave == "assistance" && event.target.value == 2) {
@@ -82,8 +82,7 @@ const Assistant = (props) => {
     } else {
       tempAssitance[index][clave] = event.target.value;
     }
-    console.log(location,"location.Asistance");
-    console.log(tempAssitance,"TEMPASSISTANCE");
+
     setModel(tempAssitance);
   };
   const handleClickComment = (event) => {
@@ -91,23 +90,33 @@ const Assistant = (props) => {
     comment.toggleAttribute("hidden");
   };
   const postClassAssistance = async () => {
-    console.log("post", model);
-    console.log(location, 'hoolaaaaaaa');
+    const options = {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    };
+    const event = new Date().toLocaleString("es-ES", options);
+    // console.log("esta es la fecha que buscamos", event);
+    //borrar comentarios
+    var arrayDate = event.split("/");
+    console.log(arrayDate);
+    const currentDay = arrayDate[0];
+    const currentMonth = arrayDate[1];
+    const currentYear = arrayDate[2];
+    const currentDate = `${currentYear}/${currentMonth}/${currentDay}`;
+
     const postClass = {
       courseid: location.courseid,
       userid: user[0],
-      createdat: format(Date.now(), "yyyy-MM-dd"),
+      createdat: currentDate,
     };
-    console.log(postClass,"POSTCLASS");
+
     let axiosClass = await axios.post(
       "http://localhost:3003/api/class/add",
-      postClass,
+      postClass
     );
-    console.log(axiosClass,"POST Q FALLA");
-    console.log("model", model);
 
     model.map(async (item) => {
-      console.log("data", model);
       await axios.post("http://localhost:3003/api/assist/add", {
         classid: axiosClass.data[0].id,
         ...item,
@@ -119,7 +128,6 @@ const Assistant = (props) => {
   return (
     <>
       <main className="main container">
-        {console.log(location,"ASSISTANCE")}
         <h1>{location.title}</h1>
         <form className="assistance-form">
           {model?.map((e, index) => {
@@ -231,25 +239,33 @@ const Assistant = (props) => {
                         testt(event, index, "coments");
                       }}
                     ></textarea>
-                    {console.log(e.ispartial)}
+                    {/* {console.log(e.ispartial)} */}
                   </div>
                 </div>
               </div>
             );
           })}
-          {mode == false ? null : (
-            <Button
-              onClick={postClassAssistance}
-              variant="contained"
-              size="large"
-              sx={{
-                paddingX: 10,
-                borderRadius: 50,
-              }}
-              color="secondary"
-            >
-              guardar
-            </Button>
+          {mode === false ? null : (
+            <div>
+              <Button
+                onClick={postClassAssistance}
+                variant="contained"
+                disabled={participants < 1 ? true : false}
+                size="large"
+                sx={{
+                  paddingX: 10,
+                  borderRadius: 50,
+                }}
+                color="secondary"
+              >
+                guardar
+              </Button>
+            </div>
+          )}
+          {participants < 1 ? (
+            <p className="sentence">No se han añadido participantes al curso</p>
+          ) : (
+            <p hidden></p>
           )}
         </form>
       </main>

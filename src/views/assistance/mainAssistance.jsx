@@ -12,17 +12,17 @@ const MainAssistance = () => {
   const navigate = useNavigate();
   const location = useLocation().state;
   const [assistance, setAssistance] = useState([]);
-  console.log(clases,"CLASES MAIN");
+  console.log(clases, "CLASES MAIN");
   useEffect(() => {
     function classData() {
       try {
-        console.log(location, 'LOCATION')
-        let courseid = location.id;   
-        console.log(courseid,"COURSEID");     
+        console.log(location, "LOCATION");
+        let courseid = location.id;
+        console.log(courseid, "COURSEID");
         axios
           .get(`http://localhost:3003/api/class/courseid/${courseid}`)
           .then((res) => {
-            console.log(res,"CLASES DATA EN USEFECT");
+            console.log(res, "CLASES DATA EN USEFECT");
             orderClass(res.data);
           });
       } catch (error) {
@@ -31,7 +31,7 @@ const MainAssistance = () => {
     }
     classData();
   }, []);
-  
+
   useEffect(() => {
     function assistanceData() {
       try {
@@ -47,6 +47,7 @@ const MainAssistance = () => {
   }, []);
   const orderClass = (dataClass) => {
     console.log("clases", dataClass);
+
     dataClass.sort((a, b) => {
       if (a.createdat > b.createdat) {
         return -1;
@@ -56,15 +57,15 @@ const MainAssistance = () => {
         return 0;
       }
     });
-    console.log(dataClass);
+    console.log("esto son los datos de la dataClass", dataClass);
     return setClases(dataClass);
   };
 
   useEffect(() => {
     function classData() {
-      console.log('MAIN ASISTAADFEF USEEFFECT');
+      console.log("MAIN ASISTAADFEF USEEFFECT");
       try {
-        console.log(location, 'LOCATION')
+        console.log(location, "LOCATION");
         let courseid = location.id;
         console.log(courseid, "COURSEID");
         axios
@@ -74,7 +75,7 @@ const MainAssistance = () => {
             orderClass(res.data);
           });
       } catch (error) {
-        console.log(error, 'ERROR' );
+        console.log(error, "ERROR");
       }
     }
     classData();
@@ -85,19 +86,25 @@ const MainAssistance = () => {
     navigate("/checkclass", { state: { ...classItem }, mode: false });
   };
 
-
   const newClass = () => {
-    console.log("location MainAsistance",location);
+    console.log("location MainAsistance", location);
+
     navigate("/addclass", {
-      state: { ...clases[0], mode: true, title: location.title, courseid: location.id, assistance: [...assistance] },
+      state: {
+        ...clases[0],
+        mode: true,
+        title: location.title,
+        courseid: location.id,
+        assistance: [...assistance],
+      },
     });
   };
+
   return (
     <>
       <main className="main-assistance container">
         <h1 className="title-main">{location.title}</h1>
         <div className="container-mainAssistance">
-          
           {clases?.length >= 1 ? (
             <>
               <Box sx={{ minWidth: 100, width: 300 }}>
@@ -116,6 +123,7 @@ const MainAssistance = () => {
                         onClick={(event) => handleClickGetClass(event, element)}
                       >
                         {element.createdat}
+                        {console.log("ESTA ES LA CORRECTA", element.createdat)}
                       </MenuItem>
                     ))}
                   </Select>
