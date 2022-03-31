@@ -53,11 +53,14 @@ const Assistant = (props) => {
   const tempModel = [];
   useEffect(() => {
     const modelAssistance = () => {
+      
       if (mode === false) {
         console.log("ASSISTANCE?",assistance);
+        console.log("PARTICIPANTS?",participants);
         assistance?.map((asistencia) => {
+      
           const nameParticipant = participants?.filter(
-            (item) => asistencia.participantid == item.id,
+            (item) => asistencia.participantid == item.id
           );
 
           const modelAlumn = {
@@ -88,7 +91,7 @@ const Assistant = (props) => {
     };
     modelAssistance();
     console.log(mode, 'mode')
-  }, [mode ? participants : assistance]);
+  }, [participants, assistance]);
 
   const tempAssitance = [...model];
   const testt = (event, index, clave) => {    
@@ -129,7 +132,7 @@ const Assistant = (props) => {
     });
     navigate("/courses");
   };
-
+console.log(model,"EL MODELO ANTES DEL RENDER")
   return (
     <>
       <main className="main container">
@@ -137,8 +140,9 @@ const Assistant = (props) => {
         <h1>{location.title}</h1>
         <form className="assistance-form">
           {model?.map((e, index) => {
+            console.log(e,"E DENTRO DEL MAP");
             return (
-              <div key={index} id={`${index}`} className="item-assistance">
+              <div key={index} id={`${index}`} className="item-assistance">               
                 <p>{e.firstname + " " + e.lastname}</p>
                 <div className="type-assistance">
                   <input
