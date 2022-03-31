@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+
 import axios from "axios";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import AddTaskIcon from "@mui/icons-material/AddTask";
 import Box from "@mui/material/Box";
-import { useNavigate, useLocation } from "react-router-dom";
+
 const MainAssistance = () => {
   const [clases, setClases] = useState();
   const modelcourses = { titleCourse: "full Stack" };
@@ -88,7 +91,6 @@ const MainAssistance = () => {
 
   const newClass = () => {
     console.log("location MainAsistance", location);
-
     navigate("/addclass", {
       state: {
         ...clases[0],
@@ -110,17 +112,17 @@ const MainAssistance = () => {
               <Box sx={{ minWidth: 100, width: 300 }}>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
-                    Select class
+                    Ver asistencias registradas
                   </InputLabel>
                   <Select
-                    labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    label="Select class"
+                    label="Ver asistencias registradas"
                   >
                     {clases?.map((element) => (
                       <MenuItem
                         key={element.id}
                         onClick={(event) => handleClickGetClass(event, element)}
+                        sx={{ color: "#ffffff" }}
                       >
                         {element.createdat}
                         {console.log("ESTA ES LA CORRECTA", element.createdat)}
@@ -131,7 +133,10 @@ const MainAssistance = () => {
               </Box>
             </>
           ) : null}
-          <div className="new-class" onClick={newClass}></div>
+          <div className="new-class" onClick={newClass}>
+            <AddTaskIcon sx={{ color: "#e1331a", fontSize: 60 }} />
+            <p>Registrar una nueva asistencia</p>
+          </div>
         </div>
       </main>
     </>
