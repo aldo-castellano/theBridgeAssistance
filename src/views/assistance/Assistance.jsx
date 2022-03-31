@@ -10,10 +10,27 @@ const Assistant = (props) => {
   const { user } = useSession();  
   const [mode, setMode] = useState(Boolean(location.mode));
   const [participants, setParticipants] = useState([]);
-  const assistance = location.assistance
+  const [assistance, setAssistance] = useState([]);
   const [model, setModel] = useState([]);  
   const navigate = useNavigate();
   
+  useEffect(() => {
+    console.log(location,"LOCATIONCOMPLETE");
+    console.log(location.id,"LOCATIONID");
+    if(location.id){
+      function assistanceData() {      
+        try {
+          let classid = location.id;         
+          axios
+            .get(`http://localhost:3003/api/assist/classid/${classid}`)
+            .then((res) => setAssistance(res.data));
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      assistanceData();
+    }   
+  }, []);
   
   useEffect(() => {
     function participantData() {
@@ -37,6 +54,7 @@ const Assistant = (props) => {
   useEffect(() => {
     const modelAssistance = () => {
       if (mode === false) {
+        console.log("ASSISTANCE?",assistance);
         assistance?.map((asistencia) => {
           const nameParticipant = participants?.filter(
             (item) => asistencia.participantid == item.id,
@@ -90,21 +108,17 @@ const Assistant = (props) => {
     const comment = document.getElementById(event.target.id + "comment");
     comment.toggleAttribute("hidden");
   };
-  const postClassAssistance = async () => {
-    console.log("post", model);
-    console.log(location, 'hoolaaaaaaa');
+  const postClassAssistance = async () => {    
     const postClass = {
       courseid: location.courseid,
       userid: user[0],
       createdat: format(Date.now(), "yyyy-MM-dd"),
     };
-    console.log(postClass,"POSTCLASS");
+    
     let axiosClass = await axios.post(
       "http://localhost:3003/api/class/add",
       postClass,
     );
-    console.log(axiosClass,"POST Q FALLA");
-    console.log("model", model);
 
     model.map(async (item) => {
       console.log("data", model);
@@ -119,7 +133,7 @@ const Assistant = (props) => {
   return (
     <>
       <main className="main container">
-        {console.log(location,"ASSISTANCE")}
+       
         <h1>{location.title}</h1>
         <form className="assistance-form">
           {model?.map((e, index) => {
