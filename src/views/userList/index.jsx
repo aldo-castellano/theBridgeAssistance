@@ -22,6 +22,7 @@ const getUsers = async() =>{
 }
 let isDouble = null;
 const handleSelection = (a)=> {
+  console.log('se ejecuta');
   if(isDouble == null){
     isDouble = setTimeout(()=>{
       isDouble = null;
@@ -31,9 +32,8 @@ const handleSelection = (a)=> {
     isDouble=null;
     navigate("/edit-user", {state:{id: a.id}});
   }
- 
-
 }
+
 //Definicion columnas grid
 const columns = [
   {field:'firstname',headerName: 'Nombre', flex: 1},
@@ -48,7 +48,6 @@ const columns = [
       <div className="user-list-table">
         <div className="user-list-control">
           <Button variant="contained" onClick={()=>navigate("/add-user") }>Crear usuario</Button>
-         
         </div>
         <div className="list-users">
         <DataGrid

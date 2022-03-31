@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation,useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CourseForm from "components/forms/CourseForm";
 import UserForm from "components/forms/UserForm";
 import ParticipantForm from "components/forms/ParticipantForm";
@@ -15,15 +15,16 @@ const Form = () => {
   const [postDone, setPostDone] = useState(false);
   const [formState, setFormState] = useState(null);
   const [title, setTitle] = useState("");
-  
-  
-  
+
+
+
   //INICIO FUNCIONES DE INICIALIZACION
-  
+
   //Definimos tipo de form recogiendo pathname
   useEffect(() => {
     setFormType(getTypeForm(pathname));
     console.log(location.state)
+    console.log(formState, 'formstate')
   }, [pathname]);
 
   useEffect(() => {
@@ -38,20 +39,22 @@ const Form = () => {
         case 2:
           createParticipant();
           break;
-          case 3:
-            
-            editUser();
-            break;
-          case 4:
-            editCourse();
-              break;
+        case 3:
+          editUser();
+          break;
+        case 4:
+          editCourse();
+          break;
+        case 5:
+          editParticipant();
+          break;
         default:
           break;
       }
     }
   }, [formState]);
 
- 
+
   //Funcion que se envia a los forms hijos para recoger la info y hacer la peticion
   const updateStateForm = (newdata) => {
     setFormState(newdata);
@@ -90,76 +93,120 @@ const Form = () => {
         createdat: format(Date.now(), "yyyy-MM-dd"),
       };
       await axios.post(url, tmpObj);
-      navigate(`/view-participants/course/${location.state.id}`,{state:{
-        id:location.state.id,
-        participantAdded:true
-      }})
+      navigate(`/view-participants/course/${location.state.id}`, {
+        state: {
+          id: location.state.id,
+          participantAdded: true
+        }
+      })
     } catch (error) {
       console.log(error);
     }
   };
 
-  const editUser = async()=>{
+  const editUser = async () => {
 
     let url = "http://localhost:3003/api/user/update";
     try {
       await axios.patch(url, formState);
       navigate("/user-list")
     } catch (error) {
-      
+
     }
   }
 
-  const editCourse = async()=>{
+  const editParticipant = async () => {
+    let url = "http://localhost:3003/api/participants/update";
+    try {
+      await axios.patch(url, formState);
+      navigate(`/view-participants/course/${location.state.courseId}`, {
+        state: {
+          id: location.state.id,
+          participantAdded: true
+        }
+      })
+    } catch (error) {
+
+    }
+  }
+
+  const editCourse = async () => {
 
     let url = "http://localhost:3003/api/course/update";
     try {
       await axios.patch(url, formState);
       navigate("/courses")
     } catch (error) {
-      
+
     }
   }
-  const getUser = async() =>{
+  const getUser = async () => {
     let url = `http://localhost:3003/api/user/id/${location.state.id}`
-    
-     try {
-       const data = await axios.get(url);
-       setDefaultValues({defaultValues:{
-          firstname : data.data.firstname,
-          lastname:data.data.lastname,
+
+    try {
+      const data = await axios.get(url);
+      setDefaultValues({
+        defaultValues: {
+          firstname: data.data.firstname,
+          lastname: data.data.lastname,
           login: data.data.login,
-          email:data.data.email,
-          id:data.data.id
-       }})
+          email: data.data.email,
+          id: data.data.id
+        }
+      })
 
-     } catch (error) {
-       console.log("Error en getUser form",error);
-     }
+    } catch (error) {
+      console.log("Error en getUser form", error);
+    }
   }
-  const getCourse = async() =>{
+  const getCourse = async () => {
     let url = `http://localhost:3003/api/course/id/${location.state.id}`
-    
-     try {
-       const data = await axios.get(url);
-       setDefaultValues({defaultValues:{
-          id:data.data.id,
-          title : data.data.title,
-          startdate:data.data.startdate,
+
+    try {
+      const data = await axios.get(url);
+      setDefaultValues({
+        defaultValues: {
+          id: data.data.id,
+          title: data.data.title,
+          startdate: data.data.startdate,
           enddate: data.data.enddate,
-          participantAdded:location.state?.participantAdded
+          participantAdded: location.state?.participantAdded
 
-       }})
+        }
+      })
 
-     } catch (error) {
-       console.log("Error en getUser form",error);
-     }
+    } catch (error) {
+      console.log("Error en getUser form", error);
+    }
   }
 
-  const setParticipant = ()=>{
-    setDefaultValues({defaultValues:{
-      courseid : location.state.id,
-   }})
+  const getParticipant = async () => {
+    let url = `http://localhost:3003/api/participants/all`
+
+    try {
+      const data = await axios.get(url);
+      const allParticipants = data.data;
+      const participant = allParticipants.filter((participant) => participant.id == location.state.participantId)
+      
+      setDefaultValues({
+        defaultValues: {
+          id: participant[0].id,
+          firstname: participant[0].firstname,
+          lastname: participant[0].lastname,
+          courseid: participant[0].courseid
+        }
+      })
+    } catch (error) {
+      console.log("Error en getUser form", error);
+    }
+  }
+
+  const setParticipant = () => {
+    setDefaultValues({
+      defaultValues: {
+        courseid: location.state.id,
+      }
+    })
   }
   //Funcion que define por path que tipo de formulario mostrar
   function getTypeForm(path) {
@@ -181,11 +228,11 @@ const Form = () => {
       case "/edit-course":
         getCourse();
         setTitle("EDITAR CURSO");
-
         return 4;
       case "/edit-participant":
+        getParticipant();
         setTitle("EDITAR ALUMNO");
-        return 4;
+        return 5;
       default:
         setTitle("ERROR");
         break;
@@ -195,9 +242,9 @@ const Form = () => {
   const propsForm = {
     title: title,
     setForm: updateStateForm,
-    defaultValues:defaultValues
+    defaultValues: defaultValues
   };
-  console.log(formState);
+  console.log(propsForm, 'propsForm');
   //INICIO RENDER
   return (
     <div className="add-form">
@@ -210,9 +257,9 @@ const Form = () => {
       ) : formType === 2 ? (
         <ParticipantForm {...propsForm} />
       ) : formType === 3 ? (
-        <UserForm {...propsForm}  />
+        <UserForm {...propsForm} />
       ) : formType === 4 ? (
-        <CourseForm {...propsForm}  />
+        <CourseForm {...propsForm} />
       ) : formType === 5 ? (
         <ParticipantForm {...propsForm} />
       ) : (

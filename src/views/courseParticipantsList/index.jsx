@@ -32,6 +32,21 @@ export default function CourseParticipantsList() {
     //     setPartAdded(false);
     // };
 
+    let isDouble = null;
+    const handleSelection = (a) => {
+        console.log('se ejecuta');
+        if (isDouble == null) {
+            isDouble = setTimeout(() => {
+                isDouble = null;
+            }, 400)
+        } else {
+            clearTimeout(isDouble);
+            isDouble = null;
+            navigate("/edit-participant", { state: { participantId: a.id, courseId: courseId } });
+        }
+    }
+
+
     const columns = [
         { field: 'firstname', headerName: 'Nombre', flex: 1 },
         { field: 'lastname', headerName: 'Apellidos', flex: 1 },
@@ -67,6 +82,7 @@ export default function CourseParticipantsList() {
                             columns={columns}
                             pageSize={6}
                             rowsPerPageOptions={[6]}
+                            onRowClick={handleSelection}
                         /></div>
                 </div>
             </div>
