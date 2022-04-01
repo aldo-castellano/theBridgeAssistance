@@ -18,8 +18,9 @@ console.log(user,"USER");
   }, [user, useSession()]);
 
   useEffect(async () => {
-    if (admin == "admin") setCourses(await adminCourses())
-    else if (admin !== "admin" && admin.length > 0) setCourses(await userCourses(userid))
+    if (admin == "admin") setCourses(await adminCourses());
+    else if (admin !== "admin" && admin.length > 0)
+      setCourses(await userCourses(userid));
   }, [admin]);
 
   useEffect(async () => {
@@ -33,6 +34,7 @@ console.log(user,"USER");
     if (admin == "admin") navigate("/edit-course", { state: { id, title } });
     else navigate("/class", { state: { id: id, title: title } });
   };
+
   return (
     <>
       <h2 className="title">MIS CURSOS</h2>

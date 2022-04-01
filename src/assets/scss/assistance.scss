@@ -32,6 +32,9 @@
   }
 }
 
+.participants {
+  color: red;
+}
 .input-assistance-type {
   display: none;
 }
@@ -158,7 +161,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
+
     p {
       margin: 0px;
       font-size: 30px;
