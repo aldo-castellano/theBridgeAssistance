@@ -13,7 +13,7 @@ import {
   InputLabel,
   FormControl,
   Snackbar,
-  Alert
+  Alert,
 } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -34,64 +34,60 @@ const schemaCourse = yup.object().shape({
 });
 
 export default function CourseForm({ setForm, title, defaultValues }) {
-  const [isEdit,setIsEdit] = useState(false)
-  const [courseId,setCourseId] = useState("");
-  const [nParticipants,setNParticipants] = useState(0)
-  const navigate = useNavigate()
+  const [isEdit, setIsEdit] = useState(false);
+  const [courseId, setCourseId] = useState("");
+  const [nParticipants, setNParticipants] = useState(0);
+  const navigate = useNavigate();
   const {
     control: controlCourse,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
   } = useForm({
     resolver: yupResolver(schemaCourse),
   });
 
-  const getNumberParticipants = async(id)=>{
-      let url = `http://localhost:3003/api/participants/count/${id}`;
-      try {
-        setNParticipants(await(await axios.get(url)).data)
-        
-      } catch (error) {
-        console.log(error);
-      }
-      
-  }
+  const getNumberParticipants = async (id) => {
+    let url = `http://localhost:3003/api/participants/count/${id}`;
+    try {
+      setNParticipants(await (await axios.get(url)).data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     defaultValues &&
-      defaultValues.defaultValues && 
+      defaultValues.defaultValues &&
       setupCourse(defaultValues.defaultValues);
-      
-     
   }, [defaultValues, reset]);
 
-  const setupCourse = (a)=>{
-    setIsEdit(true)
+  const setupCourse = (a) => {
+    setIsEdit(true);
     setCourseId(a.id);
     getNumberParticipants(a.id);
-    reset(a)
+    reset(a);
+  };
 
-  }
- 
-  const onSubmit = data => setForm({...data,id:isEdit ? courseId : ""})
- 
+  const onSubmit = (data) => setForm({ ...data, id: isEdit ? courseId : "" });
+
   return (
     <>
       <div className="add-form-header">
         <h2>{title}</h2>
       </div>
 
-      { defaultValues &&
-      defaultValues.defaultValues && (<Button
-        variant="contained"
-        style={{
-          backgroundColor: "#22172b",
-        }}
-        sx={{ mt: 4 }}
-        onClick={()=> navigate(`/view-participants/course/${courseId}`)}
-      >
-        Administrar alumnos
-      </Button>)}
+      {defaultValues && defaultValues.defaultValues && (
+        <Button
+          variant="contained"
+          style={{
+            backgroundColor: "#22172b",
+          }}
+          sx={{ mt: 4 }}
+          onClick={() => navigate(`/view-participants/course/${courseId}`)}
+        >
+          Administrar alumnos
+        </Button>
+      )}
 
       <small>Actualmente el curso tiene {nParticipants.count} alumnos.</small>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -116,7 +112,7 @@ export default function CourseForm({ setForm, title, defaultValues }) {
               <Controller
                 name="startdate"
                 control={controlCourse}
-                defaultValue={Date.now()}
+                defaultValue={new Date()}
                 render={({
                   field: { onChange, value },
                   fieldState: { error, invalid },
@@ -146,7 +142,7 @@ export default function CourseForm({ setForm, title, defaultValues }) {
               <Controller
                 name="enddate"
                 control={controlCourse}
-                defaultValue={Date.now()}
+                defaultValue={new Date()}
                 render={({
                   field: { onChange, value },
                   fieldState: { error, invalid },
@@ -190,9 +186,13 @@ export default function CourseForm({ setForm, title, defaultValues }) {
             </FormControl>
           </ThemeProvider>
           <Button variant="contained" type="submit" sx={{ mt: 4 }}>
-            {!isEdit? "Crear" : "Guardar cambios"}
+            {!isEdit ? "Crear" : "Guardar cambios"}
           </Button>
-          <Button variant="contained" onClick={() => navigate('/courses')} sx={{ mt: 2 }}>
+          <Button
+            variant="contained"
+            onClick={() => navigate("/courses")}
+            sx={{ mt: 2 }}
+          >
             volver
           </Button>
         </div>
