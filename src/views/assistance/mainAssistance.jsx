@@ -14,8 +14,7 @@ const MainAssistance = () => {
   const modelcourses = { titleCourse: "full Stack" };
   const navigate = useNavigate();
   const location = useLocation().state;
-  const [assistance, setAssistance] = useState([]);
-  console.log(clases, "CLASES MAIN");
+
   useEffect(() => {
     function classData() {
       try {
@@ -34,20 +33,7 @@ const MainAssistance = () => {
     }
     classData();
   }, []);
-
-  useEffect(() => {
-    function assistanceData() {
-      try {
-        let classid = location.id;
-        axios
-          .get(`http://localhost:3003/api/assist/classid/${classid}`)
-          .then((res) => setAssistance(res.data));
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    assistanceData();
-  }, []);
+  
   const orderClass = (dataClass) => {
     console.log("clases", dataClass);
     dataClass.sort((a, b) => {
@@ -64,8 +50,7 @@ const MainAssistance = () => {
   };
 
   useEffect(() => {
-    function classData() {
-      console.log('MAIN ASISTAADFEF USEEFFECT');
+    function classData() {      
       try {
         console.log(location, 'LOCATION')
         let courseid = location.id;
@@ -92,7 +77,7 @@ const MainAssistance = () => {
   const newClass = () => {
     console.log("location MainAsistance", location);
     navigate("/addclass", {
-      state: { ...clases[0], mode: true, title: location.title, courseid: location.id, assistance: [...assistance] },
+      state: { ...clases[0], mode: true, title: location.title, courseid: location.id },
     });
   };
 
