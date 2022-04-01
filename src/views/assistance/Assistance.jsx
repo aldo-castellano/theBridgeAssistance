@@ -248,11 +248,12 @@ const Assistant = (props) => {
               </div>
             );
           })}
-          {mode == false ? null : (
+          {mode === false ? null : (
             <Button
               onClick={postClassAssistance}
               variant="contained"
               size="large"
+              disabled={participants < 1 ? true : false}
               sx={{
                 paddingX: 10,
                 borderRadius: 50,
@@ -262,6 +263,11 @@ const Assistant = (props) => {
               guardar
             </Button>
           )}
+          {participants < 1 ? (
+            <p className="participants">
+              Todavía no se han añadido participantes al curso
+            </p>
+          ) : null}
         </form>
       </main>
     </>
