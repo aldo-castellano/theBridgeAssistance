@@ -26,7 +26,8 @@ const schemaParticipant = yup.object().shape({
   courseid: yup.string().required(),
 });
 
-export default function ParticipantForm({ setForm, title,defaultValues }) {
+export default function ParticipantForm({ setForm, title, defaultValues }) {
+  const [isEdit, setIsEdit] = useState(false);
   const {
     control: controlParticipant,
     handleSubmit,
@@ -35,18 +36,18 @@ export default function ParticipantForm({ setForm, title,defaultValues }) {
   } = useForm({
     resolver: yupResolver(schemaParticipant),
   });
- 
+
   useEffect(() => {
     defaultValues &&
       defaultValues.defaultValues &&
       reset(defaultValues.defaultValues);
+    setIsEdit(true);
   }, [defaultValues, reset]);
   const [coursesArr, setCoursesArr] = useState([]);
-
   useEffect(() => {
     getCourses();
   }, []);
-
+  console.log(errorsParticipant, 'error')
   const getCourses = async () => {
     let url = "http://localhost:3003/api/course/all";
 
@@ -56,7 +57,20 @@ export default function ParticipantForm({ setForm, title,defaultValues }) {
       console.log("Error en getRoles");
     }
   };
-  const onSubmit = (data) => setForm(data);
+
+  const deleteParticipant = async () => {
+    let url = `http://localhost:3003/api/participants/${defaultValues.defaultValues.id}/delete`
+    try {
+      console.log(defaultValues.defaultValues.id);
+      const response = await axios.delete(url)
+    } catch (error){
+      console.log(error);
+    }
+  }
+
+  const onSubmit = (data) => {
+    setForm(data);
+  }
 
   return (
     <>
@@ -125,8 +139,14 @@ export default function ParticipantForm({ setForm, title,defaultValues }) {
           </ThemeProvider>
 
           <Button variant="contained" type="submit" sx={{ mt: 4 }}>
-            Crear
+            {isEdit ? 'Guardar cambios' : 'Crear'}
           </Button>
+
+          {
+            (!isEdit) ? <></> : <button onClick={deleteParticipant}>
+              eliminar
+            </button>
+          }
         </div>
       </form>
     </>
