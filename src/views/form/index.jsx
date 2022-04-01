@@ -7,6 +7,10 @@ import { format } from "date-fns";
 import CourseForm from "components/forms/CourseForm";
 import UserForm from "components/forms/UserForm";
 import ParticipantForm from "components/forms/ParticipantForm";
+import axios from "axios";
+import { format } from "date-fns";
+import userCourses from "services/usercourses";
+
 
 const Form = () => {
   const [formType, setFormType] = useState(0);
@@ -50,6 +54,7 @@ const Form = () => {
     }
   }, [formState]);
 
+
   //This function decides which form to render according to path
   function getTypeForm(path) {
     switch (path) {
@@ -87,10 +92,15 @@ const Form = () => {
   };
 
   const createUser = async () => {
+    const urlUserCourse =  "http://localhost:3003/api/usercourses/add"
     const url = "http://localhost:3003/api/user/add";
     try {
-      const response = await axios.post(url, formState);
+
+      const response = await axios.post(url, formState);     
+      const userCourse = await axios.post(urlUserCourse, {userid: response.data[0].id ,courseid:response.data[0].courseid})  
+      setPostDone(true);
       navigate('/user-list');
+
     } catch (error) {
       console.log(error);
     }

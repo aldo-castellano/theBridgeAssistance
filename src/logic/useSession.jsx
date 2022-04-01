@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 export const useSession = () => {
   const navigate = useNavigate();
   const { jwt, setJWT, user, setUser } = useContext(Context);
+  let alerta = "alert inicial";
   const loger = useCallback(
     ({ login, password }) => {
       // setState({ loading: true, error: false });
@@ -18,7 +19,8 @@ export const useSession = () => {
           //console.log([id, login, rol])
           setUser([id, login, rol]);
         })
-        .catch((err) => {
+        .catch((err) => {          
+          alerta = true;          
           window.sessionStorage.removeItem("jwt");
           window.sessionStorage.removeItem("user");
           // setState({ loading: false, error: true });
@@ -36,5 +38,5 @@ export const useSession = () => {
     navigate("/login");
   }, [setJWT]);
 
-  return { user, logout, loger, isLogged: Boolean(jwt) };
+  return { user, logout, loger, isLogged: Boolean(jwt), alerta };
 };

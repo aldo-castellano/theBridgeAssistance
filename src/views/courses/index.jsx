@@ -10,7 +10,7 @@ export const Courses = () => {
   const [admin, setAdmin] = useState([]);
   const { user } = useSession();
   const userid = user ? user[0] : "";
-
+console.log(user,"USER");
   useEffect(() => {
     if (user !== null && typeof user == "object") {
       setAdmin(user[1]);
@@ -31,12 +31,10 @@ export const Courses = () => {
   }, [courses]);
 
   const handleClick = (id, title) => {
-    console.log(id, "hola soy el id");
     if (admin == "admin") navigate("/edit-course", { state: { id, title } });
     else navigate("/class", { state: { id: id, title: title } });
   };
-  console.log(courses, "Index Courses");
-  console.log(admin, "index admin");
+
   return (
     <>
       <h2 className="title">MIS CURSOS</h2>
