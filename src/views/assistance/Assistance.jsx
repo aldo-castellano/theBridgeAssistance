@@ -9,15 +9,32 @@ const Assistant = (props) => {
   const { user } = useSession();
   const [mode, setMode] = useState(Boolean(location.mode));
   const [participants, setParticipants] = useState([]);
-  const assistance = location.assistance;
+  const [assistance, setAssistance] = useState([]);
   const [model, setModel] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(location, "LOCATIONCOMPLETE");
+    console.log(location.id, "LOCATIONID");
+    if (location.id) {
+      function assistanceData() {
+        try {
+          let classid = location.id;
+          axios
+            .get(`http://localhost:3003/api/assist/classid/${classid}`)
+            .then((res) => setAssistance(res.data));
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      assistanceData();
+    }
+  }, []);
 
   useEffect(() => {
     function participantData() {
       try {
         let courseid = location.courseid;
-        // console.log("este es el courseid", courseid);
 
         axios
           .get(`http://localhost:3003/api/participants/courseid/${courseid}`)
@@ -36,13 +53,12 @@ const Assistant = (props) => {
   useEffect(() => {
     const modelAssistance = () => {
       if (mode === false) {
+        console.log("ASSISTANCE?", assistance);
+        console.log("PARTICIPANTS?", participants);
         assistance?.map((asistencia) => {
-          const nameParticipant = participants?.filter((item) => {
-            return (
-              asistencia.participantid === item.id,
-              console.log("el itemid", item.id)
-            );
-          });
+          const nameParticipant = participants?.filter(
+            (item) => asistencia.participantid == item.id
+          );
 
           const modelAlumn = {
             firstname: nameParticipant[0]?.firstname,
@@ -65,12 +81,11 @@ const Assistant = (props) => {
           return tempModel.push(modelAlumn);
         });
       }
-
       setModel(tempModel);
     };
     modelAssistance();
     console.log(mode, "mode");
-  }, [mode ? participants : assistance]);
+  }, [participants, assistance]);
 
   const tempAssitance = [...model];
   const testt = (event, index, clave) => {
@@ -82,7 +97,6 @@ const Assistant = (props) => {
     } else {
       tempAssitance[index][clave] = event.target.value;
     }
-
     setModel(tempAssitance);
   };
   const handleClickComment = (event) => {
@@ -124,13 +138,14 @@ const Assistant = (props) => {
     });
     navigate("/courses");
   };
-
+  console.log(model, "EL MODELO ANTES DEL RENDER");
   return (
     <>
       <main className="main container">
         <h1>{location.title}</h1>
         <form className="assistance-form">
           {model?.map((e, index) => {
+            console.log(e, "E DENTRO DEL MAP");
             return (
               <div key={index} id={`${index}`} className="item-assistance">
                 <p>{e.firstname + " " + e.lastname}</p>
@@ -263,10 +278,10 @@ const Assistant = (props) => {
             </div>
           )}
           {participants < 1 ? (
-            <p className="sentence">No se han añadido participantes al curso</p>
-          ) : (
-            <p hidden></p>
-          )}
+            <p className="participants">
+              Todavía no se han añadido participantes al curso
+            </p>
+          ) : null}
         </form>
       </main>
     </>

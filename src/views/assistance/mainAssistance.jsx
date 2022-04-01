@@ -14,8 +14,7 @@ const MainAssistance = () => {
   const modelcourses = { titleCourse: "full Stack" };
   const navigate = useNavigate();
   const location = useLocation().state;
-  const [assistance, setAssistance] = useState([]);
-  console.log(clases, "CLASES MAIN");
+
   useEffect(() => {
     function classData() {
       try {
@@ -35,19 +34,6 @@ const MainAssistance = () => {
     classData();
   }, []);
 
-  useEffect(() => {
-    function assistanceData() {
-      try {
-        let classid = location.id;
-        axios
-          .get(`http://localhost:3003/api/assist/classid/${classid}`)
-          .then((res) => setAssistance(res.data));
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    assistanceData();
-  }, []);
   const orderClass = (dataClass) => {
     console.log("clases", dataClass);
 
@@ -66,7 +52,6 @@ const MainAssistance = () => {
 
   useEffect(() => {
     function classData() {
-      console.log("MAIN ASISTAADFEF USEEFFECT");
       try {
         console.log(location, "LOCATION");
         let courseid = location.id;
@@ -97,9 +82,18 @@ const MainAssistance = () => {
         mode: true,
         title: location.title,
         courseid: location.id,
-        assistance: [...assistance],
       },
     });
+  };
+  //Modificar la altura del select
+  const ITEM_HEIGHT = 90;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5,
+        width: 250,
+      },
+    },
   };
 
   return (
@@ -117,6 +111,7 @@ const MainAssistance = () => {
                   <Select
                     id="demo-simple-select"
                     label="Ver asistencias registradas"
+                    MenuProps={MenuProps}
                   >
                     {clases?.map((element) => (
                       <MenuItem
