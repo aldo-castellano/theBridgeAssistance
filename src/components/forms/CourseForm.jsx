@@ -192,6 +192,9 @@ export default function CourseForm({ setForm, title, defaultValues }) {
           <Button variant="contained" type="submit" sx={{ mt: 4 }}>
             {!isEdit? "Crear" : "Guardar cambios"}
           </Button>
+          <Button variant="contained" onClick={() => navigate('/courses')} sx={{ mt: 2 }}>
+            volver
+          </Button>
         </div>
       </form>
     </>

@@ -9,7 +9,6 @@ export default function CourseParticipantsList() {
     const navigate = useNavigate();
     const { courseId } = useParams();
     const [participants, setParticipants] = useState([]);
-    //const [showAlert, setShowAlert] = useState(false);
 
     const getCourseParticipants = async () => {
         let url = `http://localhost:3003/api/participants/courseid/${courseId}`;
@@ -23,14 +22,6 @@ export default function CourseParticipantsList() {
     useEffect(() => {
         getCourseParticipants();
     }, []);
-
-    // const handleClose = (event, reason) => {
-    //     if (reason === 'clickaway') {
-    //         return;
-    //     }
-
-    //     setPartAdded(false);
-    // };
 
     let isDouble = null;
     const handleSelection = (a) => {
@@ -52,19 +43,19 @@ export default function CourseParticipantsList() {
         { field: 'lastname', headerName: 'Apellidos', flex: 1 },
     ]
 
+    const previousComponentTitle = 'editar curso';
+
     return (
         <>
-            {/* <Snackbar anchorOrigin={{ vertical: "top", horizontal: "center" }} open={partAdded} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="success" sx={{ width: '80%' }}>
-                    El alumno se añadió correctamente
-                </Alert>
-            </Snackbar > */}
             <div className="user-list-container">
                 <div className="user-list-title">
                     <h2>Alumnos</h2>
                 </div>
                 <div className="user-list-table">
                     <div className="user-list-control">
+                        <Button variant="contained" onClick={() => navigate("/edit-course", { state: { id: courseId, previousComponentTitle } })} sx={{ mt: 2 }}>
+                            volver
+                        </Button>
                         {(<Button
                             variant="contained"
                             style={{
@@ -75,6 +66,7 @@ export default function CourseParticipantsList() {
                         >
                             Añadir alumnos
                         </Button>)}
+
                     </div>
                     <div className="list-users">
                         <DataGrid
