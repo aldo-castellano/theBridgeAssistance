@@ -8,30 +8,31 @@ export const Courses = () => {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [admin, setAdmin] = useState([]);
-
-  //Wait for user
   const { user } = useSession();
-  const userid = typeof user == "string" ? user.split(",")[0] : "null";
-
-  console.log(user)  
-  useEffect(async () => {
-    typeof user == "object" && setAdmin(user[1]);
+  const userid = user ? user[0] : "";
+console.log(user,"USER");
+  useEffect(() => {
+    if (user !== null && typeof user == "object") {
+      setAdmin(user[1]);
+    }
   }, [user, useSession()]);
 
   useEffect(async () => {
-    if (admin == "admin") setCourses(await adminCourses());
-    else setCourses(await userCourses(userid));
-    if (courses.length == 1)
+    if (admin == "admin") setCourses(await adminCourses())
+    else if (admin !== "admin" && admin.length > 0) setCourses(await userCourses(userid))
+  }, [admin]);
+
+  useEffect(async () => {
+    if (courses.length == 1 && admin !== "admin")
       navigate("/class", {
         state: { id: courses[0].id, title: courses[0].title },
       });
-  }, [admin]);
+  }, [courses]);
 
   const handleClick = (id, title) => {
-    if (!admin == "admin") navigate("/edit-course", { state: { id, title } });
-    else navigate("/class", { state: { id: id, title } });
+    if (admin == "admin") navigate("/edit-course", { state: { id, title } });
+    else navigate("/class", { state: { id: id, title: title } });
   };
-
   return (
     <>
       <h2 className="title">MIS CURSOS</h2>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSession } from "logic/useSession";
 import { Icon } from "@iconify/react";
 import axios from "axios";
 import { Button } from "@mui/material";
@@ -6,11 +7,30 @@ import { format } from "date-fns";
 import { useNavigate, useLocation } from "react-router-dom";
 const Assistant = (props) => {
   const location = useLocation().state;
+  const { user } = useSession();
   const [mode, setMode] = useState(Boolean(location.mode));
   const [participants, setParticipants] = useState([]);
   const [assistance, setAssistance] = useState([]);
   const [model, setModel] = useState([]);
-  console.log("location", location);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(location, "LOCATIONCOMPLETE");
+    console.log(location.id, "LOCATIONID");
+    if (location.id) {
+      function assistanceData() {
+        try {
+          let classid = location.id;
+          axios
+            .get(`http://localhost:3003/api/assist/classid/${classid}`)
+            .then((res) => setAssistance(res.data));
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      assistanceData();
+    }
+  }, []);
 
   useEffect(() => {
     function participantData() {
@@ -27,27 +47,15 @@ const Assistant = (props) => {
     participantData();
   }, []);
 
-  useEffect(() => {
-    function assistanceData() {
-      try {
-        let classid = location.id;
-        axios
-          .get(`http://localhost:3003/api/assist/classid/${classid}`)
-          .then((res) => setAssistance(res.data));
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    assistanceData();
-  }, []);
-
   const tempModel = [];
   useEffect(() => {
     const modelAssistance = () => {
       if (mode === false) {
+        console.log("ASSISTANCE?", assistance);
+        console.log("PARTICIPANTS?", participants);
         assistance?.map((asistencia) => {
           const nameParticipant = participants?.filter(
-            (item) => asistencia.participantid == item.id,
+            (item) => asistencia.participantid == item.id
           );
 
           const modelAlumn = {
@@ -66,16 +74,18 @@ const Assistant = (props) => {
             participantid: participant?.id,
             ispartial: location.ispartial ?? false,
             coments: location.coments ?? null,
-            assistance: location.assistance ?? 0,
+            assistance: "0",
           };
           return tempModel.push(modelAlumn);
         });
       }
-
+      console.log(tempModel, "tempModel");
+      console.log("model", model);
       setModel(tempModel);
     };
     modelAssistance();
-  }, [mode ? participants : assistance]);
+    console.log(mode, "mode");
+  }, [participants, assistance]);
 
   const tempAssitance = [...model];
   const testt = (event, index, clave) => {
@@ -87,7 +97,8 @@ const Assistant = (props) => {
     } else {
       tempAssitance[index][clave] = event.target.value;
     }
-    console.log(tempAssitance);
+    console.log(location, "location.Asistance");
+    console.log(tempAssitance, "TEMPASSISTANCE");
     setModel(tempAssitance);
   };
   const handleClickComment = (event) => {
@@ -95,17 +106,16 @@ const Assistant = (props) => {
     comment.toggleAttribute("hidden");
   };
   const postClassAssistance = async () => {
-    console.log("post", model);
     const postClass = {
       courseid: location.courseid,
-      userid: location.userid,
+      userid: user[0],
       createdat: format(Date.now(), "yyyy-MM-dd"),
     };
+
     let axiosClass = await axios.post(
       "http://localhost:3003/api/class/add",
-      postClass,
+      postClass
     );
-    console.log("model", model);
 
     model.map(async (item) => {
       console.log("data", model);
@@ -114,16 +124,16 @@ const Assistant = (props) => {
         ...item,
       });
     });
-    navigator("/courses");
+    navigate("/courses");
   };
-
+  console.log(model, "EL MODELO ANTES DEL RENDER");
   return (
     <>
       <main className="main container">
-        {console.log(location)}
         <h1>{location.title}</h1>
         <form className="assistance-form">
           {model?.map((e, index) => {
+            console.log(e, "E DENTRO DEL MAP");
             return (
               <div key={index} id={`${index}`} className="item-assistance">
                 <p>{e.firstname + " " + e.lastname}</p>

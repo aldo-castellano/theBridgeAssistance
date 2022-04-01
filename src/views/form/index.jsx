@@ -5,6 +5,7 @@ import UserForm from "components/forms/UserForm";
 import ParticipantForm from "components/forms/ParticipantForm";
 import axios from "axios";
 import { format } from "date-fns";
+import userCourses from "services/usercourses";
 
 const Form = () => {
   const [formType, setFormType] = useState(0);
@@ -49,17 +50,19 @@ const Form = () => {
       }
     }
   }, [formState]);
- 
+  console.log(formState,"formstate");
   //Funcion que se envia a los forms hijos para recoger la info y hacer la peticion
   const updateStateForm = (newdata) => {
     setFormState(newdata);
   };
   const createUser = async () => {
+    const urlUserCourse =  "http://localhost:3003/api/usercourses/add"
     const url = "http://localhost:3003/api/user/add";
     try {
-      const response = await axios.post(url, formState);
-      console.log("Se realiza post correctamente", response);
+      const response = await axios.post(url, formState);     
+      const userCourse = await axios.post(urlUserCourse, {userid: response.data[0].id ,courseid:response.data[0].courseid})     
       setPostDone(true);
+
     } catch (error) {
       console.log(error);
     }

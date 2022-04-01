@@ -77,14 +77,16 @@ export default function UserForm({setForm,title,defaultValues}) {
     try {
       let data = await axios.get(url);
       setCoursesArr(await (await axios.get(url)).data);
+      
     } catch (error) {
       console.log("Error en getRoles");
     }
   };
 
   const onSubmit = data => {
-    let data2 = {...data,id:isEdit ? userId : ""}
     
+    let data2 = {...data,id:isEdit ? userId : ""}
+    console.log(data2,"DATA");
     setForm(data2)
   }
  
