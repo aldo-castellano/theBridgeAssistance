@@ -8,6 +8,7 @@ import {
   FormControl,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
@@ -28,6 +29,8 @@ const schemaParticipant = yup.object().shape({
 
 export default function ParticipantForm({ setForm, title, defaultValues }) {
   const [isEdit, setIsEdit] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
   const {
     control: controlParticipant,
     handleSubmit,
@@ -41,7 +44,11 @@ export default function ParticipantForm({ setForm, title, defaultValues }) {
     defaultValues &&
       defaultValues.defaultValues &&
       reset(defaultValues.defaultValues);
-    setIsEdit(true);
+    if (defaultValues) {
+      if (Object.keys(defaultValues.defaultValues).length > 1) {
+        setIsEdit(true);
+      }
+    }
   }, [defaultValues, reset]);
   const [coursesArr, setCoursesArr] = useState([]);
   useEffect(() => {
@@ -63,7 +70,7 @@ export default function ParticipantForm({ setForm, title, defaultValues }) {
     try {
       console.log(defaultValues.defaultValues.id);
       const response = await axios.delete(url)
-    } catch (error){
+    } catch (error) {
       console.log(error);
     }
   }
@@ -142,11 +149,9 @@ export default function ParticipantForm({ setForm, title, defaultValues }) {
             {isEdit ? 'Guardar cambios' : 'Crear'}
           </Button>
 
-          {
-            (!isEdit) ? <></> : <button onClick={deleteParticipant}>
-              eliminar
-            </button>
-          }
+          <Button variant="contained" onClick={() => { (isEdit) ? navigate(`/view-participants/course/${location.state.courseId}`) : navigate(`/view-participants/course/${location.state.id}`) }} sx={{ mt: 2 }}>
+            volver
+          </Button>
         </div>
       </form>
     </>

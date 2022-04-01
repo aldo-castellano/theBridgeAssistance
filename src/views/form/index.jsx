@@ -20,6 +20,7 @@ const Form = () => {
   //Declares type of form depending on pathname
   useEffect(() => {
     setFormType(getTypeForm(pathname));
+    console.log(location, 'location');
   }, [pathname]);
 
   useEffect(() => {

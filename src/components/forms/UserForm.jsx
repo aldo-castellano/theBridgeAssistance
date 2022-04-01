@@ -7,6 +7,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from 'axios';
 import theme from "../../assets/formConfi";
+import { useNavigate } from "react-router-dom";
 
 
 const schemaUser = yup.object().shape({
@@ -33,6 +34,7 @@ const schemaUserE = yup.object().shape({
 export default function UserForm({ setForm, title, defaultValues }) {
   const [isEdit, setIsEdit] = useState(false)
   const [userId, setUserId] = useState("");
+  const navigate = useNavigate();
   const {
     control: controlUser,
     handleSubmit,
@@ -225,7 +227,12 @@ export default function UserForm({ setForm, title, defaultValues }) {
               />
             </FormControl>
           </ThemeProvider>
-          <Button variant="contained" type="submit" sx={{ mt: 4 }}>Crear</Button></div>
+          <Button variant="contained" type="submit" sx={{ mt: 4 }}>Crear</Button>
+
+          <Button variant="contained" onClick={() => navigate('/user-list')} sx={{ mt: 2 }}>
+            volver
+          </Button>
+        </div>
       </form>
 
     </>
