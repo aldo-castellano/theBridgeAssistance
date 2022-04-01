@@ -77,6 +77,7 @@ export default function UserForm({ setForm, title, defaultValues }) {
     try {
       let data = await axios.get(url);
       setCoursesArr(await (await axios.get(url)).data);
+      
     } catch (error) {
       console.log("Error en getRoles");
     }

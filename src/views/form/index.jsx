@@ -8,6 +8,7 @@ import CourseForm from "components/forms/CourseForm";
 import UserForm from "components/forms/UserForm";
 import ParticipantForm from "components/forms/ParticipantForm";
 
+
 const Form = () => {
   const [formType, setFormType] = useState(0);
   const [defaultValues, setDefaultValues] = useState(null);
@@ -50,6 +51,7 @@ const Form = () => {
     }
   }, [formState]);
 
+
   //This function decides which form to render according to path
   function getTypeForm(path) {
     switch (path) {
@@ -87,10 +89,13 @@ const Form = () => {
   };
 
   const createUser = async () => {
+    const urlUserCourse = `${process.env.REACT_APP_API_URL}/usercourses/add`;
     const url = `${process.env.REACT_APP_API_URL}/user/add`;
     try {
       const response = await axios.post(url, formState);
+      const userCourse = await axios.post(urlUserCourse, { userid: response.data[0].id, courseid: response.data[0].courseid })
       navigate('/user-list');
+
     } catch (error) {
       console.log(error);
     }
@@ -236,7 +241,7 @@ const Form = () => {
     setForm: updateStateForm,
     defaultValues: defaultValues
   };
-  
+
   return (
     <div className="add-form">
       {formType === 0 ? (
