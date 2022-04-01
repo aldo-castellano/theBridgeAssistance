@@ -49,7 +49,7 @@ export const Courses = () => {
             <p>+</p>
           </section>
         )}
-        {courses.length > 1 &&
+        {courses.length >= 1 &&
           courses.map(({ id, title }, i) => (
             <section
               key={`course-${i}`}

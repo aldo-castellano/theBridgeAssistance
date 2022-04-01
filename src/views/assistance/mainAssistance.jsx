@@ -22,7 +22,7 @@ const MainAssistance = () => {
         let courseid = location.id;
         console.log(courseid, "COURSEID");
         axios
-          .get(`http://localhost:3003/api/class/courseid/${courseid}`)
+          .get(`${process.env.REACT_APP_API_URL}/class/courseid/${courseid}`)
           .then((res) => {
             console.log(res, "CLASES DATA EN USEFECT");
             orderClass(res.data);
@@ -57,7 +57,7 @@ const MainAssistance = () => {
         let courseid = location.id;
         console.log(courseid, "COURSEID");
         axios
-          .get(`http://localhost:3003/api/class/courseid/${courseid}`)
+          .get(`${process.env.REACT_APP_API_URL}/class/courseid/${courseid}`)
           .then((res) => {
             console.log(res, "CLASES DATA EN USEFECT");
             orderClass(res.data);

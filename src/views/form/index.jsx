@@ -87,7 +87,7 @@ const Form = () => {
   };
 
   const createUser = async () => {
-    const url = "http://localhost:3003/api/user/add";
+    const url = `${process.env.REACT_APP_API_URL}/user/add`;
     try {
       const response = await axios.post(url, formState);
       navigate('/user-list');
@@ -97,7 +97,7 @@ const Form = () => {
   };
 
   const createCourse = async () => {
-    const url = "http://localhost:3003/api/course/add";
+    const url = `${process.env.REACT_APP_API_URL}/course/add`;
     try {
       const tempObj = {
         title: formState.title,
@@ -113,7 +113,7 @@ const Form = () => {
   };
 
   const createParticipant = async () => {
-    const url = "http://localhost:3003/api/participants/add";
+    const url = `${process.env.REACT_APP_API_URL}/participants/add`;
     try {
       const tmpObj = {
         ...formState,
@@ -132,7 +132,7 @@ const Form = () => {
   };
 
   const editUser = async () => {
-    const url = "http://localhost:3003/api/user/update";
+    const url = `${process.env.REACT_APP_API_URL}/user/update`;
     try {
       await axios.patch(url, formState);
       navigate("/user-list")
@@ -142,7 +142,7 @@ const Form = () => {
   }
 
   const editParticipant = async () => {
-    const url = "http://localhost:3003/api/participants/update";
+    const url = `${process.env.REACT_APP_API_URL}/participants/update`;
     try {
       await axios.patch(url, formState);
       navigate(`/view-participants/course/${location.state.courseId}`, {
@@ -157,7 +157,7 @@ const Form = () => {
   }
 
   const editCourse = async () => {
-    const url = "http://localhost:3003/api/course/update";
+    const url = `${process.env.REACT_APP_API_URL}/course/update`;
     try {
       await axios.patch(url, formState);
       navigate("/courses")
@@ -167,7 +167,7 @@ const Form = () => {
   }
 
   const getUser = async () => {
-    const url = `http://localhost:3003/api/user/id/${location.state.id}`
+    const url = `${process.env.REACT_APP_API_URL}/user/id/${location.state.id}`
     try {
       const data = await axios.get(url);
       setDefaultValues({
@@ -185,7 +185,7 @@ const Form = () => {
   }
 
   const getCourse = async () => {
-    const url = `http://localhost:3003/api/course/id/${location.state.id}`
+    const url = `${process.env.REACT_APP_API_URL}/course/id/${location.state.id}`
     try {
       const data = await axios.get(url);
       setDefaultValues({
@@ -204,7 +204,7 @@ const Form = () => {
   }
 
   const getParticipant = async () => {
-    const url = `http://localhost:3003/api/participants/all`
+    const url = `${process.env.REACT_APP_API_URL}/participants/all`
     try {
       const response = await axios.get(url);
       const allParticipants = response.data;

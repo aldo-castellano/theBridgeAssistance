@@ -63,7 +63,7 @@ export default function UserForm({ setForm, title, defaultValues }) {
   }, [defaultValues, reset]);
 
   const getRoles = async () => {
-    let url = "http://localhost:3003/api/roles/all"
+    let url = `${process.env.REACT_APP_API_URL}/roles/all`
 
     try {
       setRols(await (await axios.get(url)).data)
@@ -73,7 +73,7 @@ export default function UserForm({ setForm, title, defaultValues }) {
   }
 
   const getCourses = async () => {
-    let url = "http://localhost:3003/api/course/all";
+    let url = `${process.env.REACT_APP_API_URL}/course/all`;
     try {
       let data = await axios.get(url);
       setCoursesArr(await (await axios.get(url)).data);

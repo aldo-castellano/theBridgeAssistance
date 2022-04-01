@@ -1,5 +1,5 @@
 const axios = require("axios");
-const ENDPOINT = "http://localhost:3003/api";
+const ENDPOINT = `${process.env.REACT_APP_API_URL}`;
 
 export default function usercourses(userid) {
   return axios.get(`${ENDPOINT}/course/user/${userid}`).then((res) => {

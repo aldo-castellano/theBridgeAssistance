@@ -11,7 +11,7 @@ export default function CourseParticipantsList() {
     const [participants, setParticipants] = useState([]);
 
     const getCourseParticipants = async () => {
-        let url = `http://localhost:3003/api/participants/courseid/${courseId}`;
+        let url = `${process.env.REACT_APP_API_URL}/participants/courseid/${courseId}`;
         try {
             setParticipants(await (await axios.get(url)).data)
         } catch (error) {

@@ -13,7 +13,7 @@ export default function UserList() {
   }, []);
 
 const getUsers = async() =>{
-  let url = "http://localhost:3003/api/user/all";
+  let url = `${process.env.REACT_APP_API_URL}/user/all`;
   try {
     setUsers(await (await axios.get(url)).data)
   } catch (error) {

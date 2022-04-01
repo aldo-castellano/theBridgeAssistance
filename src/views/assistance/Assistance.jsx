@@ -22,7 +22,7 @@ const Assistant = (props) => {
         try {
           let classid = location.id;
           axios
-            .get(`http://localhost:3003/api/assist/classid/${classid}`)
+            .get(`${process.env.REACT_APP_API_URL}/assist/classid/${classid}`)
             .then((res) => setAssistance(res.data));
         } catch (error) {
           console.log(error);
@@ -38,7 +38,7 @@ const Assistant = (props) => {
         let courseid = location.courseid;
 
         axios
-          .get(`http://localhost:3003/api/participants/courseid/${courseid}`)
+          .get(`${process.env.REACT_APP_API_URL}/participants/courseid/${courseid}`)
           .then((res) => {
             console.log("esto son los participantes", res.data);
             setParticipants(res.data);
@@ -116,11 +116,11 @@ const Assistant = (props) => {
     };
 
     let axiosClass = await axios.post(
-      "http://localhost:3003/api/class/add",
+      `${process.env.REACT_APP_API_URL}/class/add`,
       postClass
     );
     model.map(async (item) => {
-      await axios.post("http://localhost:3003/api/assist/add", {
+      await axios.post(`${process.env.REACT_APP_API_URL}/assist/add`, {
         classid: axiosClass.data[0].id,
         ...item,
       });

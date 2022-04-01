@@ -48,7 +48,7 @@ export default function CourseForm({ setForm, title, defaultValues }) {
   });
 
   const getNumberParticipants = async (id) => {
-    let url = `http://localhost:3003/api/participants/count/${id}`;
+    let url = `${process.env.REACT_APP_API_URL}/participants/count/${id}`;
     try {
       setNParticipants(await (await axios.get(url)).data);
     } catch (error) {

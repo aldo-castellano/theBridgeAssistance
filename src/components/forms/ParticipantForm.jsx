@@ -56,7 +56,7 @@ export default function ParticipantForm({ setForm, title, defaultValues }) {
   }, []);
   console.log(errorsParticipant, 'error')
   const getCourses = async () => {
-    let url = "http://localhost:3003/api/course/all";
+    let url = `${process.env.REACT_APP_API_URL}/api/course/all`;
 
     try {
       setCoursesArr(await (await axios.get(url)).data);
@@ -66,7 +66,7 @@ export default function ParticipantForm({ setForm, title, defaultValues }) {
   };
 
   const deleteParticipant = async () => {
-    let url = `http://localhost:3003/api/participants/${defaultValues.defaultValues.id}/delete`
+    let url = `${process.env.REACT_APP_API_URL}/participants/${defaultValues.defaultValues.id}/delete`
     try {
       console.log(defaultValues.defaultValues.id);
       const response = await axios.delete(url)
