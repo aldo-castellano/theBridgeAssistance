@@ -18,8 +18,9 @@ export const Courses = () => {
   }, [user, useSession()]);
 
   useEffect(async () => {
-    if (admin == "admin") setCourses(await adminCourses())
-    else if (admin !== "admin" && admin.length > 0) setCourses(await userCourses(userid))
+    if (admin == "admin") setCourses(await adminCourses());
+    else if (admin !== "admin" && admin.length > 0)
+      setCourses(await userCourses(userid));
   }, [admin]);
 
   useEffect(async () => {
@@ -30,12 +31,12 @@ export const Courses = () => {
   }, [courses]);
 
   const handleClick = (id, title) => {
-    console.log(id, 'hola soy el id')
+    console.log(id, "hola soy el id");
     if (admin == "admin") navigate("/edit-course", { state: { id, title } });
     else navigate("/class", { state: { id: id, title: title } });
   };
-console.log(courses,"Index Courses");
-console.log(admin,"index admin");
+  console.log(courses, "Index Courses");
+  console.log(admin, "index admin");
   return (
     <>
       <h2 className="title">MIS CURSOS</h2>

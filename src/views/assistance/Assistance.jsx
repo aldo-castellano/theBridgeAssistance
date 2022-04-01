@@ -105,22 +105,10 @@ const Assistant = (props) => {
     comment.toggleAttribute("hidden");
   };
   const postClassAssistance = async () => {
-    const options = {
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
-      time: "HH:mm",
-    };
-    const date = new Date();
+    let temp = new Date();
+    temp.setHours(temp.getHours() + 2);
+    const date = temp.toISOString();
     console.log("esta es la fecha que buscamos", date);
-
-    // var arrayDate = event.split("/");
-    // console.log(arrayDate);
-    // const currentDay = arrayDate[0];
-    // const currentMonth = arrayDate[1];
-    // const currentYear = arrayDate[2];
-    // const currentDate = `${currentYear}/${currentMonth}/${currentDay}`;
-
     const postClass = {
       courseid: location.courseid,
       userid: user[0],
