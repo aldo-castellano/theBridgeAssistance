@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react";
 import axios from "axios";
 import { Button } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
+import { getTime } from "date-fns";
 const Assistant = (props) => {
   const location = useLocation().state;
   const { user } = useSession();
@@ -108,28 +109,28 @@ const Assistant = (props) => {
       year: "numeric",
       month: "numeric",
       day: "numeric",
+      time: "HH:mm",
     };
-    const event = new Date().toLocaleString("es-ES", options);
-    // console.log("esta es la fecha que buscamos", event);
-    //borrar comentarios
-    var arrayDate = event.split("/");
-    console.log(arrayDate);
-    const currentDay = arrayDate[0];
-    const currentMonth = arrayDate[1];
-    const currentYear = arrayDate[2];
-    const currentDate = `${currentYear}/${currentMonth}/${currentDay}`;
+    const date = new Date();
+    console.log("esta es la fecha que buscamos", date);
+
+    // var arrayDate = event.split("/");
+    // console.log(arrayDate);
+    // const currentDay = arrayDate[0];
+    // const currentMonth = arrayDate[1];
+    // const currentYear = arrayDate[2];
+    // const currentDate = `${currentYear}/${currentMonth}/${currentDay}`;
 
     const postClass = {
       courseid: location.courseid,
       userid: user[0],
-      createdat: currentDate,
+      createdat: date,
     };
 
     let axiosClass = await axios.post(
       "http://localhost:3003/api/class/add",
       postClass
     );
-
     model.map(async (item) => {
       await axios.post("http://localhost:3003/api/assist/add", {
         classid: axiosClass.data[0].id,
