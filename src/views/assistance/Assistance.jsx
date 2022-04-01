@@ -1,26 +1,26 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useSession } from "logic/useSession";
 import { Icon } from "@iconify/react";
 import axios from "axios";
 import { Button } from "@mui/material";
 import { format } from "date-fns";
-import { useNavigate, useLocation} from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 const Assistant = (props) => {
   const location = useLocation().state;
-  const { user } = useSession();  
+  const { user } = useSession();
   const [mode, setMode] = useState(Boolean(location.mode));
   const [participants, setParticipants] = useState([]);
   const [assistance, setAssistance] = useState([]);
-  const [model, setModel] = useState([]);  
+  const [model, setModel] = useState([]);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
-    console.log(location,"LOCATIONCOMPLETE");
-    console.log(location.id,"LOCATIONID");
-    if(location.id){
-      function assistanceData() {      
+    console.log(location, "LOCATIONCOMPLETE");
+    console.log(location.id, "LOCATIONID");
+    if (location.id) {
+      function assistanceData() {
         try {
-          let classid = location.id;         
+          let classid = location.id;
           axios
             .get(`http://localhost:3003/api/assist/classid/${classid}`)
             .then((res) => setAssistance(res.data));
@@ -29,15 +29,14 @@ const Assistant = (props) => {
         }
       }
       assistanceData();
-    }   
+    }
   }, []);
-  
+
   useEffect(() => {
     function participantData() {
       try {
         let courseid = location.courseid;
-        console.log("este es el courseid",courseid)
-        
+
         axios
           .get(`http://localhost:3003/api/participants/courseid/${courseid}`)
           .then((res) => setParticipants(res.data));
@@ -48,17 +47,13 @@ const Assistant = (props) => {
     participantData();
   }, []);
 
-
-
   const tempModel = [];
   useEffect(() => {
     const modelAssistance = () => {
-      
       if (mode === false) {
-        console.log("ASSISTANCE?",assistance);
-        console.log("PARTICIPANTS?",participants);
+        console.log("ASSISTANCE?", assistance);
+        console.log("PARTICIPANTS?", participants);
         assistance?.map((asistencia) => {
-      
           const nameParticipant = participants?.filter(
             (item) => asistencia.participantid == item.id
           );
@@ -68,33 +63,32 @@ const Assistant = (props) => {
             lastname: nameParticipant[0]?.lastname,
             ...asistencia,
           };
-          
+
           return tempModel.push(modelAlumn);
         });
       } else {
         participants.map((participant) => {
-          
           const modelAlumn = {
             firstname: participant?.firstname,
             lastname: participant?.lastname,
             participantid: participant?.id,
             ispartial: location.ispartial ?? false,
             coments: location.coments ?? null,
-            assistance: "0"
+            assistance: "0",
           };
           return tempModel.push(modelAlumn);
         });
       }
-      console.log(tempModel, 'tempModel');
+      console.log(tempModel, "tempModel");
       console.log("model", model);
       setModel(tempModel);
     };
     modelAssistance();
-    console.log(mode, 'mode')
+    console.log(mode, "mode");
   }, [participants, assistance]);
 
   const tempAssitance = [...model];
-  const testt = (event, index, clave) => {    
+  const testt = (event, index, clave) => {
     if (clave === "ispartial") {
       tempAssitance[index][clave] = event.target.checked;
     } else if (clave == "assistance" && event.target.value == 2) {
@@ -103,24 +97,24 @@ const Assistant = (props) => {
     } else {
       tempAssitance[index][clave] = event.target.value;
     }
-    console.log(location,"location.Asistance");
-    console.log(tempAssitance,"TEMPASSISTANCE");
+    console.log(location, "location.Asistance");
+    console.log(tempAssitance, "TEMPASSISTANCE");
     setModel(tempAssitance);
   };
   const handleClickComment = (event) => {
     const comment = document.getElementById(event.target.id + "comment");
     comment.toggleAttribute("hidden");
   };
-  const postClassAssistance = async () => {    
+  const postClassAssistance = async () => {
     const postClass = {
       courseid: location.courseid,
       userid: user[0],
       createdat: format(Date.now(), "yyyy-MM-dd"),
     };
-    
+
     let axiosClass = await axios.post(
       "http://localhost:3003/api/class/add",
-      postClass,
+      postClass
     );
 
     model.map(async (item) => {
@@ -132,17 +126,16 @@ const Assistant = (props) => {
     });
     navigate("/courses");
   };
-console.log(model,"EL MODELO ANTES DEL RENDER")
+  console.log(model, "EL MODELO ANTES DEL RENDER");
   return (
     <>
       <main className="main container">
-       
         <h1>{location.title}</h1>
         <form className="assistance-form">
           {model?.map((e, index) => {
-            console.log(e,"E DENTRO DEL MAP");
+            console.log(e, "E DENTRO DEL MAP");
             return (
-              <div key={index} id={`${index}`} className="item-assistance">               
+              <div key={index} id={`${index}`} className="item-assistance">
                 <p>{e.firstname + " " + e.lastname}</p>
                 <div className="type-assistance">
                   <input
