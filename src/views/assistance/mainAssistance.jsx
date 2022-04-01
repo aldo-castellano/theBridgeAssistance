@@ -1,28 +1,30 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+
 import axios from "axios";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import AddTaskIcon from '@mui/icons-material/AddTask';
 import Box from "@mui/material/Box";
-import { useNavigate, useLocation } from "react-router-dom";
+
 const MainAssistance = () => {
   const [clases, setClases] = useState();
   const modelcourses = { titleCourse: "full Stack" };
   const navigate = useNavigate();
   const location = useLocation().state;
-  const [assistance, setAssistance] = useState([]);
-  console.log(clases,"CLASES MAIN");
+
   useEffect(() => {
     function classData() {
       try {
         console.log(location, 'LOCATION')
-        let courseid = location.id;   
-        console.log(courseid,"COURSEID");     
+        let courseid = location.id;
+        console.log(courseid, "COURSEID");
         axios
           .get(`http://localhost:3003/api/class/courseid/${courseid}`)
           .then((res) => {
-            console.log(res,"CLASES DATA EN USEFECT");
+            console.log(res, "CLASES DATA EN USEFECT");
             orderClass(res.data);
           });
       } catch (error) {
@@ -32,19 +34,6 @@ const MainAssistance = () => {
     classData();
   }, []);
   
-  useEffect(() => {
-    function assistanceData() {
-      try {
-        let classid = location.id;
-        axios
-          .get(`http://localhost:3003/api/assist/classid/${classid}`)
-          .then((res) => setAssistance(res.data));
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    assistanceData();
-  }, []);
   const orderClass = (dataClass) => {
     console.log("clases", dataClass);
     dataClass.sort((a, b) => {
@@ -61,8 +50,7 @@ const MainAssistance = () => {
   };
 
   useEffect(() => {
-    function classData() {
-      console.log('MAIN ASISTAADFEF USEEFFECT');
+    function classData() {      
       try {
         console.log(location, 'LOCATION')
         let courseid = location.id;
@@ -74,7 +62,7 @@ const MainAssistance = () => {
             orderClass(res.data);
           });
       } catch (error) {
-        console.log(error, 'ERROR' );
+        console.log(error, 'ERROR');
       }
     }
     classData();
@@ -87,33 +75,34 @@ const MainAssistance = () => {
 
 
   const newClass = () => {
-    console.log("location MainAsistance",location);
+    console.log("location MainAsistance", location);
     navigate("/addclass", {
-      state: { ...clases[0], mode: true, title: location.title, courseid: location.id, assistance: [...assistance] },
+      state: { ...clases[0], mode: true, title: location.title, courseid: location.id },
     });
   };
+
   return (
     <>
       <main className="main-assistance container">
         <h1 className="title-main">{location.title}</h1>
         <div className="container-mainAssistance">
-          
+
           {clases?.length >= 1 ? (
             <>
               <Box sx={{ minWidth: 100, width: 300 }}>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
-                    Select class
+                    Ver asistencias registradas
                   </InputLabel>
                   <Select
-                    labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    label="Select class"
+                    label="Ver asistencias registradas"
                   >
                     {clases?.map((element) => (
                       <MenuItem
                         key={element.id}
                         onClick={(event) => handleClickGetClass(event, element)}
+                        sx={{ color: '#ffffff'}}
                       >
                         {element.createdat}
                       </MenuItem>
@@ -123,7 +112,10 @@ const MainAssistance = () => {
               </Box>
             </>
           ) : null}
-          <div className="new-class" onClick={newClass}></div>
+          <div className="new-class" onClick={newClass}>
+            <AddTaskIcon sx={{ color: '#e1331a', fontSize: 60 }} />
+            <p>Registrar una nueva asistencia</p>
+          </div>
         </div>
       </main>
     </>
