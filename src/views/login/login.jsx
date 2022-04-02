@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import Alert from '@mui/material/Alert';
 import { TextField, Button } from "@mui/material";
 import logol from "assets/img/lone-logo.png";
 
@@ -11,21 +11,22 @@ const Login = () => {
 
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-  const { loger, isLogged } = useSession();
-
+  const { loger, isLogged, alerta } = useSession();  
+  
   const trySubmit = (e) => {
     if (e.which == 13) userLogin();
   };
-
-  const userLogin = async () => {
+  const userLogin = async () => {     
     //TODO: VALIDATE
     //TODO: ERROR MESSAGE
+    console.log(alerta,"alert DENTRO USERLOGIN");
+    //if (alerta) alert("El usuario o contraseña son erroneas")
     await loger({ login, password });
     setLogin("");
-    setPassword("");
+    setPassword("");       
   };
 
-  useEffect(() => {
+  useEffect(() => {    
     console.log(isLogged);
     if (isLogged) navigate("/");
   }, [isLogged, navigate]);
@@ -34,7 +35,7 @@ const Login = () => {
     <>
       <div className="login-field">
         <img className="logo" src={logol} alt="logo" />
-        <h2>INICIA SESION</h2>
+        <h2>INICIA SESION</h2>       
         <form className="login-form" onSubmit={userLogin}>
           <TextField
             className="input"

@@ -10,7 +10,7 @@ export const Courses = () => {
   const [admin, setAdmin] = useState([]);
   const { user } = useSession();
   const userid = user ? user[0] : "";
-console.log(user,"USER");
+  
   useEffect(() => {
     if (user !== null && typeof user == "object") {
       setAdmin(user[1]);
@@ -18,8 +18,9 @@ console.log(user,"USER");
   }, [user, useSession()]);
 
   useEffect(async () => {
-    if (admin == "admin") setCourses(await adminCourses())
-    else if (admin !== "admin" && admin.length > 0) setCourses(await userCourses(userid))
+    if (admin == "admin") setCourses(await adminCourses());
+    else if (admin !== "admin" && admin.length > 0)
+      setCourses(await userCourses(userid));
   }, [admin]);
 
   useEffect(async () => {
@@ -33,6 +34,7 @@ console.log(user,"USER");
     if (admin == "admin") navigate("/edit-course", { state: { id, title } });
     else navigate("/class", { state: { id: id, title: title } });
   };
+
   return (
     <>
       <h2 className="title">MIS CURSOS</h2>
@@ -45,7 +47,7 @@ console.log(user,"USER");
             <p>+</p>
           </section>
         )}
-        {courses.length > 1 &&
+        {courses.length >= 1 &&
           courses.map(({ id, title }, i) => (
             <section
               key={`course-${i}`}

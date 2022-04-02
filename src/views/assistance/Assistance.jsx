@@ -3,8 +3,8 @@ import { useSession } from "logic/useSession";
 import { Icon } from "@iconify/react";
 import axios from "axios";
 import { Button } from "@mui/material";
-import { format } from "date-fns";
 import { useNavigate, useLocation } from "react-router-dom";
+import { getTime } from "date-fns";
 const Assistant = (props) => {
   const location = useLocation().state;
   const { user } = useSession();
@@ -22,7 +22,7 @@ const Assistant = (props) => {
         try {
           let classid = location.id;
           axios
-            .get(`http://localhost:3003/api/assist/classid/${classid}`)
+            .get(`${process.env.REACT_APP_API_URL}/assist/classid/${classid}`)
             .then((res) => setAssistance(res.data));
         } catch (error) {
           console.log(error);
@@ -38,8 +38,11 @@ const Assistant = (props) => {
         let courseid = location.courseid;
 
         axios
-          .get(`http://localhost:3003/api/participants/courseid/${courseid}`)
-          .then((res) => setParticipants(res.data));
+          .get(`${process.env.REACT_APP_API_URL}/participants/courseid/${courseid}`)
+          .then((res) => {
+            console.log("esto son los participantes", res.data);
+            setParticipants(res.data);
+          });
       } catch (error) {
         console.log(error);
       }
@@ -79,8 +82,6 @@ const Assistant = (props) => {
           return tempModel.push(modelAlumn);
         });
       }
-      console.log(tempModel, "tempModel");
-      console.log("model", model);
       setModel(tempModel);
     };
     modelAssistance();
@@ -97,8 +98,6 @@ const Assistant = (props) => {
     } else {
       tempAssitance[index][clave] = event.target.value;
     }
-    console.log(location, "location.Asistance");
-    console.log(tempAssitance, "TEMPASSISTANCE");
     setModel(tempAssitance);
   };
   const handleClickComment = (event) => {
@@ -106,20 +105,22 @@ const Assistant = (props) => {
     comment.toggleAttribute("hidden");
   };
   const postClassAssistance = async () => {
+    let temp = new Date();
+    temp.setHours(temp.getHours() + 2);
+    const date = temp.toISOString();
+    console.log("esta es la fecha que buscamos", date);
     const postClass = {
       courseid: location.courseid,
       userid: user[0],
-      createdat: format(Date.now(), "yyyy-MM-dd"),
+      createdat: date,
     };
 
     let axiosClass = await axios.post(
-      "http://localhost:3003/api/class/add",
+      `${process.env.REACT_APP_API_URL}/class/add`,
       postClass
     );
-
     model.map(async (item) => {
-      console.log("data", model);
-      await axios.post("http://localhost:3003/api/assist/add", {
+      await axios.post(`${process.env.REACT_APP_API_URL}/assist/add`, {
         classid: axiosClass.data[0].id,
         ...item,
       });
@@ -242,26 +243,34 @@ const Assistant = (props) => {
                         testt(event, index, "coments");
                       }}
                     ></textarea>
-                    {console.log(e.ispartial)}
+                    {/* {console.log(e.ispartial)} */}
                   </div>
                 </div>
               </div>
             );
           })}
-          {mode == false ? null : (
-            <Button
-              onClick={postClassAssistance}
-              variant="contained"
-              size="large"
-              sx={{
-                paddingX: 10,
-                borderRadius: 50,
-              }}
-              color="secondary"
-            >
-              guardar
-            </Button>
+          {mode === false ? null : (
+            <div>
+              <Button
+                onClick={postClassAssistance}
+                variant="contained"
+                disabled={participants < 1 ? true : false}
+                size="large"
+                sx={{
+                  paddingX: 10,
+                  borderRadius: 50,
+                }}
+                color="secondary"
+              >
+                guardar
+              </Button>
+            </div>
           )}
+          {participants < 1 ? (
+            <p className="participants">
+              Todavía no se han añadido participantes al curso
+            </p>
+          ) : null}
         </form>
       </main>
     </>

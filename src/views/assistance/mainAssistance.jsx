@@ -22,7 +22,7 @@ const MainAssistance = () => {
         let courseid = location.id;
         console.log(courseid, "COURSEID");
         axios
-          .get(`http://localhost:3003/api/class/courseid/${courseid}`)
+          .get(`${process.env.REACT_APP_API_URL}/class/courseid/${courseid}`)
           .then((res) => {
             console.log(res, "CLASES DATA EN USEFECT");
             orderClass(res.data);
@@ -36,6 +36,7 @@ const MainAssistance = () => {
 
   const orderClass = (dataClass) => {
     console.log("clases", dataClass);
+
     dataClass.sort((a, b) => {
       if (a.createdat > b.createdat) {
         return -1;
@@ -45,7 +46,7 @@ const MainAssistance = () => {
         return 0;
       }
     });
-    console.log(dataClass);
+    console.log("esto son los datos de la dataClass", dataClass);
     return setClases(dataClass);
   };
 
@@ -56,7 +57,7 @@ const MainAssistance = () => {
         let courseid = location.id;
         console.log(courseid, "COURSEID");
         axios
-          .get(`http://localhost:3003/api/class/courseid/${courseid}`)
+          .get(`${process.env.REACT_APP_API_URL}/class/courseid/${courseid}`)
           .then((res) => {
             console.log(res, "CLASES DATA EN USEFECT");
             orderClass(res.data);
@@ -119,6 +120,7 @@ const MainAssistance = () => {
                         sx={{ color: "#ffffff" }}
                       >
                         {element.createdat}
+                        {console.log("ESTA ES LA CORRECTA", element.createdat)}
                       </MenuItem>
                     ))}
                   </Select>

@@ -8,6 +8,7 @@ import {
   FormControl,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
@@ -26,7 +27,10 @@ const schemaParticipant = yup.object().shape({
   courseid: yup.string().required(),
 });
 
-export default function ParticipantForm({ setForm, title,defaultValues }) {
+export default function ParticipantForm({ setForm, title, defaultValues }) {
+  const [isEdit, setIsEdit] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
   const {
     control: controlParticipant,
     handleSubmit,
@@ -35,20 +39,24 @@ export default function ParticipantForm({ setForm, title,defaultValues }) {
   } = useForm({
     resolver: yupResolver(schemaParticipant),
   });
- 
+
   useEffect(() => {
     defaultValues &&
       defaultValues.defaultValues &&
       reset(defaultValues.defaultValues);
+    if (defaultValues) {
+      if (Object.keys(defaultValues.defaultValues).length > 1) {
+        setIsEdit(true);
+      }
+    }
   }, [defaultValues, reset]);
   const [coursesArr, setCoursesArr] = useState([]);
-
   useEffect(() => {
     getCourses();
   }, []);
-
+  console.log(errorsParticipant, 'error')
   const getCourses = async () => {
-    let url = "http://localhost:3003/api/course/all";
+    let url = `${process.env.REACT_APP_API_URL}/api/course/all`;
 
     try {
       setCoursesArr(await (await axios.get(url)).data);
@@ -56,7 +64,20 @@ export default function ParticipantForm({ setForm, title,defaultValues }) {
       console.log("Error en getRoles");
     }
   };
-  const onSubmit = (data) => setForm(data);
+
+  const deleteParticipant = async () => {
+    let url = `${process.env.REACT_APP_API_URL}/participants/${defaultValues.defaultValues.id}/delete`
+    try {
+      console.log(defaultValues.defaultValues.id);
+      const response = await axios.delete(url)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const onSubmit = (data) => {
+    setForm(data);
+  }
 
   return (
     <>
@@ -125,7 +146,11 @@ export default function ParticipantForm({ setForm, title,defaultValues }) {
           </ThemeProvider>
 
           <Button variant="contained" type="submit" sx={{ mt: 4 }}>
-            Crear
+            {isEdit ? 'Guardar cambios' : 'Crear'}
+          </Button>
+
+          <Button variant="contained" onClick={() => { (isEdit) ? navigate(`/view-participants/course/${location.state.courseId}`) : navigate(`/view-participants/course/${location.state.id}`) }} sx={{ mt: 2 }}>
+            volver
           </Button>
         </div>
       </form>
