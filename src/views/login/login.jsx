@@ -20,7 +20,7 @@ const Login = () => {
     //TODO: VALIDATE
     //TODO: ERROR MESSAGE
     console.log(alerta,"alert DENTRO USERLOGIN");
-    if (alerta) alert("El usuario o contraseña son erroneas")
+    //if (alerta) alert("El usuario o contraseña son erroneas")
     await loger({ login, password });
     setLogin("");
     setPassword("");       
